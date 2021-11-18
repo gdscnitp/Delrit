@@ -1,16 +1,7 @@
 # ride_sharing
 
-A new Flutter project.
+You must be aware of car-pooling and its advantages like reducing traffic and pollution. Also, there might be situations when you don’t want to travel alone or cut down your ride costs. However, finding someone to share your ride with other people can be a tedious task. 
 
-## Getting Started
+To combat this problem, here is a real-time app that will allow users to enlist their vehicles whenever they are going somewhere so that other users can share the ride if it is in their way and split the cost accordingly.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The app will have real-time GPS-activated maps. Users can share their source and destination. Other users would be able to contact them via chat or call within the app and with additional features like Internationalisation!
