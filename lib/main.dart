@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
+import 'package:ride_sharing/provider/getit.dart';
 import 'package:ride_sharing/route_generator.dart';
 import 'package:flutter/material.dart';
 
@@ -8,16 +9,20 @@ void main() {
   if (defaultTargetPlatform == TargetPlatform.android) {
     AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
   }
+  WidgetsFlutterBinding.ensureInitialized();
+  setupLocator();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Restaurant Flutter UI',
-      initialRoute: '/test',
+      initialRoute: '/login',
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData(

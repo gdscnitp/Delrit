@@ -1,5 +1,6 @@
 import 'package:ride_sharing/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/src/screens/login_page.dart';
 import 'package:ride_sharing/src/screens/map_test.dart';
 
 class RouteGenerator {
@@ -12,6 +13,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case '/test':
         return MaterialPageRoute(builder: (_) => const MapTest());
+      case '/login':
+        return MaterialPageRoute(builder: (_) => const LoginPage());
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {
