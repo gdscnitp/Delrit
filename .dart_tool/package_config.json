@@ -63,19 +63,19 @@
     },
     {
       "name": "firebase_core",
-      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.8.0",
+      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.10.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "firebase_core_platform_interface",
-      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.0.1",
+      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "firebase_core_web",
-      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.1.0",
+      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -177,7 +177,7 @@
     },
     {
       "name": "google_maps_flutter",
-      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.0",
+      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
@@ -279,7 +279,19 @@
     },
     {
       "name": "shared_preferences",
-      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.8",
+      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.9",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "shared_preferences_android",
+      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.8",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "shared_preferences_ios",
+      "rootUri": "file:///C:/src_flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_ios-2.0.8",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
@@ -392,7 +404,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-11-21T11:45:29.889088Z",
+  "generated": "2021-11-21T13:57:02.853307Z",
   "generator": "pub",
   "generatorVersion": "2.14.4"
 }
