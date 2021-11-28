@@ -29,10 +29,10 @@ class LoginViewModel extends BaseModel {
         User? user = result.user;
 
         try {
-          userUid = _auth.currentUser!.uid;
+          userUid = user!.uid;
 
           userDb.collection('users').doc(userUid).set(
-              {"id": userUid, "name": user!.displayName, "email": user.email});
+              {"id": userUid, "name": user.displayName, "email": user.email});
 
           Navigator.of(context).pushNamed('/');
         } catch (e) {

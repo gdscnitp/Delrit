@@ -1,1 +1,0 @@
-const MAPAPIKEY = "AIzaSyBb32owVFGKt52lkEFhAd_RvLoRHqETA04";

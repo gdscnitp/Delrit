@@ -7,6 +7,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ride_sharing/auth/secrets.dart';
+import 'package:ride_sharing/src/screens/address_search.dart';
+import 'package:uuid/uuid.dart';
 
 class MapTest extends StatefulWidget {
   const MapTest({Key? key}) : super(key: key);
@@ -162,8 +164,10 @@ class _MapTestState extends State<MapTest> {
       MAPAPIKEY,
       PointLatLng(startLat, startLon),
       PointLatLng(destLat, destLon),
-      travelMode: TravelMode.transit,
+      travelMode: TravelMode.driving,
+      optimizeWaypoints: true,
     );
+    print("ERRORS ================================");
     print(result.points);
     print(result.errorMessage);
 
@@ -181,7 +185,9 @@ class _MapTestState extends State<MapTest> {
       points: polylineCoordinates,
       width: 3,
     );
-    polylines[id] = polyline;
+    setState(() {
+      polylines[id] = polyline;
+    });
   }
 
   @override
@@ -203,8 +209,18 @@ class _MapTestState extends State<MapTest> {
     return Container(
       width: width * 0.8,
       child: TextField(
-        onChanged: (value) {
-          locationCallback(value);
+        // onChanged: (value) {
+        // locationCallback(value);
+        // },
+        onTap: () async {
+          final sessionToken = const Uuid().v4();
+          final result = await showSearch(
+            context: context,
+            delegate: AddressSearch(sessionToken),
+          );
+          print(result.toString());
+          locationCallback(result!.description);
+          controller.text = result.description;
         },
         controller: controller,
         focusNode: focusNode,
@@ -313,6 +329,7 @@ class _MapTestState extends State<MapTest> {
                             locationCallback: (String value) {
                               setState(() {
                                 _destinationAddress = value;
+                                destinationAddressController.text = value;
                               });
                             }),
                         const SizedBox(height: 10),
