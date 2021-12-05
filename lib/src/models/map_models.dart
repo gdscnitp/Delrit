@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:ride_sharing/auth/secrets.dart';
 
@@ -21,9 +22,10 @@ class PlaceApiProvider {
 
   final String apiKey = MAPAPIKEY;
 
-  Future<List<Suggestion>> fetchSuggestions(String input) async {
+  Future<List<Suggestion>> fetchSuggestions(
+      String input, Position position) async {
     final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=address&language=en&components=country:in&key=$apiKey&sessiontoken=$sessionToken');
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&language=en&components=country:in&position=${position.latitude},${position.longitude}&radius=1000000&key=$apiKey&sessiontoken=$sessionToken');
     final response = await client.get(url);
 
     if (response.statusCode == 200) {

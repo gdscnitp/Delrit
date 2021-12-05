@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:ride_sharing/src/models/map_models.dart';
 
 class AddressSearch extends SearchDelegate<Suggestion?> {
   final sessionToken;
+  final Position position;
   late PlaceApiProvider apiClient;
 
-  AddressSearch(this.sessionToken) {
+  AddressSearch(this.sessionToken, this.position) {
     apiClient = PlaceApiProvider(sessionToken);
   }
 
@@ -41,7 +43,7 @@ class AddressSearch extends SearchDelegate<Suggestion?> {
   @override
   Widget buildSuggestions(BuildContext context) {
     return FutureBuilder<List<Suggestion>>(
-      future: query == "" ? null : apiClient.fetchSuggestions(query),
+      future: query == "" ? null : apiClient.fetchSuggestions(query, position),
       builder: (context, snapshot) => query == ""
           ? Container(
               padding: const EdgeInsets.all(10),

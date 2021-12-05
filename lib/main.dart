@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Restaurant Flutter UI',
-      initialRoute: '/test',
+      initialRoute: '/splash',
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData(

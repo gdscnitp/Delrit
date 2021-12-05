@@ -7,7 +7,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ride_sharing/auth/secrets.dart';
+import 'package:ride_sharing/src/models/map_models.dart';
 import 'package:ride_sharing/src/screens/address_search.dart';
+import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
 import 'package:uuid/uuid.dart';
 
 class MapTest extends StatefulWidget {
@@ -196,65 +198,6 @@ class _MapTestState extends State<MapTest> {
     _getCurrentLocation();
   }
 
-  Widget _textField({
-    required TextEditingController controller,
-    required FocusNode focusNode,
-    required String label,
-    required String hint,
-    required double width,
-    required Icon prefixIcon,
-    Widget? suffixIcon,
-    required Function(String) locationCallback,
-  }) {
-    return Container(
-      width: width * 0.8,
-      child: TextField(
-        // onChanged: (value) {
-        // locationCallback(value);
-        // },
-        onTap: () async {
-          final sessionToken = const Uuid().v4();
-          final result = await showSearch(
-            context: context,
-            delegate: AddressSearch(sessionToken),
-          );
-          print(result.toString());
-          locationCallback(result!.description);
-          controller.text = result.description;
-        },
-        controller: controller,
-        focusNode: focusNode,
-        decoration: InputDecoration(
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
-          labelText: label,
-          filled: true,
-          fillColor: Colors.white,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10.0),
-            ),
-            borderSide: BorderSide(
-              color: Colors.grey.shade400,
-              width: 2,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10.0),
-            ),
-            borderSide: BorderSide(
-              color: Colors.blue.shade300,
-              width: 2,
-            ),
-          ),
-          contentPadding: const EdgeInsets.all(15),
-          hintText: hint,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -299,7 +242,8 @@ class _MapTestState extends State<MapTest> {
                           style: TextStyle(fontSize: 20.0),
                         ),
                         const SizedBox(height: 10),
-                        _textField(
+                        placeSearchTextField(
+                            context: context,
                             label: 'Start',
                             hint: 'Choose starting point',
                             prefixIcon: const Icon(Icons.looks_one),
@@ -313,23 +257,25 @@ class _MapTestState extends State<MapTest> {
                             controller: startAddressController,
                             focusNode: startAddressFocusNode,
                             width: width,
-                            locationCallback: (String value) {
+                            locationCallback: (Suggestion? value) {
                               setState(() {
-                                _startAddress = value;
+                                _startAddress = value!.description;
                               });
                             }),
                         const SizedBox(height: 10),
-                        _textField(
+                        placeSearchTextField(
+                            context: context,
                             label: 'Destination',
                             hint: 'Choose destination',
                             prefixIcon: const Icon(Icons.looks_two),
                             controller: destinationAddressController,
                             focusNode: desrinationAddressFocusNode,
                             width: width,
-                            locationCallback: (String value) {
+                            locationCallback: (Suggestion? value) {
                               setState(() {
-                                _destinationAddress = value;
-                                destinationAddressController.text = value;
+                                _destinationAddress = value!.description;
+                                destinationAddressController.text =
+                                    value.description;
                               });
                             }),
                         const SizedBox(height: 10),

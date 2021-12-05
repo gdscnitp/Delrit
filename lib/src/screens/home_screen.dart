@@ -16,8 +16,34 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Home'),
         backgroundColor: config.Colors().mainColor(1),
       ),
-      body: const Center(
-        child: Text('Home'),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/login');
+            },
+            child: const Text('Login'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/test');
+            },
+            child: const Text('Map Test'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/addride');
+            },
+            child: const Text('Add Ride'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/searchrider');
+            },
+            child: const Text('Search Rider'),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

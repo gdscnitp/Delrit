@@ -42,6 +42,7 @@ class Colors {
   final Color _secondDarkColor = const Color(0xFFE7F6F8);
   final Color _accentColor = const Color(0xFFFF0000);
   final Color _accentDarkColor = const Color(0xFFFF0000);
+  final Color _backgroundColor = const Color.fromRGBO(48, 54, 72, 1);
 
   final Map<int, Color> color = {
     50: const Color.fromRGBO(0, 217, 112, .1),
@@ -82,5 +83,9 @@ class Colors {
 
   Color accentDarkColor(double opacity) {
     return _accentDarkColor.withOpacity(opacity);
+  }
+
+  Color backgroundColor(double opacity) {
+    return _backgroundColor.withOpacity(opacity);
   }
 }
