@@ -20,6 +20,7 @@ class _SearchRiderState extends State<SearchRider> {
     return BaseView<SearchRiderViewModel>(
       onModelReady: (model) => model.getCurrentLocation(),
       builder: (context, model, child) => Scaffold(
+        key: model.scaffoldkey,
         body: Stack(
           children: [
             GoogleMap(
@@ -97,7 +98,9 @@ class _SearchRiderState extends State<SearchRider> {
                               }),
                           const SizedBox(height: 10),
                           ElevatedButton(
-                            onPressed: model.getNearbyRiders,
+                            onPressed: () {
+                              model.getNearbyRiders(context);
+                            },
                             // color: Colors.red,
                             // shape: RoundedRectangleBorder(
                             //   borderRadius: BorderRadius.circular(20.0),

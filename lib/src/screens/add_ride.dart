@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/constant/text_field_style.dart';
+import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/src/models/map_models.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
@@ -60,12 +61,14 @@ class _AddRideState extends State<AddRide> {
                 },
               ),
               SizedBox(height: height * 0.05),
-              TextButton(
-                onPressed: () {
-                  model.addRideToDb(context);
-                },
-                child: const Text("Submit"),
-              )
+              model.state == ViewState.Busy
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: () {
+                        model.addRideToDb(context);
+                      },
+                      child: const Text("Submit"),
+                    )
             ],
           )),
     );

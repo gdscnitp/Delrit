@@ -7,9 +7,10 @@ import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/src/models/riders.dart';
 
 class SearchRiderViewModel extends BaseModel {
+  final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
   final CameraPosition initialLocation = const CameraPosition(
     target: LatLng(26.8876621, 80.995846),
-    zoom: 8.0,
+    zoom: 15.0,
   );
   GoogleMapController? mapController;
   late Position currentPosition;
@@ -72,13 +73,13 @@ class SearchRiderViewModel extends BaseModel {
     });
   }
 
-  void getNearbyRiders() async {
+  void getNearbyRiders(BuildContext context) async {
     // final BitmapDescriptor personIcon = await BitmapDescriptor.fromAssetImage(
     //     const ImageConfiguration(
     //         devicePixelRatio: 0.0001, size: Size(0.0001, 0.0001)),
     //     'assets/icons/person.png');
     List<Rider> riders =
-        (await db.collection('availableRider').get()).docs.map((e) {
+        (await db.collection('availableRiders').get()).docs.map((e) {
       var data = e.data();
       return Rider(
           id: e.id,
@@ -99,6 +100,12 @@ class SearchRiderViewModel extends BaseModel {
     for (Rider r in nearbyRiders) {
       markers.add(
         Marker(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => const Text("ddd"),
+            );
+          },
           markerId: MarkerId(r.id),
           // icon: personIcon,
           position: LatLng(r.source.latitude, r.source.longitude),
