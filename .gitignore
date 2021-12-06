@@ -9,9 +9,6 @@
 .history
 .svn/
 
-
-./lib/auth/secrets.dart
-
 # IntelliJ related
 *.iml
 *.ipr
@@ -47,3 +44,5 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+lib/auth/secrets.dart

@@ -1,7 +1,10 @@
+import 'package:ride_sharing/src/screens/add_ride.dart';
 import 'package:ride_sharing/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/src/screens/login_page.dart';
 import 'package:ride_sharing/src/screens/map_test.dart';
+import 'package:ride_sharing/src/screens/search_riders.dart';
+import 'package:ride_sharing/src/screens/splash_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -11,10 +14,17 @@ class RouteGenerator {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => const HomeScreen());
+      case '/splash':
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case '/test':
         return MaterialPageRoute(builder: (_) => const MapTest());
       case '/login':
         return MaterialPageRoute(builder: (_) => const LoginPage());
+      case '/addride':
+        return MaterialPageRoute(builder: (_) => const AddRide());
+      case '/searchrider':
+        return MaterialPageRoute(builder: (_) => const SearchRider());
+
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {

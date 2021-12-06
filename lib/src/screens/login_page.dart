@@ -11,29 +11,43 @@ class LoginPage extends StatelessWidget {
       builder: (ctx, model, child) => Scaffold(
         body: SafeArea(
           child: Center(
-            child: Container(
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Sign In with Google'),
+            child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    await model.signInWithGoogle();
+                    Navigator.of(context).pushNamed('/');
+                  },
+                  child: const Text('Sign In with Google'),
+                ),
+                const SizedBox(height: 5),
+                const Text('Or'),
+                const SizedBox(height: 5),
+                ElevatedButton(
+                  onPressed: () async {
+                    await model.signInWithFacebook();
+                    Navigator.of(context).pushNamed('/');
+                  },
+                  child: const Text('Sign In with Facebook'),
+                ),
+                const SizedBox(height: 5),
+                const Text('Or'),
+                const SizedBox(height: 5),
+                ElevatedButton(
+                  onPressed: () {
+                    model.signInWithNumber(context);
+                  },
+                  child: const Text('Sign In with Phone Number'),
+                ),
+                const SizedBox(height: 5),
+                TextFormField(
+                  controller: model.phoneNum,
+                  decoration: const InputDecoration(
+                    hintText: 'enter phone number',
+                    border: InputBorder.none,
                   ),
-                  const SizedBox(height: 5),
-                  const Text('Or'),
-                  const SizedBox(height: 5),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Sign In with Facebook'),
-                  ),
-                  const SizedBox(height: 5),
-                  const Text('Or'),
-                  const SizedBox(height: 5),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Sign In with Phone Number'),
-                  ),
-                ],
-              ),
+                )
+              ],
             ),
           ),
         ),
