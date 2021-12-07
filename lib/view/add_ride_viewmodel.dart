@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 
 class AddRideViewModel extends BaseModel {
@@ -18,6 +19,7 @@ class AddRideViewModel extends BaseModel {
     nameController.clear();
     sourceController.clear();
     destinationController.clear();
+    notifyListeners();
     // _dateController.clear();
     // _timeController.clear();
     // _seatsController.clear();
@@ -25,13 +27,16 @@ class AddRideViewModel extends BaseModel {
   }
 
   void addRideToDb(BuildContext context) async {
+    setState(ViewState.Busy);
     var sourceCord = await locationFromAddress(sourceController.text);
     var destinationCord = await locationFromAddress(destinationController.text);
-    db.collection("availableRider").add({
+    await db.collection("availableRiders").add({
       "name": nameController.text,
       "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
       "destination":
           GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
     }).then((value) => print("added"));
+    clear();
+    setState(ViewState.Idle);
   }
 }

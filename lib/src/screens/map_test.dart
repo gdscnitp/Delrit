@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ride_sharing/auth/secrets.dart';
 import 'package:ride_sharing/src/models/map_models.dart';
 import 'package:ride_sharing/src/screens/address_search.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
@@ -162,6 +162,7 @@ class _MapTestState extends State<MapTest> {
 
   _createPolylines(startLat, startLon, destLat, destLon) async {
     polylinePoints = PolylinePoints();
+    var MAPAPIKEY = FlutterConfig?.get('MAPS_API_HTTPS') ?? "";
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       MAPAPIKEY,
       PointLatLng(startLat, startLon),
