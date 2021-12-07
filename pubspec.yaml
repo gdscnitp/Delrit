@@ -50,6 +50,7 @@ dependencies:
   flutter_facebook_auth: ^3.5.6
   uuid: ^3.0.5
   google_fonts: ^2.1.0
+  flutter_config: ^2.0.0
 
 dev_dependencies:
   flutter_test:
