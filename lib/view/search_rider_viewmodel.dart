@@ -74,10 +74,10 @@ class SearchRiderViewModel extends BaseModel {
   }
 
   void getNearbyRiders(BuildContext context) async {
+    // ImageConfiguration configuration =
+    //     createLocalImageConfiguration(context, size: const Size(1, 1));
     // final BitmapDescriptor personIcon = await BitmapDescriptor.fromAssetImage(
-    //     const ImageConfiguration(
-    //         devicePixelRatio: 0.0001, size: Size(0.0001, 0.0001)),
-    //     'assets/icons/person.png');
+    //     configuration, 'assets/icons/person.png');
     List<Rider> riders =
         (await db.collection('availableRiders').get()).docs.map((e) {
       var data = e.data();
@@ -88,13 +88,20 @@ class SearchRiderViewModel extends BaseModel {
           destination: data["destination"]);
     }).toList();
 
-    // nearbyRiders = riders.where((r) {
-    //   var dist = Geolocator.distanceBetween(currentPosition.latitude,
-    //       currentPosition.longitude, r.source.latitude, r.source.longitude);
-    //   // print(dist);
-    //   return dist > 60000;
-    // }).toList();
-    nearbyRiders = riders;
+    nearbyRiders = riders.where((r) {
+      var dist = Geolocator.distanceBetween(currentPosition.latitude,
+          currentPosition.longitude, r.source.latitude, r.source.longitude);
+      // print(dist);
+      return dist < 10000;
+    }).toList();
+
+    mapController?.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(currentPosition.latitude, currentPosition.longitude),
+            zoom: 13.0),
+      ),
+    );
 
     markers.clear();
     for (Rider r in nearbyRiders) {
