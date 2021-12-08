@@ -36,30 +36,12 @@ class App {
 }
 
 class Colors {
-  final Color _mainColor = const Color(0xFF00C853);
-  final Color _mainDarkColor = const Color(0xFF00C853);
-  final _secondColor = const Color(0xFF000000);
-  final Color _secondDarkColor = const Color(0xFFE7F6F8);
-  final Color _accentColor = const Color(0xFFFF0000);
-  final Color _accentDarkColor = const Color(0xFFFF0000);
-  final Color _backgroundColor = const Color.fromRGBO(48, 54, 72, 1);
-
-  final Map<int, Color> color = {
-    50: const Color.fromRGBO(0, 217, 112, .1),
-    100: const Color.fromRGBO(0, 217, 112, .2),
-    200: const Color.fromRGBO(0, 217, 112, .3),
-    300: const Color.fromRGBO(0, 217, 112, .4),
-    400: const Color.fromRGBO(0, 217, 112, .5),
-    500: const Color.fromRGBO(0, 217, 112, .6),
-    600: const Color.fromRGBO(0, 217, 112, .7),
-    700: const Color.fromRGBO(0, 217, 112, .8),
-    800: const Color.fromRGBO(0, 217, 112, .9),
-    900: const Color.fromRGBO(0, 217, 112, 1),
-  };
-
-  MaterialColor swatchColor() {
-    return MaterialColor(0xFF00D970, color);
-  }
+  final Color _mainColor = const Color(0xFF478DF4);
+  final Color _mainDarkColor = const Color(0xFF478DF4);
+  final Color _secondColor = const Color(0xFF704949);
+  final Color _secondDarkColor = const Color(0xFF704949);
+  final Color _backgroundColor = const Color(0xFFFFFFFF);
+  final Color _backgroundDarkColor = const Color(0xFF2c2c2c);
 
   Color mainColor(double opacity) {
     return _mainColor.withOpacity(opacity);
@@ -69,8 +51,8 @@ class Colors {
     return _secondColor.withOpacity(opacity);
   }
 
-  Color accentColor(double opacity) {
-    return _accentColor.withOpacity(opacity);
+  Color backgroundColor(double opacity) {
+    return _backgroundColor.withOpacity(opacity);
   }
 
   Color mainDarkColor(double opacity) {
@@ -81,11 +63,7 @@ class Colors {
     return _secondDarkColor.withOpacity(opacity);
   }
 
-  Color accentDarkColor(double opacity) {
-    return _accentDarkColor.withOpacity(opacity);
-  }
-
-  Color backgroundColor(double opacity) {
-    return _backgroundColor.withOpacity(opacity);
+  Color backgroundDarkColor(double opacity) {
+    return _backgroundDarkColor.withOpacity(opacity);
   }
 }

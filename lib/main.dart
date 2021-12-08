@@ -30,17 +30,24 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData(
-        fontFamily: 'Poppins',
-        primaryColor: const Color(0xFF252525),
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF2C2C2C),
-        accentColor: config.Colors().mainDarkColor(1),
-        hintColor: config.Colors().secondDarkColor(1),
-        focusColor: config.Colors().accentDarkColor(1),
+        // fontFamily: 'Poppins',
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFF478DF4),
+          secondary: Color(0xFFF4AE47),
+          surface: Color(0xFFC4C4C4),
+          background: Color(0xFF2C2C2C),
+          error: Color(0xFFB00020),
+          onPrimary: Colors.black,
+          onSecondary: Colors.black,
+          onSurface: Colors.black,
+          onBackground: Colors.white,
+          onError: Colors.white,
+          brightness: Brightness.dark,
+        ),
         textTheme: TextTheme(
-          button: const TextStyle(color: Color(0xFF252525)),
+          button: const TextStyle(color: Colors.white),
           headline1: TextStyle(
-              fontSize: 20.0, color: config.Colors().secondDarkColor(1)),
+              fontSize: 20.0, color: config.Colors().mainDarkColor(1)),
           headline2: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.w600,
@@ -48,15 +55,15 @@ class MyApp extends StatelessWidget {
           headline3: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors().secondDarkColor(1)),
+              color: config.Colors().mainDarkColor(1)),
           headline4: TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w700,
-              color: config.Colors().mainDarkColor(1)),
+              color: config.Colors().secondDarkColor(1)),
           headline5: TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w300,
-              color: config.Colors().secondDarkColor(1)),
+              color: config.Colors().mainDarkColor(1)),
           subtitle1: TextStyle(
               fontSize: 15.0,
               fontWeight: FontWeight.w500,
@@ -72,20 +79,30 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w600,
               color: config.Colors().secondDarkColor(1)),
           caption: TextStyle(
-              fontSize: 12.0, color: config.Colors().secondDarkColor(0.7)),
+            fontSize: 12.0,
+            color: config.Colors().secondDarkColor(0.6),
+          ),
         ),
       ),
       theme: ThemeData(
-        fontFamily: 'Poppins',
-        primaryColor: config.Colors().mainColor(1),
-        brightness: Brightness.light,
-        accentColor: config.Colors().mainColor(1),
-        focusColor: config.Colors().accentColor(1),
-        hintColor: config.Colors().secondColor(1),
+        // fontFamily: 'Poppins',
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF478DF4),
+          secondary: Color(0xFFF4AE47),
+          surface: Color(0xFFC4C4C4),
+          background: Color(0xFFFFFFFF),
+          error: Color(0xFFB00020),
+          onPrimary: Colors.white,
+          onSecondary: Colors.white,
+          onSurface: Colors.black,
+          onBackground: Colors.black,
+          onError: Colors.white,
+          brightness: Brightness.light,
+        ),
         textTheme: TextTheme(
           button: const TextStyle(color: Colors.white),
           headline1:
-              TextStyle(fontSize: 20.0, color: config.Colors().secondColor(1)),
+              TextStyle(fontSize: 20.0, color: config.Colors().mainColor(1)),
           headline2: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.w600,
@@ -93,15 +110,15 @@ class MyApp extends StatelessWidget {
           headline3: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors().secondColor(1)),
+              color: config.Colors().mainColor(1)),
           headline4: TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w700,
-              color: config.Colors().mainColor(1)),
+              color: config.Colors().secondColor(1)),
           headline5: TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w300,
-              color: config.Colors().secondColor(1)),
+              color: config.Colors().mainColor(1)),
           subtitle1: TextStyle(
               fontSize: 15.0,
               fontWeight: FontWeight.w500,
@@ -117,7 +134,9 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w600,
               color: config.Colors().secondColor(1)),
           caption: TextStyle(
-              fontSize: 12.0, color: config.Colors().secondColor(0.6)),
+            fontSize: 12.0,
+            color: config.Colors().secondColor(0.6),
+          ),
         ),
       ),
     );
