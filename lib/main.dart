@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ride Sharing',
+      title: 'Ride Sharing 2.0',
       initialRoute: '/splash',
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
