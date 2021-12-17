@@ -1,6 +1,6 @@
 # Ride Sharing
 
-Ride Sharing App, built wit Flutter
+Ride Sharing App, built with Flutter
 
 ## Problems Addressed:
 
@@ -34,8 +34,8 @@ All
 ## Setting up the project:
 
 1. Fork and Clone the project:
-```bash
-  git clone https://github.com/<your-account>/Ride-Sharing-App
+```
+  git clone https://github.com/<your-account-here>/Ride-Sharing-App.git
 ```
 
 2. Install the packages:
