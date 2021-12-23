@@ -38,42 +38,15 @@ class ApiService extends BaseApi {
     return response;
   }
 
-  Future<ApiResponse> postArticleMethod(
-      {required String endpoint, required Map<String, dynamic> data}) async {
+  Future<ApiResponse> sendFirebaseNotification(String token) async {
     ApiResponse response;
     try {
-      response = await postRequest(endpoint, data);
-      print('no error');
+      response = await getRequest(endpoint: "/firebase/send", query: {
+        "token": token,
+      });
     } catch (e) {
       response = ApiResponse(error: true, errorMessage: e.toString());
     }
-
-    return response;
-  }
-
-  Future<ApiResponse> getProfileMethod(
-      {required String endpoint, required String id}) async {
-    ApiResponse response;
-    try {
-      response = await getRequest(endpoint: endpoint, query: {"user_id": id});
-      print('no error');
-    } catch (e) {
-      response = ApiResponse(error: true, errorMessage: e.toString());
-    }
-
-    return response;
-  }
-
-  Future<ApiResponse> followUserMethod(
-      {required String endpoint, required Map<String, dynamic> data}) async {
-    ApiResponse response;
-    try {
-      response = await postRequest(endpoint, data);
-      print('no error');
-    } catch (e) {
-      response = ApiResponse(error: true, errorMessage: e.toString());
-    }
-
     return response;
   }
 }

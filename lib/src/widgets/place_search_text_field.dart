@@ -47,11 +47,13 @@ Widget inputFormField({
   // required TextEditingController controller,
   // FocusNode? focusNode,
   required String label,
+  required TextEditingController controller,
   //required String hint,
   //required BuildContext context,
 }) {
   return SizedBox(
     child: TextFormField(
+      controller: controller,
       // onChanged: (value) {
       // locationCallback(value);
       // },

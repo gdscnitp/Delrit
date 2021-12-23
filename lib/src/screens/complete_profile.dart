@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:ride_sharing/config/app_config.dart';
+import 'package:ride_sharing/provider/base_view.dart';
+import 'package:ride_sharing/src/screens/address_search.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
+import 'package:ride_sharing/view/complete_profile_viewmodel.dart';
+import 'package:uuid/uuid.dart';
 
 class CompleteProfile extends StatelessWidget {
   const CompleteProfile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: const [
-          Flexible(flex: 1, child: Header()),
-          Flexible(flex: 3, child: Body()),
-        ],
-      ),
-    );
+    return BaseView<CompleteProfileViewModel>(builder: (context, model, child) {
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Column(
+          children: [
+            Flexible(flex: 1, child: Header(model: model)),
+            Flexible(flex: 3, child: Body(model: model)),
+          ],
+        ),
+      );
+    });
   }
 }
 
 class Header extends StatelessWidget {
-  const Header({Key? key}) : super(key: key);
+  final CompleteProfileViewModel model;
+  const Header({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +53,19 @@ class Header extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: TextFormField(
+              controller: model.addressController,
+              onTap: () async {
+                final Position currentLocation =
+                    await Geolocator.getCurrentPosition(
+                  desiredAccuracy: LocationAccuracy.medium,
+                );
+                final sessionToken = const Uuid().v4();
+                final result = await showSearch(
+                  context: context,
+                  delegate: AddressSearch(sessionToken, currentLocation),
+                );
+                model.updateLocation(result!.description);
+              },
               textAlign: TextAlign.center,
               decoration: const InputDecoration(
                 border: InputBorder.none,
@@ -58,6 +79,10 @@ class Header extends StatelessWidget {
                   Icons.menu,
                   size: 35,
                 ),
+                suffixIcon: Icon(
+                  Icons.gps_fixed,
+                  size: 20,
+                ),
               ),
             ),
           ),
@@ -68,7 +93,8 @@ class Header extends StatelessWidget {
 }
 
 class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+  final CompleteProfileViewModel model;
+  Body({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -89,28 +115,29 @@ class Body extends StatelessWidget {
               SizedBox(
                 height: App(context).appHeight(4),
               ),
-              inputFormField(label: 'Name'),
+              inputFormField(label: 'Name', controller: model.nameController),
               SizedBox(
                 height: App(context).appHeight(4),
               ),
-              inputFormField(label: 'Email'),
+              inputFormField(label: 'Email', controller: model.emailController),
               SizedBox(
                 height: App(context).appHeight(4),
               ),
-              inputFormField(label: 'Phone'),
+              inputFormField(label: 'Phone', controller: model.phoneController),
               SizedBox(
                 height: App(context).appHeight(4),
               ),
-              inputFormField(label: 'Gender'),
+              inputFormField(
+                  label: 'Gender', controller: model.genderController),
               SizedBox(
                 height: App(context).appHeight(4),
               ),
-              inputFormField(label: 'Age'),
+              inputFormField(label: 'Age', controller: model.ageController),
               SizedBox(
                 height: App(context).appHeight(4),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: model.save,
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(
                     horizontal: App(context).appWidth(20.0),

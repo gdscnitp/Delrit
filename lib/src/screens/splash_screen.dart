@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Timer(
-      const Duration(seconds: 3),
+      const Duration(seconds: 1),
       () => Navigator.of(context).pushReplacementNamed('/'),
     );
     super.initState();
@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: config.Colors().backgroundColor(1),
+      backgroundColor: config.Colors().backgroundDarkColor(1),
       body: Center(
         child: Container(
           child:
