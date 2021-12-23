@@ -43,6 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Text('Search Rider'),
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/complete-profile');
+            },
+            child: const Text('Complete Profile'),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
