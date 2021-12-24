@@ -6,6 +6,7 @@ import 'package:ride_sharing/src/screens/address_search.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
 import 'package:ride_sharing/view/complete_profile_viewmodel.dart';
 import 'package:uuid/uuid.dart';
+import 'package:ride_sharing/config/app_config.dart' as config;
 
 class CompleteProfile extends StatelessWidget {
   const CompleteProfile({Key? key}) : super(key: key);
@@ -67,21 +68,30 @@ class Header extends StatelessWidget {
                 model.updateLocation(result!.description);
               },
               textAlign: TextAlign.center,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 18.0, horizontal: 10.0),
+                contentPadding: const EdgeInsets.symmetric(
+                    vertical: 18.0, horizontal: 10.0),
                 hintText: 'Pick your current location',
-                hintStyle: TextStyle(
+                hintStyle: const TextStyle(
                   fontSize: 18,
                 ),
-                prefixIcon: Icon(
+                prefixIcon: const Icon(
                   Icons.menu,
                   size: 35,
                 ),
-                suffixIcon: Icon(
-                  Icons.gps_fixed,
-                  size: 20,
+                suffixIcon: GestureDetector(
+                  onTap: () async {
+                    final result =
+                        await Navigator.pushNamed(context, "/choose-location");
+                    print(result);
+                    print("============================");
+                    model.updateLocation(result.toString());
+                  },
+                  child: const Icon(
+                    Icons.gps_fixed,
+                    size: 20,
+                  ),
                 ),
               ),
             ),
@@ -100,8 +110,9 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: App(context).appWidth(10.0),
-          vertical: App(context).appHeight(5)),
+        horizontal: App(context).appWidth(10.0),
+        vertical: App(context).appHeight(5),
+      ),
       child: SingleChildScrollView(
         child: SizedBox(
           child: Column(
