@@ -111,7 +111,7 @@ class CompleteProfileViewModel extends BaseModel {
     notifyListeners();
   }
 
-  void save() {
+  void save(BuildContext context) {
     print(nameController.text);
     print(phoneController.text);
     print(emailController.text);
@@ -130,7 +130,10 @@ class CompleteProfileViewModel extends BaseModel {
         "address": addressController.text,
         "age": ageController.text,
         "gender": genderController.text
-      }).then((value) => print("User saved to db"));
+      }).then((value) {
+        print("User saved to db");
+        Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+      });
     }
 
     // notifyListeners();
