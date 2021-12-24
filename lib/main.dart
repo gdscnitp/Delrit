@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -6,6 +9,17 @@ import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/provider/getit.dart';
 import 'package:ride_sharing/route_generator.dart';
 import 'package:flutter/material.dart';
+
+Future<void> saveTokenToDatabase(String? token) async {
+  final String? uid = FirebaseAuth.instance.currentUser?.uid;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  print("Userid: " + uid.toString());
+  if (uid != null) {
+    await db.collection('users').doc(uid).update({
+      'tokens': FieldValue.arrayUnion([token])
+    });
+  }
+}
 
 void main() async {
   if (defaultTargetPlatform == TargetPlatform.android) {
@@ -15,13 +29,21 @@ void main() async {
   await FlutterConfig.loadEnvVariables();
   await Firebase.initializeApp();
   setupLocator();
+
+  String? token = await FirebaseMessaging.instance.getToken();
+  await saveTokenToDatabase(token);
+  FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

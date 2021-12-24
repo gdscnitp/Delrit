@@ -4,10 +4,15 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ride_sharing/provider/base_model.dart';
+import 'package:ride_sharing/services/api_response.dart';
+import 'package:ride_sharing/services/api_services.dart';
 import 'package:ride_sharing/src/models/riders.dart';
+import 'package:ride_sharing/src/widgets/rider_details_bottom_sheet.dart';
+import 'package:http/http.dart' as http;
 
 class SearchRiderViewModel extends BaseModel {
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
+  final ApiService _apiService = ApiService();
   final CameraPosition initialLocation = const CameraPosition(
     target: LatLng(26.8876621, 80.995846),
     zoom: 15.0,
@@ -108,9 +113,11 @@ class SearchRiderViewModel extends BaseModel {
       markers.add(
         Marker(
           onTap: () {
+            String buttonText = "Accept Ride";
             showModalBottomSheet(
               context: context,
-              builder: (context) => const Text("ddd"),
+              builder: (context) => RiderDetailsBottomSheet(rider: r),
+              enableDrag: true,
             );
           },
           markerId: MarkerId(r.id),
@@ -125,5 +132,11 @@ class SearchRiderViewModel extends BaseModel {
     }
     notifyListeners();
     print(nearbyRiders);
+  }
+
+  void acceptRide(Rider r) async {
+    final ApiResponse response =
+        await _apiService.sendFirebaseNotification("dddd");
+    print(response.data);
   }
 }

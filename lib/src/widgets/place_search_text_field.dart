@@ -42,3 +42,28 @@ Widget placeSearchTextField({
     ),
   );
 }
+
+Widget inputFormField({
+  // required TextEditingController controller,
+  // FocusNode? focusNode,
+  required String label,
+  required TextEditingController controller,
+  //required String hint,
+  //required BuildContext context,
+}) {
+  return SizedBox(
+    child: TextFormField(
+      controller: controller,
+      // onChanged: (value) {
+      // locationCallback(value);
+      // },
+      onTap: () {},
+      // controller: controller,
+      // focusNode: focusNode,
+      decoration: kTextFormFieldStyle(
+        label: label,
+        hint: 'Type here...',
+      ),
+    ),
+  );
+}

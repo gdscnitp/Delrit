@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 abstract class BaseApi {
-  final String _baseUrl = 'medium-server.herokuapp.com';
+  final String _baseUrl = 'ride-sharing-server.herokuapp.com';
   // final String _baseUrl = '192.168.1.9:5000';
   final String _authToken = Prefs().getToken();
 
@@ -74,15 +74,9 @@ abstract class BaseApi {
   //GET
   Future<ApiResponse> getRequest(
       {required String endpoint, Map<String, String>? query}) async {
-    final uri = Uri.http(_baseUrl, endpoint, query);
+    final uri = Uri.https(_baseUrl, endpoint, query);
     print(uri);
-    print(_authToken);
-    return processResponse(await http.get(
-      uri,
-      headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $_authToken',
-      },
-    ));
+    return processResponse(await http.get(uri));
   }
 
   //GET Without Auth
@@ -138,10 +132,10 @@ abstract class BaseApi {
   }
 
   Future<ApiResponse> processResponse(Response response) async {
-    if (_authToken.isEmpty || _authToken == null) {
-      print('not logged in');
-      return ApiResponse(error: true, errorMessage: 'User not logged in');
-    }
+    // if (_authToken.isEmpty || _authToken == null) {
+    //   print('not logged in');
+    //   return ApiResponse(error: true, errorMessage: 'User not logged in');
+    // }
     try {
       if (response.statusCode >= 200 && response.statusCode <= 207) {
         print('==');
