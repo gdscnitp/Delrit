@@ -15,9 +15,13 @@ Future<void> saveTokenToDatabase(String? token) async {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   print("Userid: " + uid.toString());
   if (uid != null) {
-    await db.collection('users').doc(uid).update({
-      'tokens': FieldValue.arrayUnion([token])
-    });
+    try {
+      await db.collection('users').doc(uid).update({
+        'tokens': FieldValue.arrayUnion([token])
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 }
 
@@ -31,8 +35,9 @@ void main() async {
   setupLocator();
 
   String? token = await FirebaseMessaging.instance.getToken();
+  print("Token: " + token.toString());
   await saveTokenToDatabase(token);
-  FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
+  // FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   runApp(const MyApp());
 }
 
