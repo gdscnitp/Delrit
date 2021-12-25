@@ -1,4 +1,5 @@
 import 'package:ride_sharing/src/screens/add_ride.dart';
+import 'package:ride_sharing/src/screens/available_riders/available_riders.dart';
 import 'package:ride_sharing/src/screens/choose_location.dart';
 import 'package:ride_sharing/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,8 @@ import 'package:ride_sharing/src/screens/map_test.dart';
 import 'package:ride_sharing/src/screens/nearby_riders.dart';
 import 'package:ride_sharing/src/screens/search_riders.dart';
 import 'package:ride_sharing/src/screens/splash_screen.dart';
-import 'package:ride_sharing/src/screens/complete_profile.dart';
+import 'package:ride_sharing/src/screens/complete_profile/complete_profile.dart';
+import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -36,6 +38,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ChooseLocation());
       case '/nearby-riders':
         return MaterialPageRoute(builder: (_) => NearbyRiders(args: args));
+      case '/user-profile':
+        return MaterialPageRoute(builder: (_) => const UserProfile());
+      case '/available-riders':
+        return MaterialPageRoute(builder: (_) => const AvailableRiders());
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {
