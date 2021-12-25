@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
+import 'package:ride_sharing/src/widgets/app_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     config.SizeConfig().init(context);
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text('Home'),
         backgroundColor: config.Colors().mainColor(1),
@@ -75,6 +77,18 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.pushNamed(context, '/complete-profile');
             },
             child: const Text('Complete Profile'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/user-profile');
+            },
+            child: const Text('User Profile'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/available-riders');
+            },
+            child: const Text('Available Riders'),
           ),
         ],
       ),
