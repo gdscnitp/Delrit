@@ -67,3 +67,46 @@ Widget inputFormField({
     ),
   );
 }
+
+Widget riderSearchTextField({
+  required TextEditingController controller,
+  FocusNode? focusNode,
+  required String label,
+  required String hint,
+  required double width,
+  required Icon suffIcon,
+  required BuildContext context,
+  Widget? suffixIcon,
+  required Function(Suggestion?) locationCallback,
+}) {
+  return SizedBox(
+    width: width * 0.8,
+    child: TextField(
+      // onChanged: (value) {
+      // locationCallback(value);
+      // },
+      onTap: () async {
+        final Position currentLocation = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.medium,
+        );
+        final sessionToken = const Uuid().v4();
+        final result = await showSearch(
+          context: context,
+          delegate: AddressSearch(sessionToken, currentLocation),
+        );
+        print(result.toString());
+        locationCallback(result);
+        controller.text = result!.description;
+      },
+      controller: controller,
+      focusNode: focusNode,
+      decoration: kTextFieldStyle(
+        suffixIcon: suffIcon,
+        label: label,
+        hint: hint,
+        fillColor: Colors.grey[300],
+        borderwidth: 0,
+      ),
+    ),
+  );
+}
