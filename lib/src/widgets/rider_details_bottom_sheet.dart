@@ -26,7 +26,7 @@ class _RiderDetailsBottomSheetState extends State<RiderDetailsBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   setState(() {
                     buttonText = "Ride Accepted";
                   });

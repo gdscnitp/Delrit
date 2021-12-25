@@ -9,8 +9,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 abstract class BaseApi {
-  final String _baseUrl = 'ride-sharing-server.herokuapp.com';
-  // final String _baseUrl = '192.168.1.9:5000';
+  // final String _baseUrl = 'ride-sharing-server.herokuapp.com';
+  final String _baseUrl = '192.168.1.11:3000';
   final String _authToken = Prefs().getToken();
 
   Future<ApiResponse> signUp(Map data, String endpoint) async {
@@ -73,7 +73,7 @@ abstract class BaseApi {
 
   //GET
   Future<ApiResponse> getRequest(
-      {required String endpoint, Map<String, String>? query}) async {
+      {required String endpoint, Map<String, Object>? query}) async {
     final uri = Uri.https(_baseUrl, endpoint, query);
     print(uri);
     return processResponse(await http.get(uri));
@@ -92,15 +92,11 @@ abstract class BaseApi {
   //POST
   Future<ApiResponse> postRequest(
       String endpoint, Map<String, dynamic> data) async {
+    print("posttttttttttttttttttt");
     final uri = Uri.http(_baseUrl, endpoint);
     print(uri);
-    print(_authToken);
     return processResponse(
-      await http.post(uri,
-          headers: {
-            HttpHeaders.authorizationHeader: 'Bearer $_authToken',
-          },
-          body: data),
+      await http.post(uri, body: data),
     );
   }
 
