@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    config.SizeConfig().init(context);
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(
@@ -46,6 +47,12 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.pushNamed(context, '/login');
             },
             child: const Text('Login'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/landing');
+            },
+            child: const Text('Landing Page'),
           ),
           ElevatedButton(
             onPressed: () {
