@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
-const TextStyle kTextStyle = TextStyle(
-  color: Colors.black,
-  fontSize: 19,
-);
-
-Widget itemRow({required String parameter, required String? value}) {
+Widget itemRow(
+    {required String parameter,
+    required String? value,
+    required BuildContext context}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -13,7 +11,7 @@ Widget itemRow({required String parameter, required String? value}) {
         flex: 1,
         child: Text(
           parameter,
-          style: kTextStyle,
+          style: Theme.of(context).textTheme.headline2,
         ),
       ),
       Flexible(
@@ -22,7 +20,7 @@ Widget itemRow({required String parameter, required String? value}) {
           value as String,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: kTextStyle,
+          style: Theme.of(context).textTheme.headline2,
         ),
       ),
     ],

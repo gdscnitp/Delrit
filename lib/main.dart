@@ -128,16 +128,22 @@ class _MyAppState extends State<MyApp> {
         ),
         textTheme: TextTheme(
           button: const TextStyle(color: Colors.white),
-          headline1:
-              TextStyle(fontSize: 20.0, color: config.Colors().mainColor(1)),
+
+          /// Headline 1 style ---- Use it --- Do not change ----///
+          headline1: TextStyle(
+              fontSize: 21.0,
+              fontWeight: FontWeight.w700,
+              color: config.Colors.mainTextColor(1)),
+
+          /// Headline 2 style ---- Use it --- Do not change ----///
           headline2: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors().secondColor(1)),
+              color: config.Colors.mainTextColor(1)),
           headline3: TextStyle(
-              fontSize: 20.0,
+              fontSize: 18.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors().mainColor(1)),
+              color: config.Colors.mainTextSecondaryColor(1)),
           headline4: TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w700,
@@ -155,11 +161,11 @@ class _MyAppState extends State<MyApp> {
               fontWeight: FontWeight.w600,
               color: config.Colors().mainColor(1)),
           bodyText1:
-              TextStyle(fontSize: 12.0, color: config.Colors().secondColor(1)),
+              TextStyle(fontSize: 15.0, color: config.Colors.mainTextColor(1)),
           bodyText2: TextStyle(
-              fontSize: 14.0,
+              fontSize: 15.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors().secondColor(1)),
+              color: config.Colors.mainTextSecondaryColor(1)),
           caption: TextStyle(
             fontSize: 12.0,
             color: config.Colors().secondColor(0.6),

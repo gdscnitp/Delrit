@@ -20,7 +20,7 @@ Widget starsColumnWidget({required int starscount, required String type}) {
               data: IconThemeData(color: Colors.blue),
               child: Icon(
                 Icons.star,
-                size: 25,
+                size: 35,
               ), // I want to iterate this "star icon" for reviews.ratings.length times
             ),
         ],

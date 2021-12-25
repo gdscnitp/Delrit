@@ -9,6 +9,7 @@ import 'package:ride_sharing/view/complete_profile_viewmodel.dart';
 import 'package:ride_sharing/view/login_viewmodel.dart';
 import 'package:ride_sharing/view/search_rider_viewmodel.dart';
 import 'package:ride_sharing/view/user_profile_viewmodel.dart';
+import 'package:ride_sharing/view/available_riders_viewmodel.dart';
 
 GetIt getIt = GetIt.instance;
 void setupLocator() {
@@ -20,4 +21,5 @@ void setupLocator() {
   getIt.registerFactory(() => CompleteProfileViewModel());
   getIt.registerFactory(() => ChooseLocationViewModel());
   getIt.registerFactory(() => UserProfileViewModel());
+  getIt.registerFactory(() => AvailableRidersViewModel());
 }

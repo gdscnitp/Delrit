@@ -84,6 +84,12 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Text('User Profile'),
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/available-riders');
+            },
+            child: const Text('Available Riders'),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

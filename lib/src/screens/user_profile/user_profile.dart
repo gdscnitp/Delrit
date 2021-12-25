@@ -10,10 +10,6 @@ import 'components/stars_column_widget.dart';
 class UserProfile extends StatelessWidget {
   const UserProfile({Key? key}) : super(key: key);
 
-  final TextStyle kTextStyle = const TextStyle(
-    fontSize: 19,
-  );
-
   void _showModalSheet(BuildContext context, UserProfileViewModel model) {
     showModalBottomSheet<dynamic>(
         context: context,
@@ -31,6 +27,7 @@ class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
+    final double sizedHeight=getProportionateScreenHeight(24);
     return BaseView<UserProfileViewModel>(builder: (context, model, child) {
       return Scaffold(
         key: _scaffoldKey,
@@ -43,7 +40,7 @@ class UserProfile extends StatelessWidget {
           title: Center(
             child: Text(
               'My Profile',
-              style: Theme.of(context).textTheme.headline3,
+              style: Theme.of(context).textTheme.headline2,
             ),
           ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -52,29 +49,35 @@ class UserProfile extends StatelessWidget {
           //physics: const BouncingScrollPhysics(),
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 15),
+            SizedBox(height: getProportionateScreenHeight(15)),
             ProfileWidget(
               imagePath: 'assets/images/user_img.png',
               onClicked: () {
                 _showModalSheet(context, model);
               },
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: getProportionateScreenHeight(20)),
             Text(
               'UserName',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headline1,
             ),
-            const SizedBox(height: 24),
-            itemRow(parameter: 'Email : ', value: 'newuser@gmail.com'),
-            const SizedBox(height: 24),
-            itemRow(parameter: 'Phone : ', value: '+91 90080050607'),
-            const SizedBox(height: 24),
-            itemRow(parameter: 'Gender : ', value: 'Female'),
-            const SizedBox(height: 24),
-            itemRow(parameter: 'Age : ', value: '35 years'),
-            const SizedBox(height: 24),
+            SizedBox(height: getProportionateScreenHeight(20)),
+            itemRow(
+                context: context,
+                parameter: 'Email : ',
+                value: 'newuser@gmail.com'),
+            SizedBox(height: getProportionateScreenHeight(20)),
+            itemRow(
+                context: context,
+                parameter: 'Phone : ',
+                value: '+91 90080050607'),
+            SizedBox(height: getProportionateScreenHeight(20)),
+            itemRow(context: context, parameter: 'Gender : ', value: 'Female'),
+            SizedBox(height: getProportionateScreenHeight(20)),
+            itemRow(context: context, parameter: 'Age : ', value: '35 years'),
+            SizedBox(height: getProportionateScreenHeight(24)),
             starsColumnWidget(starscount: 5, type: 'Your ride stars'),
-            const SizedBox(height: 24),
+            SizedBox(height: getProportionateScreenHeight(24)),
             starsColumnWidget(starscount: 4, type: 'Your drive stars'),
           ],
         ),

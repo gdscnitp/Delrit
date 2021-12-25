@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/config/app_config.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class AppDrawer extends StatelessWidget {
               onTap: () {}),
           _createDrawerItem(
               icon: Icons.face, text: 'Your past rides', onTap: () {}),
-          Divider(),
+          const Divider(),
           _createDrawerItem(
               icon: Icons.help_center, text: 'Your vehicle info', onTap: () {}),
           _createDrawerItem(
@@ -34,11 +35,18 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context).pop();
             },
           ),
-          const Align(
+          Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 80),
-              child: Text('App Version 1.0.0'),
+              padding: EdgeInsets.symmetric(
+                vertical: getProportionateScreenHeight(
+                  80,
+                ),
+              ),
+              child: Text(
+                'App Version 1.0.0',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
             ),
           ),
         ],
@@ -48,8 +56,8 @@ class AppDrawer extends StatelessWidget {
 
   Widget _createHeader() {
     return DrawerHeader(
-      margin: EdgeInsets.only(bottom: 8.0),
-      padding: EdgeInsets.fromLTRB(10.0, 16.0, 10.0, 8.0),
+      margin: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.fromLTRB(10.0, 16.0, 10.0, 8.0),
       child: Image.asset(
         'assets/images/user_img.png',
       ),
@@ -63,7 +71,7 @@ class AppDrawer extends StatelessWidget {
         children: <Widget>[
           Icon(icon),
           Padding(
-            padding: EdgeInsets.only(left: 8.0),
+            padding: const EdgeInsets.only(left: 8.0),
             child: Text(text),
           )
         ],

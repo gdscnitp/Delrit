@@ -1,4 +1,5 @@
 import 'package:ride_sharing/src/screens/add_ride.dart';
+import 'package:ride_sharing/src/screens/available_riders/available_riders.dart';
 import 'package:ride_sharing/src/screens/choose_location.dart';
 import 'package:ride_sharing/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ChooseLocation());
       case '/user-profile':
         return MaterialPageRoute(builder: (_) => const UserProfile());
+      case '/available-riders':
+        return MaterialPageRoute(builder: (_) => const AvailableRiders());
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {

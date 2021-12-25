@@ -66,6 +66,14 @@ class Colors {
   Color backgroundDarkColor(double opacity) {
     return _backgroundDarkColor.withOpacity(opacity);
   }
+
+  static Color mainTextColor(double opacity) {
+    return const Color(0xFF000000).withOpacity(opacity);
+  }
+
+  static Color mainTextSecondaryColor(double opacity) {
+    return const Color(0xFF72757C).withOpacity(opacity);
+  }
 }
 
 class SizeConfig {
