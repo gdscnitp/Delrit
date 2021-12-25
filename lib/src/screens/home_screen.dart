@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    config.SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),

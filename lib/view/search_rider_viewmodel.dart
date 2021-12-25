@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -7,6 +9,7 @@ import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_services.dart';
 import 'package:ride_sharing/src/models/riders.dart';
+import 'package:ride_sharing/src/widgets/get_bytes_from_asset.dart';
 import 'package:ride_sharing/src/widgets/rider_details_bottom_sheet.dart';
 import 'package:http/http.dart' as http;
 
@@ -79,10 +82,8 @@ class SearchRiderViewModel extends BaseModel {
   }
 
   void getNearbyRiders(BuildContext context) async {
-    // ImageConfiguration configuration =
-    //     createLocalImageConfiguration(context, size: const Size(1, 1));
-    // final BitmapDescriptor personIcon = await BitmapDescriptor.fromAssetImage(
-    //     configuration, 'assets/icons/person.png');
+    final Uint8List markerIcon =
+        await getBytesFromAsset('assets/icons/person.png', 150);
     List<Rider> riders =
         (await db.collection('availableRiders').get()).docs.map((e) {
       var data = e.data();
@@ -121,7 +122,7 @@ class SearchRiderViewModel extends BaseModel {
             );
           },
           markerId: MarkerId(r.id),
-          // icon: personIcon,
+          icon: BitmapDescriptor.fromBytes(markerIcon),
           position: LatLng(r.source.latitude, r.source.longitude),
           infoWindow: InfoWindow(
             title: r.name,
@@ -135,8 +136,15 @@ class SearchRiderViewModel extends BaseModel {
   }
 
   void acceptRide(Rider r) async {
+    print("yoooooooooooooooooooo");
+    var token =
+        "cuiqIW3wT2ycOyijjoOdJK:APA91bFbPRFj6wRNowB7jo7xAuVE_KGvnZy-wIPQPkT936djHz1GT_Bxss_B2bH427EAz4aIp8mPiInV0fINchIlHPhZHjm3KeAGqBQtc8knkfTirHwTGqkzN6NCiYuqepWgROstaB3M";
     final ApiResponse response =
-        await _apiService.sendFirebaseNotification("dddd");
+        await _apiService.sendFirebaseNotification(token);
     print(response.data);
+    // final uri = Uri.parse("http://192.168.1.11:3000/firebase/send");
+    // final response = await http.post(uri, body: {"tokens": token});
+
+    // print(response.body);
   }
 }

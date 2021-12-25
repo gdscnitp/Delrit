@@ -41,8 +41,8 @@ class ApiService extends BaseApi {
   Future<ApiResponse> sendFirebaseNotification(String token) async {
     ApiResponse response;
     try {
-      response = await getRequest(endpoint: "/firebase/send", query: {
-        "token": token,
+      response = await postRequest("/firebase/send", {
+        "tokens": token,
       });
     } catch (e) {
       response = ApiResponse(error: true, errorMessage: e.toString());
