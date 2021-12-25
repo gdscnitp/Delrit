@@ -79,6 +79,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
                               setState(() {
                                 model.startAddress = value!.description;
                               });
+                              model.getNewPosition(value!.description);
                             },
                           ),
                           const SizedBox(height: 10),

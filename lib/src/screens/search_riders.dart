@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ride_sharing/constant/text_field_style.dart';
 import 'package:ride_sharing/provider/base_view.dart';
-import 'package:ride_sharing/src/models/map_models.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
 import 'package:ride_sharing/view/search_rider_viewmodel.dart';
 
@@ -14,7 +11,7 @@ class SearchRider extends StatefulWidget {
 }
 
 class _SearchRiderState extends State<SearchRider> {
-  List<String> _vehicles = ['Choose vehicle', 'Car', 'Bike'];
+  final List<String> _vehicles = ['Choose vehicle', 'Car', 'Bike'];
   String _selectedVehicle = 'Choose vehicle';
 
   DateTime selectedDate = DateTime.now();
@@ -43,19 +40,6 @@ class _SearchRiderState extends State<SearchRider> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              // GoogleMap(
-              //   markers: Set<Marker>.of(model.markers),
-              //   initialCameraPosition: model.initialLocation,
-              //   myLocationEnabled: true,
-              //   myLocationButtonEnabled: false,
-              //   mapType: MapType.normal,
-              //   zoomGesturesEnabled: true,
-              //   zoomControlsEnabled: false,
-              //   onMapCreated: (GoogleMapController controller) {
-              //     model.mapController = controller;
-              //   },
-              // ),
-              // Show zoom buttons
               Stack(
                 children: [
                   SizedBox(
@@ -73,7 +57,17 @@ class _SearchRiderState extends State<SearchRider> {
                     ),
                     child: TextFormField(
                       textAlign: TextAlign.center,
+                      readOnly: true,
                       decoration: InputDecoration(
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Colors.grey.shade400,
+                            width: 2,
+                          ),
+                        ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: const BorderRadius.all(
                             Radius.circular(10.0),
@@ -113,7 +107,6 @@ class _SearchRiderState extends State<SearchRider> {
                   ),
                 ],
               ),
-
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: SafeArea(
@@ -122,20 +115,21 @@ class _SearchRiderState extends State<SearchRider> {
                     child: Container(
                       height: height * .5,
                       decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10.0),
+                        color: Colors.white70,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 3,
+                            blurRadius: 5,
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 3,
-                              blurRadius: 5,
-                            ),
-                          ]),
+                        ],
+                      ),
                       width: width * 0.9,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        padding: const EdgeInsets.only(top: 30.0, bottom: 10.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
@@ -158,10 +152,15 @@ class _SearchRiderState extends State<SearchRider> {
                               controller: model.startAddressController,
                               focusNode: model.startAddressFocusNode,
                               width: width,
-                              locationCallback: (Suggestion? value) {
+                              locationCallback: (String? value) {
                                 setState(() {
-                                  model.startAddress = value!.description;
+                                  model.startAddress = value ?? "";
+                                  model.startAddressController.text =
+                                      value ?? "";
                                 });
+                                if (value != null) {
+                                  model.getNewPosition(value);
+                                }
                               },
                             ),
                             const SizedBox(height: 10),
@@ -176,11 +175,11 @@ class _SearchRiderState extends State<SearchRider> {
                               controller: model.destinationAddressController,
                               focusNode: model.desrinationAddressFocusNode,
                               width: width,
-                              locationCallback: (Suggestion? value) {
+                              locationCallback: (String? value) {
                                 setState(() {
-                                  model.destinationAddress = value!.description;
+                                  model.destinationAddress = value ?? "";
                                   model.destinationAddressController.text =
-                                      value.description;
+                                      value ?? "";
                                 });
                               },
                             ),
@@ -287,12 +286,20 @@ class _SearchRiderState extends State<SearchRider> {
                               width: width * 0.8,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  model.getNearbyRiders(context);
+                                  print(model.startAddressController.text);
+                                  print(
+                                      model.destinationAddressController.text);
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/nearby-riders',
+                                    arguments: {
+                                      'startAddress':
+                                          model.startAddressController.text,
+                                      'destinationAddress': model
+                                          .destinationAddressController.text,
+                                    },
+                                  );
                                 },
-                                // color: Colors.red,
-                                // shape: RoundedRectangleBorder(
-                                //   borderRadius: BorderRadius.circular(20.0),
-                                // ),
                                 child: const Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(

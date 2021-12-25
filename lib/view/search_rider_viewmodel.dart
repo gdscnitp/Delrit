@@ -1,7 +1,10 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -38,6 +41,46 @@ class SearchRiderViewModel extends BaseModel {
   final db = FirebaseFirestore.instance;
   List<Rider> nearbyRiders = [];
 
+  late PolylinePoints polylinePoints;
+  Map<PolylineId, Polyline> polylines = {};
+  List<LatLng> polylineCoordinates = [];
+
+  init(args) async {
+    getCurrentLocation();
+    print("==========================================");
+    print(startAddressController.text);
+    print(destinationAddressController.text);
+    print(args);
+    print("==========================================");
+    startAddressController.text = args?["startAddress"] ?? '';
+    destinationAddressController.text = args?["destinationAddress"] ?? '';
+
+    List<Location> l = await locationFromAddress(startAddressController.text);
+    print(l);
+    mapController
+        ?.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+                target: LatLng(l[0].latitude, l[0].longitude), zoom: 15.0),
+          ),
+        )
+        .then((d) => notifyListeners());
+    notifyListeners();
+  }
+
+  getNewPosition(String value) async {
+    List<Location> l = await locationFromAddress(value);
+    print(l[0]);
+    // print("==========================================================");
+    mapController?.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(l[0].latitude, l[0].longitude), zoom: 13.0),
+      ),
+    );
+    notifyListeners();
+  }
+
   getAddress() async {
     try {
       // Places are retrieved using the coordinates
@@ -53,7 +96,7 @@ class SearchRiderViewModel extends BaseModel {
       print(currentAddress);
       print("========================");
       // Update the text of the TextField
-      startAddressController.text = currentAddress;
+      // startAddressController.text = currentAddress;
 
       // Setting the user's present location as the starting address
       startAddress = currentAddress;
@@ -133,6 +176,107 @@ class SearchRiderViewModel extends BaseModel {
     }
     notifyListeners();
     print(nearbyRiders);
+  }
+
+  Future<bool> calculateDistance() async {
+    try {
+      List<Location> startPlacemark =
+          await locationFromAddress(startAddressController.text);
+      List<Location> destinationPlacemark =
+          await locationFromAddress(destinationAddressController.text);
+
+      double startLatitude = startAddressController.text == currentAddress
+          ? currentPosition.latitude
+          : startPlacemark[0].latitude;
+
+      double startLongitude = startAddressController.text == currentAddress
+          ? currentPosition.longitude
+          : startPlacemark[0].longitude;
+
+      double destinationLatitude = destinationPlacemark[0].latitude;
+      double destinationLongitude = destinationPlacemark[0].longitude;
+
+      String startString = "($startLongitude, $startLongitude)";
+      String destinationString =
+          "($destinationLatitude, $destinationLongitude)";
+
+      Marker startMarker = Marker(
+        markerId: MarkerId(startString),
+        position: LatLng(startLatitude, startLongitude),
+        infoWindow:
+            InfoWindow(title: 'Start $startString', snippet: startAddress),
+      );
+
+      Marker destinationMarker = Marker(
+        markerId: MarkerId(destinationString),
+        position: LatLng(destinationLatitude, destinationLongitude),
+        infoWindow: InfoWindow(
+            title: 'Destination $destinationString',
+            snippet: destinationAddress),
+      );
+
+      markers.clear();
+      markers.add(startMarker);
+      markers.add(destinationMarker);
+
+      print(
+        'START COORDINATES: ($startLatitude, $startLongitude)',
+      );
+      print(
+        'DESTINATION COORDINATES: ($destinationLatitude, $destinationLongitude)',
+      );
+
+      double miny = min(startLatitude, destinationLatitude);
+      double maxy = max(startLatitude, destinationLatitude);
+      double minx = min(startLongitude, destinationLongitude);
+      double maxx = max(startLongitude, destinationLongitude);
+
+      mapController?.animateCamera(CameraUpdate.newLatLngBounds(
+          LatLngBounds(
+              southwest: LatLng(miny, minx), northeast: LatLng(maxy, maxx)),
+          100.0));
+
+      await _createPolylines(startLatitude, startLongitude, destinationLatitude,
+          destinationLongitude);
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  _createPolylines(startLat, startLon, destLat, destLon) async {
+    polylinePoints = PolylinePoints();
+    var MAPAPIKEY = FlutterConfig?.get('MAPS_API_HTTPS') ?? "";
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      MAPAPIKEY,
+      PointLatLng(startLat, startLon),
+      PointLatLng(destLat, destLon),
+      travelMode: TravelMode.driving,
+      optimizeWaypoints: true,
+    );
+    print("ERRORS ================================");
+    print(result.points);
+    print(result.errorMessage);
+
+    if (result.points.isNotEmpty) {
+      for (var point in result.points) {
+        print(point.latitude.toString() + " " + point.longitude.toString());
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      }
+    }
+    polylines.clear();
+    PolylineId id = PolylineId(startAddress + destinationAddress);
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: Colors.red,
+      points: polylineCoordinates,
+      width: 3,
+    );
+    polylines[id] = polyline;
+    // notifyListeners();
   }
 
   void acceptRide(Rider r) async {
