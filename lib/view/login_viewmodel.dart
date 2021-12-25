@@ -107,7 +107,7 @@ class LoginViewModel extends BaseModel {
     );
   }
 
-  Future signInWithGoogle() async {
+  Future<User?> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleUser!.authentication;
@@ -116,19 +116,21 @@ class LoginViewModel extends BaseModel {
         idToken: googleSignInAuthentication.idToken);
 
     //value has data of authenticated user
-    return await _auth.signInWithCredential(credential).then((value) async {
-      user = value.user!;
+    final UserCredential userCred =
+        await _auth.signInWithCredential(credential);
+    final User? user = userCred.user;
 
-      userUid = _auth.currentUser!.uid;
+    if (user != null) {
       String? token = await FirebaseMessaging.instance.getToken();
-
-      userDb.collection('users').doc(userUid).set({
+      userDb.collection('users').doc(user.uid).set({
         "id": userUid,
         "name": user.displayName,
         "email": user.email,
         "tokens": FieldValue.arrayUnion([token])
       });
-    });
+    }
+
+    return user;
   }
 
   Future signInWithFacebook() async {
