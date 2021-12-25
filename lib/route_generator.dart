@@ -1,4 +1,5 @@
 import 'package:ride_sharing/src/screens/add_ride.dart';
+import 'package:ride_sharing/src/screens/choose_location.dart';
 import 'package:ride_sharing/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/src/screens/login_page.dart';
@@ -27,6 +28,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const SearchRider());
       case '/complete-profile':
         return MaterialPageRoute(builder: (_) => const CompleteProfile());
+      case '/choose-location':
+        return MaterialPageRoute(builder: (_) => const ChooseLocation());
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {
