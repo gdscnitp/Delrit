@@ -2,6 +2,7 @@ import 'package:ride_sharing/src/screens/add_ride.dart';
 import 'package:ride_sharing/src/screens/choose_location.dart';
 import 'package:ride_sharing/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/src/screens/landing_page.dart';
 import 'package:ride_sharing/src/screens/login_page.dart';
 import 'package:ride_sharing/src/screens/map_test.dart';
 import 'package:ride_sharing/src/screens/search_riders.dart';
@@ -18,6 +19,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case '/splash':
         return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case "/landing":
+        return MaterialPageRoute(builder: (_) => const Landing_Page());
       case '/test':
         return MaterialPageRoute(builder: (_) => const MapTest());
       case '/login':
