@@ -133,42 +133,42 @@ class _MyAppState extends State<MyApp> {
           headline1: TextStyle(
               fontSize: 21.0,
               fontWeight: FontWeight.w700,
-              color: config.Colors.mainTextColor(1)),
+              color: config.ThemeColors.mainTextColor(1)),
 
           /// Headline 2 style ---- Use it --- Do not change ----///
           headline2: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors.mainTextColor(1)),
+              color: config.ThemeColors.mainTextColor(1)),
           headline3: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors.mainTextSecondaryColor(1)),
+              color: config.ThemeColors.mainTextSecondaryColor(1)),
           headline4: TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w700,
-              color: config.Colors().secondColor(1)),
+              color: config.ThemeColors().secondColor(1)),
           headline5: TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w300,
-              color: config.Colors().mainColor(1)),
+              color: config.ThemeColors().mainColor(1)),
           subtitle1: TextStyle(
               fontSize: 15.0,
               fontWeight: FontWeight.w500,
-              color: config.Colors().secondColor(1)),
+              color: config.ThemeColors().secondColor(1)),
           subtitle2: TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors().mainColor(1)),
-          bodyText1:
-              TextStyle(fontSize: 15.0, color: config.Colors.mainTextColor(1)),
+              color: config.ThemeColors().mainColor(1)),
+          bodyText1: TextStyle(
+              fontSize: 15.0, color: config.ThemeColors.mainTextColor(1)),
           bodyText2: TextStyle(
               fontSize: 15.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors.mainTextSecondaryColor(1)),
+              color: config.ThemeColors.mainTextSecondaryColor(1)),
           caption: TextStyle(
             fontSize: 12.0,
-            color: config.Colors().secondColor(0.6),
+            color: config.ThemeColors().secondColor(0.6),
           ),
         ),
       ),

@@ -62,7 +62,7 @@ class Landing_Page extends StatelessWidget {
                     'Continue with Phone Number',
                     style: TextStyle(fontFamily: 'Roboto'),
                   ),
-                  color: config.Colors().mainColor(1),
+                  color: config.ThemeColors().mainColor(1),
                   textColor: Colors.white,
                 ),
               ),
