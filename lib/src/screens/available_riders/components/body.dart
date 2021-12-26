@@ -14,18 +14,19 @@ class Body extends StatelessWidget {
 
   void showModalSheet(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(15),
-            topLeft: Radius.circular(15),
-          ),
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(15),
+          topLeft: Radius.circular(15),
         ),
-        builder: (builder) {
-          return model.isRideConfirmed
-              ? rideConfirmed(ridername: 'Rider Name', context: context)
-              : rideNotConfirmed(context: context, ridername: 'New user');
-        });
+      ),
+      builder: (builder) {
+        return model.isRideConfirmed
+            ? rideConfirmed(ridername: 'Rider Name', context: context)
+            : rideNotConfirmed(context: context, ridername: 'New user');
+      },
+    );
   }
 
   @override
@@ -180,11 +181,12 @@ class Body extends StatelessWidget {
                         ),
                         Expanded(
                           child: resuableButton(
-                              text: 'Call',
-                              buttoncolor: null,
-                              onPress: () {
-                                showModalSheet(context);
-                              }),
+                            text: 'Call',
+                            buttoncolor: null,
+                            onPress: () {
+                              showModalSheet(context);
+                            },
+                          ),
                         ),
                       ],
                     ),
