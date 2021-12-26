@@ -159,6 +159,7 @@ class SearchRiderViewModel extends BaseModel {
           onTap: () {
             String buttonText = "Accept Ride";
             showModalBottomSheet(
+              isScrollControlled: true,
               context: context,
               builder: (context) => RiderDetailsBottomSheet(rider: r),
               enableDrag: true,

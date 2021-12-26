@@ -15,7 +15,9 @@ class AppDrawer extends StatelessWidget {
           _createDrawerItem(
             icon: Icons.contacts,
             text: 'My Profile',
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed('/user-profile');
+            },
           ),
           _createDrawerItem(
               icon: Icons.location_on,
