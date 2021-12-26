@@ -1,121 +1,175 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/provider/getit.dart';
 import 'package:ride_sharing/route_generator.dart';
 import 'package:flutter/material.dart';
 
+Future<void> saveTokenToDatabase(String? token) async {
+  final String? uid = FirebaseAuth.instance.currentUser?.uid;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  print("Userid: " + uid.toString());
+  if (uid != null) {
+    try {
+      await db.collection('users').doc(uid).update({
+        'tokens': FieldValue.arrayUnion([token])
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+}
+
 void main() async {
   if (defaultTargetPlatform == TargetPlatform.android) {
     AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
   }
   WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables();
   await Firebase.initializeApp();
   setupLocator();
+
+  String? token = await FirebaseMessaging.instance.getToken();
+  print("Token: " + token.toString());
+  await saveTokenToDatabase(token);
+  // FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Restaurant Flutter UI',
+      title: 'Ride Sharing',
       initialRoute: '/splash',
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
-      darkTheme: ThemeData(
-        fontFamily: 'Poppins',
-        primaryColor: const Color(0xFF252525),
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF2C2C2C),
-        accentColor: config.Colors().mainDarkColor(1),
-        hintColor: config.Colors().secondDarkColor(1),
-        focusColor: config.Colors().accentDarkColor(1),
-        textTheme: TextTheme(
-          button: const TextStyle(color: Color(0xFF252525)),
-          headline1: TextStyle(
-              fontSize: 20.0, color: config.Colors().secondDarkColor(1)),
-          headline2: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().secondDarkColor(1)),
-          headline3: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().secondDarkColor(1)),
-          headline4: TextStyle(
-              fontSize: 22.0,
-              fontWeight: FontWeight.w700,
-              color: config.Colors().mainDarkColor(1)),
-          headline5: TextStyle(
-              fontSize: 22.0,
-              fontWeight: FontWeight.w300,
-              color: config.Colors().secondDarkColor(1)),
-          subtitle1: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
-              color: config.Colors().secondDarkColor(1)),
-          subtitle2: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().mainDarkColor(1)),
-          bodyText1: TextStyle(
-              fontSize: 12.0, color: config.Colors().secondDarkColor(1)),
-          bodyText2: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.w600,
-              color: config.Colors().secondDarkColor(1)),
-          caption: TextStyle(
-              fontSize: 12.0, color: config.Colors().secondDarkColor(0.7)),
-        ),
-      ),
+      // darkTheme: ThemeData(
+      //   // fontFamily: 'Poppins',
+      //   colorScheme: const ColorScheme.dark(
+      //     primary: Color(0xFF478DF4),
+      //     secondary: Color(0xFFF4AE47),
+      //     surface: Color(0xFFC4C4C4),
+      //     background: Color(0xFF2C2C2C),
+      //     error: Color(0xFFB00020),
+      //     onPrimary: Colors.black,
+      //     onSecondary: Colors.black,
+      //     onSurface: Colors.black,
+      //     onBackground: Colors.white,
+      //     onError: Colors.white,
+      //     brightness: Brightness.dark,
+      //   ),
+      //   textTheme: TextTheme(
+      //     button: const TextStyle(color: Colors.white),
+      //     headline1: TextStyle(
+      //         fontSize: 20.0, color: config.Colors().mainDarkColor(1)),
+      //     headline2: TextStyle(
+      //         fontSize: 18.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.Colors().secondDarkColor(1)),
+      //     headline3: TextStyle(
+      //         fontSize: 20.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.Colors().mainDarkColor(1)),
+      //     headline4: TextStyle(
+      //         fontSize: 22.0,
+      //         fontWeight: FontWeight.w700,
+      //         color: config.Colors().secondDarkColor(1)),
+      //     headline5: TextStyle(
+      //         fontSize: 22.0,
+      //         fontWeight: FontWeight.w300,
+      //         color: config.Colors().mainDarkColor(1)),
+      //     subtitle1: TextStyle(
+      //         fontSize: 15.0,
+      //         fontWeight: FontWeight.w500,
+      //         color: config.Colors().secondDarkColor(1)),
+      //     subtitle2: TextStyle(
+      //         fontSize: 16.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.Colors().mainDarkColor(1)),
+      //     bodyText1: TextStyle(
+      //         fontSize: 12.0, color: config.Colors().secondDarkColor(1)),
+      //     bodyText2: TextStyle(
+      //         fontSize: 14.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.Colors().secondDarkColor(1)),
+      //     caption: TextStyle(
+      //       fontSize: 12.0,
+      //       color: config.Colors().secondDarkColor(0.6),
+      //     ),
+      //   ),
+      // ),
       theme: ThemeData(
-        fontFamily: 'Poppins',
-        primaryColor: config.Colors().mainColor(1),
-        brightness: Brightness.light,
-        accentColor: config.Colors().mainColor(1),
-        focusColor: config.Colors().accentColor(1),
-        hintColor: config.Colors().secondColor(1),
+        // fontFamily: 'Poppins',
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF478DF4),
+          secondary: Color(0xFFF4AE47),
+          surface: Color(0xFFC4C4C4),
+          background: Color(0xFFFFFFFF),
+          error: Color(0xFFB00020),
+          onPrimary: Colors.white,
+          onSecondary: Colors.white,
+          onSurface: Colors.black,
+          onBackground: Colors.black,
+          onError: Colors.white,
+          brightness: Brightness.light,
+        ),
         textTheme: TextTheme(
           button: const TextStyle(color: Colors.white),
-          headline1:
-              TextStyle(fontSize: 20.0, color: config.Colors().secondColor(1)),
+
+          /// Headline 1 style ---- Use it --- Do not change ----///
+          headline1: TextStyle(
+              fontSize: 21.0,
+              fontWeight: FontWeight.w700,
+              color: config.ThemeColors.mainTextColor(1)),
+
+          /// Headline 2 style ---- Use it --- Do not change ----///
           headline2: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors().secondColor(1)),
+              color: config.ThemeColors.mainTextColor(1)),
           headline3: TextStyle(
-              fontSize: 20.0,
+              fontSize: 18.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors().secondColor(1)),
+              color: config.ThemeColors.mainTextSecondaryColor(1)),
           headline4: TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w700,
-              color: config.Colors().mainColor(1)),
+              color: config.ThemeColors().secondColor(1)),
           headline5: TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w300,
-              color: config.Colors().secondColor(1)),
+              color: config.ThemeColors().mainColor(1)),
           subtitle1: TextStyle(
               fontSize: 15.0,
               fontWeight: FontWeight.w500,
-              color: config.Colors().secondColor(1)),
+              color: config.ThemeColors().secondColor(1)),
           subtitle2: TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors().mainColor(1)),
-          bodyText1:
-              TextStyle(fontSize: 12.0, color: config.Colors().secondColor(1)),
+              color: config.ThemeColors().mainColor(1)),
+          bodyText1: TextStyle(
+              fontSize: 15.0, color: config.ThemeColors.mainTextColor(1)),
           bodyText2: TextStyle(
-              fontSize: 14.0,
+              fontSize: 15.0,
               fontWeight: FontWeight.w600,
-              color: config.Colors().secondColor(1)),
+              color: config.ThemeColors.mainTextSecondaryColor(1)),
           caption: TextStyle(
-              fontSize: 12.0, color: config.Colors().secondColor(0.6)),
+            fontSize: 12.0,
+            color: config.ThemeColors().secondColor(0.6),
+          ),
         ),
       ),
     );

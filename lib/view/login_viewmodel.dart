@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,11 +29,18 @@ class LoginViewModel extends BaseModel {
         UserCredential result = await _auth.signInWithCredential(credential);
         User? user = result.user;
 
+        print("===================================================");
+
         try {
           userUid = user!.uid;
+          String? token = await FirebaseMessaging.instance.getToken();
 
-          userDb.collection('users').doc(userUid).set(
-              {"id": userUid, "name": user.displayName, "email": user.email});
+          userDb.collection('users').doc(userUid).set({
+            "id": userUid,
+            "name": user.displayName,
+            "email": user.email,
+            "tokens": FieldValue.arrayUnion([token]),
+          });
 
           Navigator.of(context).pushNamed('/');
         } catch (e) {
@@ -73,7 +81,18 @@ class LoginViewModel extends BaseModel {
                             await _auth.signInWithCredential(credential);
                         User? user = result.user;
                         if (user != null) {
-                          Navigator.of(context).pushNamed('/');
+                          String? token =
+                              await FirebaseMessaging.instance.getToken();
+
+                          userDb.collection('users').doc(user.uid).set({
+                            "id": user.uid,
+                            "name": user.displayName,
+                            "email": user.email,
+                            "tokens": FieldValue.arrayUnion([token]),
+                          });
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/complete-profile',
+                              (Route<dynamic> route) => false);
                           print('successfully  signed in');
                         } else {
                           Fluttertoast.showToast(msg: 'error signing in');
@@ -88,7 +107,7 @@ class LoginViewModel extends BaseModel {
     );
   }
 
-  Future signInWithGoogle() async {
+  Future<User?> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleUser!.authentication;
@@ -97,16 +116,21 @@ class LoginViewModel extends BaseModel {
         idToken: googleSignInAuthentication.idToken);
 
     //value has data of authenticated user
-    return await _auth.signInWithCredential(credential).then((value) {
-      user = value.user!;
+    final UserCredential userCred =
+        await _auth.signInWithCredential(credential);
+    final User? user = userCred.user;
 
-      userUid = _auth.currentUser!.uid;
+    if (user != null) {
+      String? token = await FirebaseMessaging.instance.getToken();
+      userDb.collection('users').doc(user.uid).set({
+        "id": userUid,
+        "name": user.displayName,
+        "email": user.email,
+        "tokens": FieldValue.arrayUnion([token])
+      });
+    }
 
-      userDb
-          .collection('users')
-          .doc(userUid)
-          .set({"id": userUid, "name": user.displayName, "email": user.email});
-    });
+    return user;
   }
 
   Future signInWithFacebook() async {

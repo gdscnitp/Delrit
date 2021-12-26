@@ -42,3 +42,68 @@ Widget placeSearchTextField({
     ),
   );
 }
+
+Widget inputFormField({
+  // required TextEditingController controller,
+  // FocusNode? focusNode,
+  required String label,
+  required TextEditingController controller,
+  //required String hint,
+  //required BuildContext context,
+}) {
+  return SizedBox(
+    child: TextFormField(
+      controller: controller,
+      // onChanged: (value) {
+      // locationCallback(value);
+      // },
+      onTap: () {},
+      // controller: controller,
+      // focusNode: focusNode,
+      decoration: kTextFormFieldStyle(
+        label: label,
+        hint: 'Type here...',
+      ),
+    ),
+  );
+}
+
+Widget riderSearchTextField({
+  required TextEditingController controller,
+  FocusNode? focusNode,
+  required String label,
+  required String hint,
+  required double width,
+  required Icon suffIcon,
+  required BuildContext context,
+  Widget? suffixIcon,
+  required Function(String?) locationCallback,
+}) {
+  return SizedBox(
+    width: width * 0.8,
+    child: TextField(
+      // onChanged: (value) {
+      // locationCallback(value);
+      // },
+      onTap: () async {
+        final Position currentLocation = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.medium,
+        );
+        final sessionToken = const Uuid().v4();
+        final result = await Navigator.pushNamed(context, "/choose-location");
+        print(result.toString());
+        locationCallback(result.toString());
+        controller.text = result.toString();
+      },
+      controller: controller,
+      focusNode: focusNode,
+      decoration: kTextFieldStyle(
+        suffixIcon: suffIcon,
+        label: label,
+        hint: hint,
+        fillColor: Colors.grey[300],
+        borderwidth: 0,
+      ),
+    ),
+  );
+}
