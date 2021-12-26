@@ -7,6 +7,7 @@ import 'package:ride_sharing/src/screens/landing_page.dart';
 import 'package:ride_sharing/src/screens/login_page.dart';
 import 'package:ride_sharing/src/screens/map_test.dart';
 import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
+import 'package:ride_sharing/src/screens/nearby_riders.dart';
 import 'package:ride_sharing/src/screens/search_riders.dart';
 import 'package:ride_sharing/src/screens/splash_screen.dart';
 import 'package:ride_sharing/src/screens/complete_profile/complete_profile.dart';
@@ -36,6 +37,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const CompleteProfile());
       case '/choose-location':
         return MaterialPageRoute(builder: (_) => const ChooseLocation());
+      case '/nearby-riders':
+        return MaterialPageRoute(builder: (_) => NearbyRiders(args: args));
       case '/user-profile':
         return MaterialPageRoute(builder: (_) => const UserProfile());
       case '/available-riders':

@@ -56,6 +56,32 @@ class ChooseLocationViewModel extends BaseModel {
     }
   }
 
+  void getNewPosition(String value) async {
+    List<Location> l = await locationFromAddress(value);
+    print(l[0]);
+    // print("==========================================================");
+    mapController?.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(l[0].latitude, l[0].longitude), zoom: 13.0),
+      ),
+    );
+    markers.clear();
+    markers.add(
+      Marker(
+        markerId: MarkerId("current_location"),
+        position: LatLng(l[0].latitude, l[0].longitude),
+        infoWindow: InfoWindow(title: "Your Location"),
+        draggable: true,
+        onDragEnd: (value) async {
+          await getAddress(latlng: value);
+          notifyListeners();
+        },
+      ),
+    );
+    notifyListeners();
+  }
+
   void getCurrentLocation() async {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) async {

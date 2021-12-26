@@ -77,7 +77,7 @@ Widget riderSearchTextField({
   required Icon suffIcon,
   required BuildContext context,
   Widget? suffixIcon,
-  required Function(Suggestion?) locationCallback,
+  required Function(String?) locationCallback,
 }) {
   return SizedBox(
     width: width * 0.8,
@@ -90,13 +90,10 @@ Widget riderSearchTextField({
           desiredAccuracy: LocationAccuracy.medium,
         );
         final sessionToken = const Uuid().v4();
-        final result = await showSearch(
-          context: context,
-          delegate: AddressSearch(sessionToken, currentLocation),
-        );
+        final result = await Navigator.pushNamed(context, "/choose-location");
         print(result.toString());
-        locationCallback(result);
-        controller.text = result!.description;
+        locationCallback(result.toString());
+        controller.text = result.toString();
       },
       controller: controller,
       focusNode: focusNode,
