@@ -2,6 +2,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/src/widgets/app_drawer.dart';
+import 'package:ride_sharing/src/screens/home_screen/components/next_rider_bottom_sheet.dart';
+import 'package:ride_sharing/src/screens/home_screen/components/ride_completed_bottom_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,6 +26,18 @@ class _HomeScreenState extends State<HomeScreen> {
     print("Handling Here");
   }
 
+  void _showModalSheet(BuildContext context) {
+    showModalBottomSheet<dynamic>(
+        context: context,
+        isScrollControlled: true,
+        builder: (builder) {
+          return Container(
+            height: config.getProportionateScreenHeight(310),
+            child: nextRiderBottomSheet(context),
+          );
+        });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text('Home'),
-        backgroundColor: config.Colors().mainColor(1),
+        backgroundColor: config.ThemeColors().mainColor(1),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,11 +104,18 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Text('Available Riders'),
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/ride-details');
+            },
+            child: const Text('Ride Details'),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/detail');
+          _showModalSheet(context);
+          //Navigator.pushNamed(context, '/detail');
         },
         child: const Icon(Icons.add),
       ),

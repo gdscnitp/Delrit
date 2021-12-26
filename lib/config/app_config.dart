@@ -35,7 +35,7 @@ class App {
   }
 }
 
-class Colors {
+class ThemeColors {
   final Color _mainColor = const Color(0xFF478DF4);
   final Color _mainDarkColor = const Color(0xFF478DF4);
   final Color _secondColor = const Color(0xFF704949);
