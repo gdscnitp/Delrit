@@ -8,6 +8,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_services.dart';
@@ -44,6 +45,11 @@ class SearchRiderViewModel extends BaseModel {
   late PolylinePoints polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
+
+  DateTime selectedDate = DateTime(0);
+
+  final List<String> vehicles = ['Choose vehicle', 'Car', 'Bike'];
+  String selectedVehicle = 'Choose vehicle';
 
   init(args) async {
     getCurrentLocation();
@@ -292,5 +298,34 @@ class SearchRiderViewModel extends BaseModel {
     // final response = await http.post(uri, body: {"tokens": token});
 
     // print(response.body);
+  }
+
+  String getText() {
+    if (selectedDate.year == 0) {
+      return 'Pick Ride Time';
+    } else {
+      return DateFormat('dd/MM/yyyy HH:mm').format(selectedDate);
+    }
+  }
+
+  void selectDateTime(BuildContext context) async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2022),
+    );
+    print(date);
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    print(time);
+
+    if (date != null && time != null) {
+      selectedDate =
+          DateTime(date.year, date.month, date.day, time.hour, time.minute);
+      notifyListeners();
+    }
   }
 }
