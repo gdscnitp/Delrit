@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -110,40 +110,61 @@ class PostRideViewModel extends BaseModel {
     if (selectedDate.year == 0) {
       return 'Pick Ride Time';
     } else {
-      return DateFormat('dd/MM/yyyy      HH:mm').format(selectedDate);
+      return DateFormat('dd/MM/yyyy HH:mm').format(selectedDate);
     }
   }
 
-  Future<void> selectDateTime(BuildContext context) async {
-    final DateTime? picked = await DatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      maxTime: DateTime(DateTime.now().year + 5),
-      minTime: DateTime.now(),
-      theme: DatePickerTheme(
-        headerColor: Colors.orange,
-        backgroundColor: Colors.grey.shade300,
-        itemStyle: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-        doneStyle: const TextStyle(
-          color: Colors.green,
-          fontSize: 16,
-        ),
-      ),
-      onChanged: (date) {
-        print('change $date in timezone ' +
-            date.timeZoneOffset.inHours.toString());
-      },
-      onConfirm: (date) {
-        print('confirm $date');
-      },
-      currentTime: DateTime.now(),
+  // Future<void> selectDateTime(BuildContext context) async {
+  //   final DateTime? picked = await DatePicker.showDateTimePicker(
+  //     context,
+  //     showTitleActions: true,
+  //     maxTime: DateTime(DateTime.now().year + 5),
+  //     minTime: DateTime.now(),
+  //     theme: DatePickerTheme(
+  //       headerColor: Colors.orange,
+  //       backgroundColor: Colors.grey.shade300,
+  //       itemStyle: const TextStyle(
+  //         color: Colors.black,
+  //         fontWeight: FontWeight.bold,
+  //         fontSize: 18,
+  //       ),
+  //       doneStyle: const TextStyle(
+  //         color: Colors.green,
+  //         fontSize: 16,
+  //       ),
+  //     ),
+  //     onChanged: (date) {
+  //       print('change $date in timezone ' +
+  //           date.timeZoneOffset.inHours.toString());
+  //     },
+  //     onConfirm: (date) {
+  //       print('confirm $date');
+  //     },
+  //     currentTime: DateTime.now(),
+  //   );
+  //   if (picked != null && picked != selectedDate) {
+  //     selectedDate = picked;
+  //     notifyListeners();
+  //   }
+  // }
+
+  void selectDateTime(BuildContext context) async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2022),
     );
-    if (picked != null && picked != selectedDate) {
-      selectedDate = picked;
+    print(date);
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    print(time);
+
+    if (date != null && time != null) {
+      selectedDate =
+          DateTime(date.year, date.month, date.day, time.hour, time.minute);
       notifyListeners();
     }
   }
@@ -151,6 +172,7 @@ class PostRideViewModel extends BaseModel {
   void clear() {
     startAddressController.clear();
     destinationAddressController.clear();
+    selectedDate = DateTime(0);
     notifyListeners();
   }
 
@@ -160,9 +182,11 @@ class PostRideViewModel extends BaseModel {
     var destinationCord =
         await locationFromAddress(destinationAddressController.text);
     await db.collection("availableRiders").add({
+      "uid": FirebaseAuth.instance.currentUser?.uid ?? "",
       "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
       "destination":
           GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
+      "time": selectedDate.millisecondsSinceEpoch,
     }).then((value) => print("added"));
     clear();
     setState(ViewState.Idle);

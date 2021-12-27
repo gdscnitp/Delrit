@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
 import 'package:ride_sharing/view/search_rider_viewmodel.dart';
@@ -15,51 +13,6 @@ class SearchRider extends StatefulWidget {
 class _SearchRiderState extends State<SearchRider> {
   final List<String> _vehicles = ['Choose vehicle', 'Car', 'Bike'];
   String _selectedVehicle = 'Choose vehicle';
-
-  DateTime selectedDate = DateTime(0);
-
-  Future<void> _selectDateTime(BuildContext context) async {
-    final DateTime? picked = await DatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      maxTime: DateTime(DateTime.now().year + 5),
-      minTime: DateTime.now(),
-      theme: DatePickerTheme(
-        headerColor: Colors.orange,
-        backgroundColor: Colors.grey.shade300,
-        itemStyle: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-        doneStyle: const TextStyle(
-          color: Colors.green,
-          fontSize: 16,
-        ),
-      ),
-      onChanged: (date) {
-        print('change $date in timezone ' +
-            date.timeZoneOffset.inHours.toString());
-      },
-      onConfirm: (date) {
-        print('confirm $date');
-      },
-      currentTime: DateTime.now(),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-
-  String getText() {
-    if (selectedDate.year == 0) {
-      return 'Pick Ride Time';
-    } else {
-      return DateFormat('dd/MM/yyyy      HH:mm').format(selectedDate);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -236,8 +189,8 @@ class _SearchRiderState extends State<SearchRider> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        getText(),
-                                        style: TextStyle(
+                                        model.getText(),
+                                        style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.normal,
                                         ),
@@ -246,7 +199,7 @@ class _SearchRiderState extends State<SearchRider> {
                                     ],
                                   ),
                                 ),
-                                onTap: () => _selectDateTime(context),
+                                onTap: () => model.selectDateTime(context),
                               ),
                             ),
                             const SizedBox(height: 10),
