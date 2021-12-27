@@ -161,7 +161,8 @@ class SearchRiderViewModel extends BaseModel {
             showModalBottomSheet(
               isScrollControlled: true,
               context: context,
-              builder: (context) => RiderDetailsBottomSheet(rider: r),
+              builder: (context) =>
+                  RiderDetailsBottomSheet(rider: r, func: () => acceptRide(r)),
               enableDrag: true,
             );
           },

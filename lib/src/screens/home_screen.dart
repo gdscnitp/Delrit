@@ -20,6 +20,32 @@ class _HomeScreenState extends State<HomeScreen> {
       _handleMessage(initialMessage);
     }
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Notification"),
+            content: const Text("yoo"),
+            actions: [
+              TextButton(
+                child: const Text("Ok"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        },
+      );
+    });
   }
 
   void _handleMessage(RemoteMessage message) {
@@ -28,14 +54,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _showModalSheet(BuildContext context) {
     showModalBottomSheet<dynamic>(
-        context: context,
-        isScrollControlled: true,
-        builder: (builder) {
-          return Container(
-            height: config.getProportionateScreenHeight(310),
-            child: nextRiderBottomSheet(context),
-          );
-        });
+      context: context,
+      isScrollControlled: true,
+      builder: (builder) {
+        return Container(
+          height: config.getProportionateScreenHeight(310),
+          child: nextRiderBottomSheet(context),
+        );
+      },
+    );
   }
 
   @override
