@@ -1,7 +1,11 @@
+
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:country_code_picker/country_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(
+
+void main() => runApp(const MaterialApp(
       home: PhoneScreen(),
     ));
 
@@ -11,86 +15,115 @@ class PhoneScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      supportedLocales: [
+        Locale('en','US'),
+      ],
+      localizationsDelegates: [
+        CountryLocalizations.delegate
+      ],
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: SafeArea(
-            child: Container(
-              child: Stack(
-                children: [
-                  Column(
+            
+            child: Stack(
+            children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 70,left:15,right: 15,bottom: 0),
+                  
+                  child: Column(
                     children: [
-                      Text(
-                        'Enter your phone number for verification.',
+                      const Text(
+                        'Enter your phone number\nfor verification',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 24),
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        'This number will be used for ride sharing related communication.You will recieve an SMS with OTP for\n verification.',
-                        style: TextStyle(fontFamily: 'Roboto'),
-                      ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
-                      Center(
+                      const Text(
+                        'This number will be used for all ride-sharing\n realated communication.You shall recieve an SMS\n with OTP for verification. ',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      const SizedBox(
+                        height: 70,
+                      ),
+                      Padding(
+                        
+                        padding: const EdgeInsets.only(right: 10,),
                         child: Row(
+                          
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          
                           children: [
+                        
                             Expanded(
-                                flex: 1,
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.blue)),
-                                    prefixIcon: Icon(Icons.flag_outlined),
-                                    suffixIcon:
-                                        Icon(Icons.arrow_drop_down_outlined),
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                )),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Expanded(
-                              flex: 6,
-                              child: TextField(
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                    hintText: 'Your Number',
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.blue))),
+                              flex:4,
+                              child: CountryCodePicker(
+                                initialSelection: 'IN',
+                                showCountryOnly: true,
+                                favorite: const ['+91','IN'],
+                                alignLeft:false,
+                                padding: const EdgeInsets.all(15),
+                                
+                                
+                                
+                            
                               ),
                             ),
+                           
+                            const Expanded(
+                                flex: 8,
+                                child: TextField(
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                      hintText: 'Your Number',
+                                      enabledBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.blue))),
+                                ),
+                              ),
+                            
                           ],
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 240),
-                        width: 280,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30)),
-                        child: ElevatedButton(
-                          onPressed: null,
-                          child: Text(
-                            'Next',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10))),
+                      
+                      const SizedBox(height:330),
+                      
+                      Positioned(
+                        bottom: 10,
+                        child: Container(
+                          //padding: EdgeInsets.only(bottom: 30),
+                          
+                          width: 300,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30)),
+                          child: ElevatedButton(
+                            onPressed: (){},
+                            child: const FractionallySizedBox(
+                              widthFactor: 1.2,
+                              child: Center(
+                                child: Text(
+                                  'Next',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10))),
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
