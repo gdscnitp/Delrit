@@ -35,7 +35,7 @@ class App {
   }
 }
 
-class Colors {
+class ThemeColors {
   final Color _mainColor = const Color(0xFF478DF4);
   final Color _mainDarkColor = const Color(0xFF478DF4);
   final Color _secondColor = const Color(0xFF704949);
@@ -66,4 +66,41 @@ class Colors {
   Color backgroundDarkColor(double opacity) {
     return _backgroundDarkColor.withOpacity(opacity);
   }
+
+  static Color mainTextColor(double opacity) {
+    return const Color(0xFF000000).withOpacity(opacity);
+  }
+
+  static Color mainTextSecondaryColor(double opacity) {
+    return const Color(0xFF72757C).withOpacity(opacity);
+  }
+}
+
+class SizeConfig {
+  static MediaQueryData? _mediaQueryData;
+  static double? screenWidth;
+  static double? screenHeight;
+  static double? defaultSize;
+  static Orientation? orientation;
+
+  void init(BuildContext context) {
+    _mediaQueryData = MediaQuery.of(context);
+    screenWidth = _mediaQueryData!.size.width;
+    screenHeight = _mediaQueryData!.size.height;
+    orientation = _mediaQueryData!.orientation;
+  }
+}
+
+// Get the proportionate height as per screen size
+double getProportionateScreenHeight(double inputHeight) {
+  double screenHeight = SizeConfig.screenHeight as double;
+  // 812 is the layout height that designer use
+  return (inputHeight / 812.0) * screenHeight;
+}
+
+// Get the proportionate height as per screen size
+double getProportionateScreenWidth(double inputWidth) {
+  double screenWidth = SizeConfig.screenWidth as double;
+  // 375 is the layout width that designer use
+  return (inputWidth / 375.0) * screenWidth;
 }

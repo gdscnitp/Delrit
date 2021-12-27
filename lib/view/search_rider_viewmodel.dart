@@ -1,5 +1,10 @@
+import 'dart:math';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -7,6 +12,7 @@ import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_services.dart';
 import 'package:ride_sharing/src/models/riders.dart';
+import 'package:ride_sharing/src/widgets/get_bytes_from_asset.dart';
 import 'package:ride_sharing/src/widgets/rider_details_bottom_sheet.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,6 +41,46 @@ class SearchRiderViewModel extends BaseModel {
   final db = FirebaseFirestore.instance;
   List<Rider> nearbyRiders = [];
 
+  late PolylinePoints polylinePoints;
+  Map<PolylineId, Polyline> polylines = {};
+  List<LatLng> polylineCoordinates = [];
+
+  init(args) async {
+    getCurrentLocation();
+    print("==========================================");
+    print(startAddressController.text);
+    print(destinationAddressController.text);
+    print(args);
+    print("==========================================");
+    startAddressController.text = args?["startAddress"] ?? '';
+    destinationAddressController.text = args?["destinationAddress"] ?? '';
+
+    List<Location> l = await locationFromAddress(startAddressController.text);
+    print(l);
+    mapController
+        ?.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+                target: LatLng(l[0].latitude, l[0].longitude), zoom: 15.0),
+          ),
+        )
+        .then((d) => notifyListeners());
+    notifyListeners();
+  }
+
+  getNewPosition(String value) async {
+    List<Location> l = await locationFromAddress(value);
+    print(l[0]);
+    // print("==========================================================");
+    mapController?.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(l[0].latitude, l[0].longitude), zoom: 13.0),
+      ),
+    );
+    notifyListeners();
+  }
+
   getAddress() async {
     try {
       // Places are retrieved using the coordinates
@@ -50,7 +96,7 @@ class SearchRiderViewModel extends BaseModel {
       print(currentAddress);
       print("========================");
       // Update the text of the TextField
-      startAddressController.text = currentAddress;
+      // startAddressController.text = currentAddress;
 
       // Setting the user's present location as the starting address
       startAddress = currentAddress;
@@ -79,10 +125,8 @@ class SearchRiderViewModel extends BaseModel {
   }
 
   void getNearbyRiders(BuildContext context) async {
-    // ImageConfiguration configuration =
-    //     createLocalImageConfiguration(context, size: const Size(1, 1));
-    // final BitmapDescriptor personIcon = await BitmapDescriptor.fromAssetImage(
-    //     configuration, 'assets/icons/person.png');
+    final Uint8List markerIcon =
+        await getBytesFromAsset('assets/icons/person.png', 150);
     List<Rider> riders =
         (await db.collection('availableRiders').get()).docs.map((e) {
       var data = e.data();
@@ -115,13 +159,14 @@ class SearchRiderViewModel extends BaseModel {
           onTap: () {
             String buttonText = "Accept Ride";
             showModalBottomSheet(
+              isScrollControlled: true,
               context: context,
               builder: (context) => RiderDetailsBottomSheet(rider: r),
               enableDrag: true,
             );
           },
           markerId: MarkerId(r.id),
-          // icon: personIcon,
+          icon: BitmapDescriptor.fromBytes(markerIcon),
           position: LatLng(r.source.latitude, r.source.longitude),
           infoWindow: InfoWindow(
             title: r.name,
@@ -134,9 +179,117 @@ class SearchRiderViewModel extends BaseModel {
     print(nearbyRiders);
   }
 
+  Future<bool> calculateDistance() async {
+    try {
+      List<Location> startPlacemark =
+          await locationFromAddress(startAddressController.text);
+      List<Location> destinationPlacemark =
+          await locationFromAddress(destinationAddressController.text);
+
+      double startLatitude = startAddressController.text == currentAddress
+          ? currentPosition.latitude
+          : startPlacemark[0].latitude;
+
+      double startLongitude = startAddressController.text == currentAddress
+          ? currentPosition.longitude
+          : startPlacemark[0].longitude;
+
+      double destinationLatitude = destinationPlacemark[0].latitude;
+      double destinationLongitude = destinationPlacemark[0].longitude;
+
+      String startString = "($startLongitude, $startLongitude)";
+      String destinationString =
+          "($destinationLatitude, $destinationLongitude)";
+
+      Marker startMarker = Marker(
+        markerId: MarkerId(startString),
+        position: LatLng(startLatitude, startLongitude),
+        infoWindow:
+            InfoWindow(title: 'Start $startString', snippet: startAddress),
+      );
+
+      Marker destinationMarker = Marker(
+        markerId: MarkerId(destinationString),
+        position: LatLng(destinationLatitude, destinationLongitude),
+        infoWindow: InfoWindow(
+            title: 'Destination $destinationString',
+            snippet: destinationAddress),
+      );
+
+      markers.clear();
+      markers.add(startMarker);
+      markers.add(destinationMarker);
+
+      print(
+        'START COORDINATES: ($startLatitude, $startLongitude)',
+      );
+      print(
+        'DESTINATION COORDINATES: ($destinationLatitude, $destinationLongitude)',
+      );
+
+      double miny = min(startLatitude, destinationLatitude);
+      double maxy = max(startLatitude, destinationLatitude);
+      double minx = min(startLongitude, destinationLongitude);
+      double maxx = max(startLongitude, destinationLongitude);
+
+      mapController?.animateCamera(CameraUpdate.newLatLngBounds(
+          LatLngBounds(
+              southwest: LatLng(miny, minx), northeast: LatLng(maxy, maxx)),
+          100.0));
+
+      await _createPolylines(startLatitude, startLongitude, destinationLatitude,
+          destinationLongitude);
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  _createPolylines(startLat, startLon, destLat, destLon) async {
+    polylinePoints = PolylinePoints();
+    var MAPAPIKEY = FlutterConfig?.get('MAPS_API_HTTPS') ?? "";
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      MAPAPIKEY,
+      PointLatLng(startLat, startLon),
+      PointLatLng(destLat, destLon),
+      travelMode: TravelMode.driving,
+      optimizeWaypoints: true,
+    );
+    print("ERRORS ================================");
+    print(result.points);
+    print(result.errorMessage);
+
+    if (result.points.isNotEmpty) {
+      for (var point in result.points) {
+        print(point.latitude.toString() + " " + point.longitude.toString());
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      }
+    }
+    polylines.clear();
+    PolylineId id = PolylineId(startAddress + destinationAddress);
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: Colors.red,
+      points: polylineCoordinates,
+      width: 3,
+    );
+    polylines[id] = polyline;
+    // notifyListeners();
+  }
+
   void acceptRide(Rider r) async {
+    print("yoooooooooooooooooooo");
+    var token =
+        "cuiqIW3wT2ycOyijjoOdJK:APA91bFbPRFj6wRNowB7jo7xAuVE_KGvnZy-wIPQPkT936djHz1GT_Bxss_B2bH427EAz4aIp8mPiInV0fINchIlHPhZHjm3KeAGqBQtc8knkfTirHwTGqkzN6NCiYuqepWgROstaB3M";
     final ApiResponse response =
-        await _apiService.sendFirebaseNotification("dddd");
+        await _apiService.sendFirebaseNotification(token);
     print(response.data);
+    // final uri = Uri.parse("http://192.168.1.11:3000/firebase/send");
+    // final response = await http.post(uri, body: {"tokens": token});
+
+    // print(response.body);
   }
 }

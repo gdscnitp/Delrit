@@ -1,27 +1,46 @@
 import 'package:flutter/material.dart';
+import 'reusable_button.dart';
+import 'ride_confirmed.dart';
+import 'package:ride_sharing/constant/text_style.dart';
+import 'call_widget.dart';
 import 'package:ride_sharing/config/app_config.dart';
-import 'package:ride_sharing/provider/base_view.dart';
-import 'package:ride_sharing/src/models/riders.dart';
-import 'package:ride_sharing/src/screens/available_riders/components/reusable_button.dart';
-import 'package:ride_sharing/view/search_rider_viewmodel.dart';
+import 'package:ride_sharing/view/available_riders_viewmodel.dart';
 
-class RiderDetailsBottomSheet extends StatefulWidget {
-  final Rider rider;
-  const RiderDetailsBottomSheet({Key? key, required this.rider})
-      : super(key: key);
-  @override
-  _RiderDetailsBottomSheetState createState() =>
-      _RiderDetailsBottomSheetState();
-}
+class Body extends StatelessWidget {
+  final AvailableRidersViewModel model;
+  Body({Key? key, required this.model}) : super(key: key);
 
-class _RiderDetailsBottomSheetState extends State<RiderDetailsBottomSheet> {
-  String buttonText = "Accept Ride";
   final double sizedHeight = getProportionateScreenHeight(7);
+
+  void showModalSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(15),
+          topLeft: Radius.circular(15),
+        ),
+      ),
+      builder: (builder) {
+        return model.isRideConfirmed
+            ? rideConfirmed(ridername: 'Rider Name', context: context)
+            : rideNotConfirmed(context: context, ridername: 'New user');
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          width: double.infinity,
+          height: getProportionateScreenHeight(200), //change to app height
+          child: Image.asset(
+            'assets/images/map.png',
+            fit: BoxFit.cover,
+          ),
+        ),
         Container(
           padding: EdgeInsets.symmetric(
             horizontal: getProportionateScreenWidth(8),
@@ -38,7 +57,7 @@ class _RiderDetailsBottomSheetState extends State<RiderDetailsBottomSheet> {
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ClipOval(
                     child: Image.asset(
@@ -145,7 +164,7 @@ class _RiderDetailsBottomSheetState extends State<RiderDetailsBottomSheet> {
                       ],
                     ),
                     SizedBox(
-                      height: getProportionateScreenHeight(30),
+                      height: getProportionateScreenHeight(40),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -153,7 +172,9 @@ class _RiderDetailsBottomSheetState extends State<RiderDetailsBottomSheet> {
                         Expanded(
                             child: resuableButton(
                                 text: 'Chat',
-                                onPress: () {},
+                                onPress: () {
+                                  model.rideStatus(true);
+                                },
                                 buttoncolor: null)),
                         const SizedBox(
                           width: 10,
@@ -162,7 +183,9 @@ class _RiderDetailsBottomSheetState extends State<RiderDetailsBottomSheet> {
                           child: resuableButton(
                             text: 'Call',
                             buttoncolor: null,
-                            onPress: () {},
+                            onPress: () {
+                              showModalSheet(context);
+                            },
                           ),
                         ),
                       ],

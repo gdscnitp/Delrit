@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 
 InputDecoration kTextFieldStyle(
-    {Icon? prefixIcon, Widget? suffixIcon, String? label, String? hint}) {
+    {Icon? prefixIcon,
+    Widget? suffixIcon,
+    String? label,
+    String? hint,
+    double? borderwidth,
+    Color? fillColor}) {
   return InputDecoration(
     prefixIcon: prefixIcon,
     suffixIcon: suffixIcon,
     labelText: label,
     filled: true,
-    fillColor: Colors.white,
+    fillColor: fillColor ?? Colors.white,
     enabledBorder: OutlineInputBorder(
       borderRadius: const BorderRadius.all(
         Radius.circular(10.0),
       ),
       borderSide: BorderSide(
         color: Colors.grey.shade400,
-        width: 2,
+        width: borderwidth ?? 2,
       ),
     ),
     focusedBorder: OutlineInputBorder(
