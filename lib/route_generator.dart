@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:ride_sharing/src/screens/landing_page.dart';
 import 'package:ride_sharing/src/screens/login_page.dart';
 import 'package:ride_sharing/src/screens/map_test.dart';
+import 'package:ride_sharing/src/screens/post_ride.dart';
 import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
 import 'package:ride_sharing/src/screens/nearby_riders.dart';
 import 'package:ride_sharing/src/screens/search_riders.dart';
@@ -45,6 +46,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const AvailableRiders());
       case '/ride-details':
         return MaterialPageRoute(builder: (_) => const RideDetails());
+      case '/post-ride':
+        return MaterialPageRoute(builder: (_) => const PostRide());
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {

@@ -7,6 +7,7 @@ import 'package:ride_sharing/view/add_ride_viewmodel.dart';
 import 'package:ride_sharing/view/choose_location_viewmodel.dart';
 import 'package:ride_sharing/view/complete_profile_viewmodel.dart';
 import 'package:ride_sharing/view/login_viewmodel.dart';
+import 'package:ride_sharing/view/post_ride_viewmodel.dart';
 import 'package:ride_sharing/view/search_rider_viewmodel.dart';
 import 'package:ride_sharing/view/user_profile_viewmodel.dart';
 import 'package:ride_sharing/view/available_riders_viewmodel.dart';
@@ -22,4 +23,5 @@ void setupLocator() {
   getIt.registerFactory(() => ChooseLocationViewModel());
   getIt.registerFactory(() => UserProfileViewModel());
   getIt.registerFactory(() => AvailableRidersViewModel());
+  getIt.registerFactory(() => PostRideViewModel());
 }
