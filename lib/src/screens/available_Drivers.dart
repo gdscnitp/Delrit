@@ -63,6 +63,8 @@ class _AvailableRidersState extends State<AvailableRiders> {
                             color: config.ThemeColors.mainTextColor(1)),
                   ),
                   DropdownButton(
+                      hint: Text('Select'),
+                      icon: Icon(Icons.arrow_drop_down),
                       value: valueChoose,
                       items: listItem.map((valueItem) {
                         return DropdownMenuItem(
