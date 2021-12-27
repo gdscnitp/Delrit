@@ -15,14 +15,19 @@ class AvailableRiders extends StatelessWidget {
     return BaseView<AvailableRidersViewModel>(builder: (context, model, child) {
       return Scaffold(
         appBar: AppBar(
-          title: Center(
-              child: Text(
+          centerTitle: true,
+          title: Text(
             'Available Riders',
             style: Theme.of(context).textTheme.headline2,
-          )),
-          leading: Icon(
-            Icons.arrow_back_outlined,
-            color: Theme.of(context).primaryColorDark,
+          ),
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back_outlined,
+              color: Theme.of(context).primaryColorDark,
+            ),
           ),
           elevation: 0,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,

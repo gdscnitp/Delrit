@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/config/app_config.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/view/user_profile_viewmodel.dart';
 import 'components/body.dart';
