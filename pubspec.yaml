@@ -53,6 +53,9 @@ dependencies:
   google_fonts: ^2.1.0
   flutter_config: ^2.0.0
   firebase_messaging: ^11.2.3
+  flutter_datetime_picker: ^1.5.1
+  # DateTime Formating
+  intl: ^0.17.0   
 
 dev_dependencies:
   flutter_test:

@@ -1,71 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
-import 'package:ride_sharing/view/search_rider_viewmodel.dart';
+import 'package:ride_sharing/view/post_ride_viewmodel.dart';
 
-class SearchRider extends StatefulWidget {
-  const SearchRider({Key? key}) : super(key: key);
+class PostRide extends StatefulWidget {
+  const PostRide({Key? key}) : super(key: key);
 
   @override
-  _SearchRiderState createState() => _SearchRiderState();
+  _PostRideState createState() => _PostRideState();
 }
 
-class _SearchRiderState extends State<SearchRider> {
-  final List<String> _vehicles = ['Choose vehicle', 'Car', 'Bike'];
-  String _selectedVehicle = 'Choose vehicle';
-
-  DateTime selectedDate = DateTime(0);
-
-  Future<void> _selectDateTime(BuildContext context) async {
-    final DateTime? picked = await DatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      maxTime: DateTime(DateTime.now().year + 5),
-      minTime: DateTime.now(),
-      theme: DatePickerTheme(
-        headerColor: Colors.orange,
-        backgroundColor: Colors.grey.shade300,
-        itemStyle: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-        doneStyle: const TextStyle(
-          color: Colors.green,
-          fontSize: 16,
-        ),
-      ),
-      onChanged: (date) {
-        print('change $date in timezone ' +
-            date.timeZoneOffset.inHours.toString());
-      },
-      onConfirm: (date) {
-        print('confirm $date');
-      },
-      currentTime: DateTime.now(),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-
-  String getText() {
-    if (selectedDate.year == 0) {
-      return 'Pick Ride Time';
-    } else {
-      return DateFormat('dd/MM/yyyy      HH:mm').format(selectedDate);
-    }
-  }
-
+class _PostRideState extends State<PostRide> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return BaseView<SearchRiderViewModel>(
+
+    return BaseView<PostRideViewModel>(
       onModelReady: (model) => model.getCurrentLocation(),
       builder: (context, model, child) => Scaffold(
         key: model.scaffoldkey,
@@ -125,7 +76,7 @@ class _SearchRiderState extends State<SearchRider> {
                           horizontal: 10.0,
                         ),
                         focusColor: Colors.white,
-                        hintText: 'Search for Riders',
+                        hintText: 'Search for drivers',
                         hintStyle: const TextStyle(
                           fontSize: 18,
                         ),
@@ -236,30 +187,22 @@ class _SearchRiderState extends State<SearchRider> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        getText(),
-                                        style: TextStyle(
+                                        model.getText(),
+                                        style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.normal,
                                         ),
                                       ),
-                                      Icon(Icons.calendar_today),
+                                      const Icon(Icons.calendar_today),
                                     ],
                                   ),
                                 ),
-                                onTap: () => _selectDateTime(context),
+                                onTap: () => model.selectDateTime(context),
                               ),
                             ),
                             const SizedBox(height: 10),
                             SizedBox(
                               width: width * 0.8,
-                              // child: TextField(
-                              //   decoration: kTextFieldStyle(
-                              //     suffixIcon: const Icon(Icons.car_rental),
-                              //     label: 'Choose Vehicle',
-                              //     hint: 'Choose Vehicle',
-                              //     fillColor: Colors.grey[300],
-                              //   ),
-                              // ),
                               child: Container(
                                 padding: const EdgeInsets.only(
                                   left: 10,
@@ -276,41 +219,6 @@ class _SearchRiderState extends State<SearchRider> {
                                     ),
                                   ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    DropdownButton(
-                                      hint: Text(
-                                        _selectedVehicle,
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                      ),
-                                      dropdownColor: Colors.grey.shade300,
-                                      icon: const Icon(Icons.arrow_drop_down),
-                                      iconSize: 40,
-                                      underline: const SizedBox(),
-                                      value: _selectedVehicle,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedVehicle = value.toString();
-                                        });
-                                      },
-                                      items: _vehicles.map((e) {
-                                        return DropdownMenuItem(
-                                          child: Text(
-                                            e,
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          value: e,
-                                        );
-                                      }).toList(),
-                                    ),
-                                    const Icon(Icons.drive_eta),
-                                  ],
-                                ),
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -321,21 +229,12 @@ class _SearchRiderState extends State<SearchRider> {
                                   print(model.startAddressController.text);
                                   print(
                                       model.destinationAddressController.text);
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/nearby-riders',
-                                    arguments: {
-                                      'startAddress':
-                                          model.startAddressController.text,
-                                      'destinationAddress': model
-                                          .destinationAddressController.text,
-                                    },
-                                  );
+                                  model.addRideToDb(context);
                                 },
                                 child: const Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
-                                    'Search Riders',
+                                    'Post my ride',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 24.0,
@@ -345,9 +244,11 @@ class _SearchRiderState extends State<SearchRider> {
                               ),
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/searchrider');
+                              },
                               child: const Text(
-                                'Search for drivers instead',
+                                'Search for riders instead',
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -363,12 +264,6 @@ class _SearchRiderState extends State<SearchRider> {
             ],
           ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   child: const Icon(Icons.my_location),
-        //   onPressed: () {
-        //     model.getCurrentLocation();
-        //   },
-        // ),
       ),
     );
   }
