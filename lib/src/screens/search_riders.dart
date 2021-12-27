@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
 import 'package:ride_sharing/view/search_rider_viewmodel.dart';
@@ -14,18 +16,48 @@ class _SearchRiderState extends State<SearchRider> {
   final List<String> _vehicles = ['Choose vehicle', 'Car', 'Bike'];
   String _selectedVehicle = 'Choose vehicle';
 
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime(0);
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2021, 12),
-        lastDate: DateTime(2100));
+  Future<void> _selectDateTime(BuildContext context) async {
+    final DateTime? picked = await DatePicker.showDateTimePicker(
+      context,
+      showTitleActions: true,
+      maxTime: DateTime(DateTime.now().year + 5),
+      minTime: DateTime.now(),
+      theme: DatePickerTheme(
+        headerColor: Colors.orange,
+        backgroundColor: Colors.grey.shade300,
+        itemStyle: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
+        doneStyle: const TextStyle(
+          color: Colors.green,
+          fontSize: 16,
+        ),
+      ),
+      onChanged: (date) {
+        print('change $date in timezone ' +
+            date.timeZoneOffset.inHours.toString());
+      },
+      onConfirm: (date) {
+        print('confirm $date');
+      },
+      currentTime: DateTime.now(),
+    );
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
       });
+    }
+  }
+
+  String getText() {
+    if (selectedDate.year == 0) {
+      return 'Pick Ride Time';
+    } else {
+      return DateFormat('dd/MM/yyyy      HH:mm').format(selectedDate);
     }
   }
 
@@ -113,7 +145,6 @@ class _SearchRiderState extends State<SearchRider> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Container(
-                      height: height * .5,
                       decoration: BoxDecoration(
                         color: Colors.white70,
                         borderRadius: const BorderRadius.all(
@@ -203,9 +234,9 @@ class _SearchRiderState extends State<SearchRider> {
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: const [
+                                    children: [
                                       Text(
-                                        'Pick Ride Time',
+                                        getText(),
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.normal,
@@ -215,7 +246,7 @@ class _SearchRiderState extends State<SearchRider> {
                                     ],
                                   ),
                                 ),
-                                onTap: () => _selectDate(context),
+                                onTap: () => _selectDateTime(context),
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -250,14 +281,15 @@ class _SearchRiderState extends State<SearchRider> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     DropdownButton(
-                                      hint: const Text(
-                                        'Choose Vehicle',
-                                        style: TextStyle(color: Colors.black),
+                                      hint: Text(
+                                        _selectedVehicle,
+                                        style: const TextStyle(
+                                            color: Colors.black),
                                       ),
                                       dropdownColor: Colors.grey.shade300,
-                                      icon: Icon(Icons.arrow_drop_down),
+                                      icon: const Icon(Icons.arrow_drop_down),
                                       iconSize: 40,
-                                      underline: SizedBox(),
+                                      underline: const SizedBox(),
                                       value: _selectedVehicle,
                                       onChanged: (value) {
                                         setState(() {
@@ -320,7 +352,7 @@ class _SearchRiderState extends State<SearchRider> {
                                   color: Colors.black,
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
