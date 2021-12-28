@@ -62,12 +62,16 @@ class _AvailableRidersState extends State<AvailableRiders> {
                             fontWeight: FontWeight.w600,
                             color: config.ThemeColors.mainTextColor(1)),
                   ),
+                  SizedBox(
+                    width: 30.0,
+                  ),
                   DropdownButton(
-                      hint: Text('Select'),
                       icon: Icon(Icons.arrow_drop_down),
+                      elevation: 0,
+                      hint: Text('Select'),
                       value: valueChoose,
                       items: listItem.map((valueItem) {
-                        return DropdownMenuItem(
+                        return DropdownMenuItem<String>(
                             value: valueItem, child: Text(valueItem));
                       }).toList(),
                       onChanged: (newValue) {
@@ -76,6 +80,54 @@ class _AvailableRidersState extends State<AvailableRiders> {
                         });
                       })
                 ],
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                child: Card(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/user_img.png',
+                            width: 80.0,
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                'Mr. Thangabali',
+                                style: TextStyle(
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                'Tata Indica',
+                                style: TextStyle(
+                                    color: config.ThemeColors
+                                        .mainTextSecondaryColor(1),
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                '3.5 Stars',
+                                style: TextStyle(
+                                    color: config.ThemeColors
+                                        .mainTextSecondaryColor(1),
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.w300),
+                              )
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
               ),
             )
           ],
