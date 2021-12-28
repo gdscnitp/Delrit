@@ -49,7 +49,7 @@ class CustomModelSheet extends StatelessWidget {
                 height: App(context).appHeight(4),
               ),
               ElevatedButton(
-                onPressed: () => model.save(),
+                onPressed: () => model.save(context),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(
                     horizontal: App(context).appWidth(20.0),
