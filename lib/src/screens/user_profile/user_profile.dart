@@ -8,31 +8,27 @@ class UserProfile extends StatelessWidget {
   const UserProfile({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final _scaffoldKey = GlobalKey<ScaffoldState>();
-    final double sizedHeight = getProportionateScreenHeight(24);
-    return BaseView<UserProfileViewModel>(builder: (context, model, child) {
-      return Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          centerTitle: true,
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(
-              Icons.arrow_back_outlined,
-              color: Theme.of(context).primaryColorDark,
+    return BaseView<UserProfileViewModel>(
+        onModelReady: (model) => model.init(),
+        builder: (context, model, child) {
+          return Scaffold(
+            key: model.scaffoldkey,
+            appBar: AppBar(
+              leading: Icon(
+                Icons.arrow_back_outlined,
+                color: Theme.of(context).primaryColorDark,
+              ),
+              elevation: 0,
+              title: Center(
+                child: Text(
+                  'My Profile',
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             ),
-          ),
-          elevation: 0,
-          title: Text(
-            'My Profile',
-            style: Theme.of(context).textTheme.headline2,
-          ),
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        ),
-        body: Body(context, model),
-      );
-    });
+            body: Body(context, model),
+          );
+        });
   }
 }

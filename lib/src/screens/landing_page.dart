@@ -6,11 +6,11 @@ import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/view/login_viewmodel.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: Landing_Page(),
-  ));
-}
+// void main() {
+//   runApp(const MaterialApp(
+//     home: Landing_Page(),
+//   ));
+// }
 
 class Landing_Page extends StatelessWidget {
   const Landing_Page({Key? key}) : super(key: key);
