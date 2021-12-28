@@ -1,4 +1,3 @@
-import 'package:ride_sharing/src/screens/add_ride.dart';
 import 'package:ride_sharing/src/screens/available_riders/available_riders.dart';
 import 'package:ride_sharing/src/screens/choose_location.dart';
 import 'package:ride_sharing/src/screens/home_screen.dart';
@@ -30,8 +29,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const MapTest());
       case '/login':
         return MaterialPageRoute(builder: (_) => const LoginPage());
-      case '/addride':
-        return MaterialPageRoute(builder: (_) => const AddRide());
       case '/searchrider':
         return MaterialPageRoute(builder: (_) => const SearchRider());
       case '/complete-profile':

@@ -30,23 +30,35 @@ Widget Body(BuildContext context, UserProfileViewModel model) {
         imagePath: 'assets/images/user_img.png',
         onClicked: () {
           _showModalSheet(context, model);
+
+          ///Fetch the data
         },
       ),
       SizedBox(height: getProportionateScreenHeight(20)),
       Text(
-        'UserName',
+        model.nameController.text,
         style: Theme.of(context).textTheme.headline1,
       ),
       SizedBox(height: getProportionateScreenHeight(20)),
       itemRow(
-          context: context, parameter: 'Email : ', value: 'newuser@gmail.com'),
+          context: context,
+          parameter: 'Email : ',
+          value: model.emailController.text),
       SizedBox(height: getProportionateScreenHeight(20)),
       itemRow(
-          context: context, parameter: 'Phone : ', value: '+91 90080050607'),
+          context: context,
+          parameter: 'Phone : ',
+          value: model.phoneController.text),
       SizedBox(height: getProportionateScreenHeight(20)),
-      itemRow(context: context, parameter: 'Gender : ', value: 'Female'),
+      itemRow(
+          context: context,
+          parameter: 'Gender : ',
+          value: model.genderController.text),
       SizedBox(height: getProportionateScreenHeight(20)),
-      itemRow(context: context, parameter: 'Age : ', value: '35 years'),
+      itemRow(
+          context: context,
+          parameter: 'Age : ',
+          value: model.ageController.text),
       SizedBox(height: getProportionateScreenHeight(24)),
       starsColumnWidget(starscount: 5, type: 'Your ride stars'),
       SizedBox(height: getProportionateScreenHeight(24)),
