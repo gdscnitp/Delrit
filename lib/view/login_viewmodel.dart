@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:ride_sharing/constant/appconstant.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_services.dart';
 
@@ -41,10 +42,11 @@ class LoginViewModel extends BaseModel {
             "email": user.email,
             "tokens": FieldValue.arrayUnion([token]),
           });
+          AppConstant.showSuccessToast("Login Successful");
 
           Navigator.of(context).pushNamed('/');
         } catch (e) {
-          Fluttertoast.showToast(msg: 'user is not signed in');
+          AppConstant.showFailToast(e.toString());
         }
       },
 
@@ -128,6 +130,9 @@ class LoginViewModel extends BaseModel {
         "email": user.email,
         "tokens": FieldValue.arrayUnion([token])
       });
+      AppConstant.showSuccessToast('Successfully signed in');
+    } else {
+      AppConstant.showFailToast('Error signing in');
     }
 
     return user;
