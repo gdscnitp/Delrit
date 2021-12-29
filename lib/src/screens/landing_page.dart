@@ -54,7 +54,9 @@ class Landing_Page extends StatelessWidget {
               FractionallySizedBox(
                 widthFactor: 0.8,
                 child: FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/phone-verification');
+                  },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6.0),
                   ),
