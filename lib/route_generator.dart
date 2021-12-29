@@ -1,3 +1,4 @@
+import 'package:ride_sharing/src/screens/available_drivers/available_drivers.dart';
 import 'package:ride_sharing/src/screens/available_riders/available_riders.dart';
 import 'package:ride_sharing/src/screens/choose_location.dart';
 import 'package:ride_sharing/src/screens/home_screen.dart';
@@ -8,7 +9,7 @@ import 'package:ride_sharing/src/screens/map_test.dart';
 import 'package:ride_sharing/src/screens/post_ride.dart';
 import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
 import 'package:ride_sharing/src/screens/nearby_riders.dart';
-import 'package:ride_sharing/src/screens/search_riders.dart';
+import 'package:ride_sharing/src/screens/search_riders/search_riders.dart';
 import 'package:ride_sharing/src/screens/splash_screen.dart';
 import 'package:ride_sharing/src/screens/complete_profile/complete_profile.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
@@ -48,6 +49,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const RideDetails());
       case '/post-ride':
         return MaterialPageRoute(builder: (_) => const PostRide());
+      case '/available-drivers':
+        return MaterialPageRoute(builder: (_) => const AvailableDrivers());
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {
