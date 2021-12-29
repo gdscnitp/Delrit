@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -9,6 +10,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_services.dart';
@@ -19,6 +21,7 @@ import 'package:http/http.dart' as http;
 
 class SearchRiderViewModel extends BaseModel {
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
+  final FirebaseFirestore db = FirebaseFirestore.instance;
   final ApiService _apiService = ApiService();
   final CameraPosition initialLocation = const CameraPosition(
     target: LatLng(26.8876621, 80.995846),
@@ -37,9 +40,11 @@ class SearchRiderViewModel extends BaseModel {
   String startAddress = '';
   String destinationAddress = '';
 
+  final List<String> vehicles = ['Choose vehicle', 'Car', 'Bike'];
+  String selectedVehicle = 'Choose vehicle';
+
   Set<Marker> markers = {};
 
-  final db = FirebaseFirestore.instance;
   List<Rider> nearbyRiders = [];
 
   late PolylinePoints polylinePoints;
@@ -47,9 +52,6 @@ class SearchRiderViewModel extends BaseModel {
   List<LatLng> polylineCoordinates = [];
 
   DateTime selectedDate = DateTime(0);
-
-  final List<String> vehicles = ['Choose vehicle', 'Car', 'Bike'];
-  String selectedVehicle = 'Choose vehicle';
 
   init(args) async {
     getCurrentLocation();
@@ -327,5 +329,27 @@ class SearchRiderViewModel extends BaseModel {
           DateTime(date.year, date.month, date.day, time.hour, time.minute);
       notifyListeners();
     }
+  }
+
+  Future<void> addDriver() async {
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
+
+    if (uid == null) {
+      print("Nooooooooooooooooooooooooooo");
+      navigationService.navigateTo('/login');
+    }
+    setState(ViewState.Busy);
+    var sourceCord = await locationFromAddress(startAddressController.text);
+    var destinationCord =
+        await locationFromAddress(destinationAddressController.text);
+    await db.collection("availableDrivers").add({
+      "uid": FirebaseAuth.instance.currentUser?.uid,
+      "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
+      "destination":
+          GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
+      "time": selectedDate.millisecondsSinceEpoch,
+      "vehicle": selectedVehicle
+    }).then((value) => print("added"));
+    setState(ViewState.Idle);
   }
 }

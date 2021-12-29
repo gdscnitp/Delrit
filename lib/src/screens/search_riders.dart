@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
 import 'package:ride_sharing/view/search_rider_viewmodel.dart';
@@ -11,9 +12,6 @@ class SearchRider extends StatefulWidget {
 }
 
 class _SearchRiderState extends State<SearchRider> {
-  final List<String> _vehicles = ['Choose vehicle', 'Car', 'Bike'];
-  String _selectedVehicle = 'Choose vehicle';
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -235,7 +233,7 @@ class _SearchRiderState extends State<SearchRider> {
                                   children: [
                                     DropdownButton(
                                       hint: Text(
-                                        _selectedVehicle,
+                                        model.selectedVehicle,
                                         style: const TextStyle(
                                             color: Colors.black),
                                       ),
@@ -243,13 +241,14 @@ class _SearchRiderState extends State<SearchRider> {
                                       icon: const Icon(Icons.arrow_drop_down),
                                       iconSize: 40,
                                       underline: const SizedBox(),
-                                      value: _selectedVehicle,
+                                      value: model.selectedVehicle,
                                       onChanged: (value) {
                                         setState(() {
-                                          _selectedVehicle = value.toString();
+                                          model.selectedVehicle =
+                                              value.toString();
                                         });
                                       },
-                                      items: _vehicles.map((e) {
+                                      items: model.vehicles.map((e) {
                                         return DropdownMenuItem(
                                           child: Text(
                                             e,
@@ -270,10 +269,11 @@ class _SearchRiderState extends State<SearchRider> {
                             SizedBox(
                               width: width * 0.8,
                               child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   print(model.startAddressController.text);
                                   print(
                                       model.destinationAddressController.text);
+                                  await model.addDriver();
                                   Navigator.pushNamed(
                                     context,
                                     '/nearby-riders',
@@ -285,15 +285,17 @@ class _SearchRiderState extends State<SearchRider> {
                                     },
                                   );
                                 },
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Search Riders',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24.0,
-                                    ),
-                                  ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: model.state == ViewState.Busy
+                                      ? const CircularProgressIndicator()
+                                      : const Text(
+                                          'Search Riders',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24.0,
+                                          ),
+                                        ),
                                 ),
                               ),
                             ),
