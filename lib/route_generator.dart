@@ -13,6 +13,7 @@ import 'package:ride_sharing/src/screens/splash_screen.dart';
 import 'package:ride_sharing/src/screens/complete_profile/complete_profile.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
 import 'package:ride_sharing/src/screens/verification.dart';
+import 'package:ride_sharing/src/screens/access_permission.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -26,6 +27,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const SplashScreen());
       case "/landing":
         return MaterialPageRoute(builder: (_) => const Landing_Page());
+      case "/access_permission": 
+        return MaterialPageRoute(builder: (_) => const AccessPermission());
       case '/test':
         return MaterialPageRoute(builder: (_) => const MapTest());
       case '/login':
