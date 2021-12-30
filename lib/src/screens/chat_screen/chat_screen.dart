@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/src/widgets/app_bar.dart';
-import 'package:ride_sharing/view/chatscreen_model.dart';
+import 'package:ride_sharing/view/chat_viewmodel.dart';
 
 import 'chatscreen_components/chat_screen_body.dart';
 

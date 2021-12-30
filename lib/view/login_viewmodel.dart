@@ -123,13 +123,24 @@ class LoginViewModel extends BaseModel {
     final User? user = userCred.user;
 
     if (user != null) {
-      String? token = await FirebaseMessaging.instance.getToken();
-      userDb.collection('users').doc(user.uid).set({
-        "id": user.uid,
-        "name": user.displayName,
-        "email": user.email,
-        "tokens": FieldValue.arrayUnion([token])
-      });
+      DocumentSnapshot userCheck =
+          await userDb.collection("users").doc(user.uid).get();
+      if (userCheck.exists) {
+        print("user exists");
+        navigationService.navigateTo("/", withreplacement: true);
+      } else {
+        String? token = await FirebaseMessaging.instance.getToken();
+        userDb.collection('users').doc(user.uid).set({
+          "id": user.uid,
+          "name": user.displayName,
+          "email": user.email,
+          "tokens": FieldValue.arrayUnion([token])
+        });
+        navigationService.navigateTo(
+          "/complete-profile",
+          withreplacement: true,
+        );
+      }
       AppConstant.showSuccessToast('Successfully signed in');
     } else {
       AppConstant.showFailToast('Error signing in');

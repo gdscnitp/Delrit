@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/provider/base_model.dart';
-import 'package:ride_sharing/src/models/userprofile_model.dart';
+import 'package:ride_sharing/src/models/user.dart';
 
 class UserProfileViewModel extends BaseModel {
   final TextEditingController nameController = TextEditingController();
@@ -33,8 +33,7 @@ class UserProfileViewModel extends BaseModel {
     if (uid != null) {
       var data = await db.collection('users').doc(uid).get();
 
-      UserProfileModel user =
-          userProfileModelFromJson(json.encode(data.data()));
+      UserProfileModel user = userProfileFromJson(data.data());
       print(user.name);
       print(user.id);
       print(user.email);

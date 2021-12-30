@@ -5,7 +5,7 @@ import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:ride_sharing/provider/base_view.dart';
-import 'package:ride_sharing/view/chatscreen_model.dart';
+import 'package:ride_sharing/view/chat_viewmodel.dart';
 
 class ChatScreenBody extends StatefulWidget {
   const ChatScreenBody({Key? key}) : super(key: key);
