@@ -1,4 +1,6 @@
 import 'package:ride_sharing/src/screens/available_riders/available_riders.dart';
+import 'package:ride_sharing/src/screens/chat_screen/chat_screen.dart';
+import 'package:ride_sharing/src/screens/chat_screen/chatscreen_components/chat_screen_body.dart';
 import 'package:ride_sharing/src/screens/choose_location.dart';
 import 'package:ride_sharing/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +48,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const AvailableRiders());
       case '/ride-details':
         return MaterialPageRoute(builder: (_) => const RideDetails());
+      case '/chats':
+        return MaterialPageRoute(builder: (_) => ChatScreen());
       case '/post-ride':
         return MaterialPageRoute(builder: (_) => const PostRide());
 //      case '/second':
