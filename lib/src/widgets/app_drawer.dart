@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart';
 
@@ -34,6 +35,7 @@ class AppDrawer extends StatelessWidget {
             icon: Icons.logout,
             text: 'Log out',
             onTap: () async {
+              await FirebaseAuth.instance.signOut();
               Navigator.of(context).pop();
             },
           ),

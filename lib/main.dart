@@ -9,7 +9,7 @@ import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/provider/getit.dart';
 import 'package:ride_sharing/route_generator.dart';
 import 'package:flutter/material.dart';
-import './src/screens/verification.dart';
+import 'package:ride_sharing/services/navigation_service.dart';
 
 Future<void> saveTokenToDatabase(String? token) async {
   final String? uid = FirebaseAuth.instance.currentUser?.uid;
@@ -48,6 +48,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: getIt<NavigationService>().navigatorKey,
       title: 'Ride Sharing',
       initialRoute: '/splash',
       onGenerateRoute: RouteGenerator.generateRoute,
