@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 class AccessPermission extends StatefulWidget {
@@ -14,14 +13,17 @@ class _AccessPermissionState extends State<AccessPermission> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      // ),
       body:Column(crossAxisAlignment: CrossAxisAlignment.center,
         children:<Widget>[
-          Image(image: AssetImage('assets/images/image 8.png'),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 60.0, 8.0, 8.0),
+            child: Image(image: AssetImage('assets/images/image 8.png'),
       ),
+          ),
       SizedBox(height: 15,),
       Container(
         child: Text('Welcome to Ride Share',
@@ -36,7 +38,10 @@ class _AccessPermissionState extends State<AccessPermission> {
         height: 50,
         child:Container(
           padding:EdgeInsets.all(7.0),
-          child: Text('In order to have a happy-go-lucky experience,please provide us the following permissions:'),
+          child: Text('In order to have a happy-go-lucky experience,please provide us the following permissions:',
+          style: TextStyle(
+            color: Colors.orange[800],
+          ),),
         ),
       ),
        SizedBox(
@@ -44,8 +49,8 @@ class _AccessPermissionState extends State<AccessPermission> {
         height: 40,
         child:
         Container(
-          padding: EdgeInsets.all(10.0),
-          child: Text('Location(for finding available car poolers and needy riders)',
+          padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+          child: Text('•  Location(for finding available car poolers and needy riders)',
          style: TextStyle(
         color: Colors.black,
         ), 
@@ -56,14 +61,15 @@ class _AccessPermissionState extends State<AccessPermission> {
         width: double.infinity,
         height: 50,
         child: Container(
-          padding: EdgeInsets.all(10.0),
-          child: Text('Phone number(for security purposes)',
+          padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+          child: Text('•  Phone number(for security purposes)',
            style: TextStyle(
         color: Colors.black,
         ),
         ),
         ),
       ),
+      SizedBox(height: 20,),
       SizedBox(
         width:double.infinity,
         height: 40,
