@@ -123,7 +123,7 @@ class LoginViewModel extends BaseModel {
     if (user != null) {
       String? token = await FirebaseMessaging.instance.getToken();
       userDb.collection('users').doc(user.uid).set({
-        "id": userUid,
+        "id": user.uid,
         "name": user.displayName,
         "email": user.email,
         "tokens": FieldValue.arrayUnion([token])
