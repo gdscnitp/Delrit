@@ -2,12 +2,16 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:ride_sharing/constant/appconstant.dart';
+import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_services.dart';
@@ -18,6 +22,7 @@ import 'package:http/http.dart' as http;
 
 class SearchRiderViewModel extends BaseModel {
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
+  final FirebaseFirestore db = FirebaseFirestore.instance;
   final ApiService _apiService = ApiService();
   final CameraPosition initialLocation = const CameraPosition(
     target: LatLng(26.8876621, 80.995846),
@@ -36,14 +41,18 @@ class SearchRiderViewModel extends BaseModel {
   String startAddress = '';
   String destinationAddress = '';
 
+  final List<String> vehicles = ['Choose vehicle', 'Car', 'Bike'];
+  String selectedVehicle = 'Choose vehicle';
+
   Set<Marker> markers = {};
 
-  final db = FirebaseFirestore.instance;
   List<Rider> nearbyRiders = [];
 
   late PolylinePoints polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
+
+  DateTime selectedDate = DateTime(0);
 
   init(args) async {
     getCurrentLocation();
@@ -161,7 +170,8 @@ class SearchRiderViewModel extends BaseModel {
             showModalBottomSheet(
               isScrollControlled: true,
               context: context,
-              builder: (context) => RiderDetailsBottomSheet(rider: r),
+              builder: (context) =>
+                  RiderDetailsBottomSheet(rider: r, func: () => acceptRide(r)),
               enableDrag: true,
             );
           },
@@ -291,5 +301,65 @@ class SearchRiderViewModel extends BaseModel {
     // final response = await http.post(uri, body: {"tokens": token});
 
     // print(response.body);
+  }
+
+  String getText() {
+    if (selectedDate.year == 0) {
+      return 'Pick Ride Time';
+    } else {
+      return DateFormat('dd/MM/yyyy HH:mm').format(selectedDate);
+    }
+  }
+
+  void selectDateTime(BuildContext context) async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2022),
+    );
+    print(date);
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    print(time);
+
+    if (date != null && time != null) {
+      selectedDate =
+          DateTime(date.year, date.month, date.day, time.hour, time.minute);
+      notifyListeners();
+    }
+  }
+
+  Future<void> addDriver() async {
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
+
+    if (uid == null) {
+      print("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+      AppConstant.showFailToast("Please Login First");
+      navigationService.navigateTo('/landing');
+      return;
+    }
+    setState(ViewState.Busy);
+    var sourceCord = await locationFromAddress(startAddressController.text);
+    var destinationCord =
+        await locationFromAddress(destinationAddressController.text);
+    await db.collection("availableDrivers").add({
+      "uid": FirebaseAuth.instance.currentUser?.uid,
+      "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
+      "destination":
+          GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
+      "time": selectedDate.millisecondsSinceEpoch,
+      "vehicle": selectedVehicle
+    }).then((value) => print("added"));
+    setState(ViewState.Idle);
+    navigationService.navigateTo(
+      '/nearby-riders',
+      arguments: {
+        'startAddress': startAddressController.text,
+        'destinationAddress': destinationAddressController.text,
+      },
+    );
   }
 }

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
-import 'package:ride_sharing/view/search_rider_viewmodel.dart';
+import 'package:ride_sharing/view/post_ride_viewmodel.dart';
 
-class SearchRider extends StatefulWidget {
-  const SearchRider({Key? key}) : super(key: key);
+class PostRide extends StatefulWidget {
+  const PostRide({Key? key}) : super(key: key);
 
   @override
-  _SearchRiderState createState() => _SearchRiderState();
+  _PostRideState createState() => _PostRideState();
 }
 
-class _SearchRiderState extends State<SearchRider> {
+class _PostRideState extends State<PostRide> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return BaseView<SearchRiderViewModel>(
+
+    return BaseView<PostRideViewModel>(
       onModelReady: (model) => model.getCurrentLocation(),
       builder: (context, model, child) => Scaffold(
         key: model.scaffoldkey,
@@ -76,7 +76,7 @@ class _SearchRiderState extends State<SearchRider> {
                           horizontal: 10.0,
                         ),
                         focusColor: Colors.white,
-                        hintText: 'Search for Riders',
+                        hintText: 'Search for drivers',
                         hintStyle: const TextStyle(
                           fontSize: 18,
                         ),
@@ -193,7 +193,7 @@ class _SearchRiderState extends State<SearchRider> {
                                           fontWeight: FontWeight.normal,
                                         ),
                                       ),
-                                      Icon(Icons.calendar_today),
+                                      const Icon(Icons.calendar_today),
                                     ],
                                   ),
                                 ),
@@ -203,14 +203,6 @@ class _SearchRiderState extends State<SearchRider> {
                             const SizedBox(height: 10),
                             SizedBox(
                               width: width * 0.8,
-                              // child: TextField(
-                              //   decoration: kTextFieldStyle(
-                              //     suffixIcon: const Icon(Icons.car_rental),
-                              //     label: 'Choose Vehicle',
-                              //     hint: 'Choose Vehicle',
-                              //     fillColor: Colors.grey[300],
-                              //   ),
-                              // ),
                               child: Container(
                                 padding: const EdgeInsets.only(
                                   left: 10,
@@ -227,82 +219,36 @@ class _SearchRiderState extends State<SearchRider> {
                                     ),
                                   ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    DropdownButton(
-                                      hint: Text(
-                                        model.selectedVehicle,
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                      ),
-                                      dropdownColor: Colors.grey.shade300,
-                                      icon: const Icon(Icons.arrow_drop_down),
-                                      iconSize: 40,
-                                      underline: const SizedBox(),
-                                      value: model.selectedVehicle,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          model.selectedVehicle =
-                                              value.toString();
-                                        });
-                                      },
-                                      items: model.vehicles.map((e) {
-                                        return DropdownMenuItem(
-                                          child: Text(
-                                            e,
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          value: e,
-                                        );
-                                      }).toList(),
-                                    ),
-                                    const Icon(Icons.drive_eta),
-                                  ],
-                                ),
                               ),
                             ),
                             const SizedBox(height: 10),
                             SizedBox(
                               width: width * 0.8,
                               child: ElevatedButton(
-                                onPressed: () async {
+                                onPressed: () {
                                   print(model.startAddressController.text);
                                   print(
                                       model.destinationAddressController.text);
-                                  await model.addDriver();
-                                  // Navigator.pushNamed(
-                                  //   context,
-                                  //   '/nearby-riders',
-                                  //   arguments: {
-                                  //     'startAddress':
-                                  //         model.startAddressController.text,
-                                  //     'destinationAddress': model
-                                  //         .destinationAddressController.text,
-                                  //   },
-                                  // );
+                                  model.addRideToDb(context);
                                 },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: model.state == ViewState.Busy
-                                      ? const CircularProgressIndicator()
-                                      : const Text(
-                                          'Search Riders',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 24.0,
-                                          ),
-                                        ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Post my ride',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24.0,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/searchrider');
+                              },
                               child: const Text(
-                                'Search for drivers instead',
+                                'Search for riders instead',
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -318,12 +264,6 @@ class _SearchRiderState extends State<SearchRider> {
             ],
           ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   child: const Icon(Icons.my_location),
-        //   onPressed: () {
-        //     model.getCurrentLocation();
-        //   },
-        // ),
       ),
     );
   }

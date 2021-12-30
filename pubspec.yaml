@@ -54,6 +54,9 @@ dependencies:
   flutter_config: ^2.0.0
   firebase_messaging: ^11.2.3
   flutter_chat_bubble: ^2.0.0
+  country_code_picker: ^2.0.2
+  # DateTime Formating
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

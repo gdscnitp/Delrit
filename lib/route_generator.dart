@@ -1,4 +1,3 @@
-import 'package:ride_sharing/src/screens/add_ride.dart';
 import 'package:ride_sharing/src/screens/available_riders/available_riders.dart';
 import 'package:ride_sharing/src/screens/chat_screen/chat_screen.dart';
 import 'package:ride_sharing/src/screens/chat_screen/chatscreen_components/chat_screen_body.dart';
@@ -8,12 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:ride_sharing/src/screens/landing_page.dart';
 import 'package:ride_sharing/src/screens/login_page.dart';
 import 'package:ride_sharing/src/screens/map_test.dart';
+import 'package:ride_sharing/src/screens/post_ride.dart';
 import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
 import 'package:ride_sharing/src/screens/nearby_riders.dart';
 import 'package:ride_sharing/src/screens/search_riders.dart';
 import 'package:ride_sharing/src/screens/splash_screen.dart';
 import 'package:ride_sharing/src/screens/complete_profile/complete_profile.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
+import 'package:ride_sharing/src/screens/verification.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -31,8 +32,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const MapTest());
       case '/login':
         return MaterialPageRoute(builder: (_) => const LoginPage());
-      case '/addride':
-        return MaterialPageRoute(builder: (_) => const AddRide());
+      case '/phone-verification':
+        return MaterialPageRoute(builder: (_) => const PhoneScreen());
       case '/searchrider':
         return MaterialPageRoute(builder: (_) => const SearchRider());
       case '/complete-profile':
@@ -49,6 +50,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const RideDetails());
       case '/chats':
         return MaterialPageRoute(builder: (_) => ChatScreen());
+      case '/post-ride':
+        return MaterialPageRoute(builder: (_) => const PostRide());
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {

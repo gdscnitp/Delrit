@@ -9,19 +9,16 @@ import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/provider/getit.dart';
 import 'package:ride_sharing/route_generator.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/services/navigation_service.dart';
 
 Future<void> saveTokenToDatabase(String? token) async {
   final String? uid = FirebaseAuth.instance.currentUser?.uid;
   final FirebaseFirestore db = FirebaseFirestore.instance;
   print("Userid: " + uid.toString());
   if (uid != null) {
-    try {
-      await db.collection('users').doc(uid).update({
-        'tokens': FieldValue.arrayUnion([token])
-      });
-    } catch (e) {
-      print(e);
-    }
+    await db.collection('users').doc(uid).update({
+      'tokens': FieldValue.arrayUnion([token])
+    });
   }
 }
 
@@ -35,9 +32,8 @@ void main() async {
   setupLocator();
 
   String? token = await FirebaseMessaging.instance.getToken();
-  print("Token: " + token.toString());
   await saveTokenToDatabase(token);
-  // FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
+  FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   runApp(const MyApp());
 }
 
@@ -52,6 +48,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: getIt<NavigationService>().navigatorKey,
       title: 'Ride Sharing',
       initialRoute: '/splash',
       onGenerateRoute: RouteGenerator.generateRoute,
