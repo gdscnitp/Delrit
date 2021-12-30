@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-UserProfileModel userProfileModelFromJson(String str) =>
-    UserProfileModel.fromJson(json.decode(str));
+UserProfileModel userProfileFromJson(Map<String, dynamic>? data) =>
+    UserProfileModel.fromJson(data!);
 
-String userProfileModelToJson(UserProfileModel data) =>
-    json.encode(data.toJson());
+String userProfileToJson(UserProfileModel data) => json.encode(data.toJson());
 
 class UserProfileModel {
   UserProfileModel({

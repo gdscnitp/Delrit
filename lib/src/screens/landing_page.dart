@@ -81,11 +81,6 @@ class Landing_Page extends StatelessWidget {
                   Buttons.Google,
                   onPressed: () async {
                     User? user = await model.signInWithGoogle();
-                    print(user?.uid);
-                    if (user != null) {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, '/complete-profile', (route) => false);
-                    }
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6.0),

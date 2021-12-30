@@ -16,6 +16,7 @@ import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_services.dart';
 import 'package:ride_sharing/src/models/riders.dart';
+import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/widgets/get_bytes_from_asset.dart';
 import 'package:ride_sharing/src/widgets/rider_details_bottom_sheet.dart';
 import 'package:http/http.dart' as http;
@@ -140,8 +141,8 @@ class SearchRiderViewModel extends BaseModel {
         (await db.collection('availableRiders').get()).docs.map((e) {
       var data = e.data();
       return Rider(
-          id: e.id,
-          name: data["name"],
+          docId: e.id,
+          uid: data['uid'] ?? "",
           source: data["source"],
           destination: data["destination"]);
     }).toList();
@@ -163,24 +164,27 @@ class SearchRiderViewModel extends BaseModel {
 
     markers.clear();
     for (Rider r in nearbyRiders) {
+      var user = (await db.collection('users').doc(r.uid).get()).data();
+      UserProfileModel userProfile = userProfileFromJson(user);
       markers.add(
         Marker(
-          onTap: () {
+          onTap: () async {
+            print(r);
             String buttonText = "Accept Ride";
             showModalBottomSheet(
               isScrollControlled: true,
               context: context,
-              builder: (context) =>
-                  RiderDetailsBottomSheet(rider: r, func: () => acceptRide(r)),
+              builder: (context) => RiderDetailsBottomSheet(
+                  rider: r, riderInfo: userProfile, func: () => acceptRide(r)),
               enableDrag: true,
             );
           },
-          markerId: MarkerId(r.id),
+          markerId: MarkerId(r.docId),
           icon: BitmapDescriptor.fromBytes(markerIcon),
           position: LatLng(r.source.latitude, r.source.longitude),
           infoWindow: InfoWindow(
-            title: r.name,
-            snippet: r.name,
+            title: userProfile.name,
+            snippet: userProfile.email,
           ),
         ),
       );
@@ -333,27 +337,27 @@ class SearchRiderViewModel extends BaseModel {
   }
 
   Future<void> addDriver() async {
-    String? uid = FirebaseAuth.instance.currentUser?.uid;
+    // String? uid = FirebaseAuth.instance.currentUser?.uid;
 
-    if (uid == null) {
-      print("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-      AppConstant.showFailToast("Please Login First");
-      navigationService.navigateTo('/landing');
-      return;
-    }
-    setState(ViewState.Busy);
-    var sourceCord = await locationFromAddress(startAddressController.text);
-    var destinationCord =
-        await locationFromAddress(destinationAddressController.text);
-    await db.collection("availableDrivers").add({
-      "uid": FirebaseAuth.instance.currentUser?.uid,
-      "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
-      "destination":
-          GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
-      "time": selectedDate.millisecondsSinceEpoch,
-      "vehicle": selectedVehicle
-    }).then((value) => print("added"));
-    setState(ViewState.Idle);
+    // if (uid == null) {
+    //   print("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+    //   AppConstant.showFailToast("Please Login First");
+    //   navigationService.navigateTo('/landing');
+    //   return;
+    // }
+    // setState(ViewState.Busy);
+    // var sourceCord = await locationFromAddress(startAddressController.text);
+    // var destinationCord =
+    //     await locationFromAddress(destinationAddressController.text);
+    // await db.collection("availableDrivers").add({
+    //   "uid": FirebaseAuth.instance.currentUser?.uid,
+    //   "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
+    //   "destination":
+    //       GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
+    //   "time": selectedDate.millisecondsSinceEpoch,
+    //   "vehicle": selectedVehicle
+    // }).then((value) => print("added"));
+    // setState(ViewState.Idle);
     navigationService.navigateTo(
       '/nearby-riders',
       arguments: {

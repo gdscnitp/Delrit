@@ -1,7 +1,7 @@
 import 'package:ride_sharing/services/api_services.dart';
 import 'package:ride_sharing/services/navigation_service.dart';
 import 'package:get_it/get_it.dart';
-import 'package:ride_sharing/view/chatscreen_model.dart';
+import 'package:ride_sharing/view/chat_viewmodel.dart';
 import 'package:ride_sharing/view/choose_location_viewmodel.dart';
 import 'package:ride_sharing/view/complete_profile_viewmodel.dart';
 import 'package:ride_sharing/view/login_viewmodel.dart';
