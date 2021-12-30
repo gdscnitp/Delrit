@@ -10,6 +10,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ride_sharing/constant/appconstant.dart';
 import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
@@ -335,8 +336,10 @@ class SearchRiderViewModel extends BaseModel {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
 
     if (uid == null) {
-      print("Nooooooooooooooooooooooooooo");
-      navigationService.navigateTo('/login');
+      print("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+      AppConstant.showFailToast("Please Login First");
+      navigationService.navigateTo('/landing');
+      return;
     }
     setState(ViewState.Busy);
     var sourceCord = await locationFromAddress(startAddressController.text);
@@ -351,5 +354,12 @@ class SearchRiderViewModel extends BaseModel {
       "vehicle": selectedVehicle
     }).then((value) => print("added"));
     setState(ViewState.Idle);
+    navigationService.navigateTo(
+      '/nearby-riders',
+      arguments: {
+        'startAddress': startAddressController.text,
+        'destinationAddress': destinationAddressController.text,
+      },
+    );
   }
 }

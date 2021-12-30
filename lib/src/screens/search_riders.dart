@@ -274,16 +274,16 @@ class _SearchRiderState extends State<SearchRider> {
                                   print(
                                       model.destinationAddressController.text);
                                   await model.addDriver();
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/nearby-riders',
-                                    arguments: {
-                                      'startAddress':
-                                          model.startAddressController.text,
-                                      'destinationAddress': model
-                                          .destinationAddressController.text,
-                                    },
-                                  );
+                                  // Navigator.pushNamed(
+                                  //   context,
+                                  //   '/nearby-riders',
+                                  //   arguments: {
+                                  //     'startAddress':
+                                  //         model.startAddressController.text,
+                                  //     'destinationAddress': model
+                                  //         .destinationAddressController.text,
+                                  //   },
+                                  // );
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
