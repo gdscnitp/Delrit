@@ -143,6 +143,12 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Text('Ride Details'),
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/access-permission');
+            },
+            child: const Text('Access Permission'),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
