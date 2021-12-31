@@ -1,3 +1,4 @@
+import 'package:ride_sharing/src/screens/available_drivers/available_drivers.dart';
 import 'package:ride_sharing/src/screens/available_riders/available_riders.dart';
 import 'package:ride_sharing/src/screens/chat_screen/chat_screen.dart';
 import 'package:ride_sharing/src/screens/chat_screen/chatscreen_components/chat_screen_body.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:ride_sharing/src/screens/landing_page.dart';
 import 'package:ride_sharing/src/screens/login_page.dart';
 import 'package:ride_sharing/src/screens/map_test.dart';
-import 'package:ride_sharing/src/screens/post_ride.dart';
 import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
 import 'package:ride_sharing/src/screens/nearby_riders.dart';
 import 'package:ride_sharing/src/screens/search_riders.dart';
@@ -15,6 +15,7 @@ import 'package:ride_sharing/src/screens/splash_screen.dart';
 import 'package:ride_sharing/src/screens/complete_profile/complete_profile.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
 import 'package:ride_sharing/src/screens/verification.dart';
+import 'package:ride_sharing/src/screens/post_ride/post_ride.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -52,6 +53,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ChatScreen());
       case '/post-ride':
         return MaterialPageRoute(builder: (_) => const PostRide());
+      case '/available-drivers':
+        return MaterialPageRoute(builder: (_) => const AvailableDrivers());
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {
