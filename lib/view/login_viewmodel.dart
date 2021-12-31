@@ -126,8 +126,9 @@ class LoginViewModel extends BaseModel {
       DocumentSnapshot userCheck =
           await userDb.collection("users").doc(user.uid).get();
       if (userCheck.exists) {
-        print("user exists");
-        navigationService.navigateTo("/", withreplacement: true);
+        print("user existssssssssssssssssss");
+        navigationService.navigateTo("/access-permission",
+            withreplacement: true);
       } else {
         String? token = await FirebaseMessaging.instance.getToken();
         userDb.collection('users').doc(user.uid).set({

@@ -1,7 +1,7 @@
+import 'package:ride_sharing/src/screens/access_permission_page.dart';
 import 'package:ride_sharing/src/screens/available_drivers/available_drivers.dart';
 import 'package:ride_sharing/src/screens/available_riders/available_riders.dart';
 import 'package:ride_sharing/src/screens/chat_screen/chat_screen.dart';
-import 'package:ride_sharing/src/screens/chat_screen/chatscreen_components/chat_screen_body.dart';
 import 'package:ride_sharing/src/screens/choose_location.dart';
 import 'package:ride_sharing/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +53,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ChatScreen());
       case '/post-ride':
         return MaterialPageRoute(builder: (_) => const PostRide());
+      case '/access-permission':
+        return MaterialPageRoute(builder: (_) => const AccessPermission());
       case '/available-drivers':
         return MaterialPageRoute(builder: (_) => const AvailableDrivers());
 //      case '/second':

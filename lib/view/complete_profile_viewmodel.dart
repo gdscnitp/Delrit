@@ -132,7 +132,8 @@ class CompleteProfileViewModel extends BaseModel {
         "gender": genderController.text
       }).then((value) {
         print("User saved to db");
-        Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+        navigationService.navigateTo("/access-permission",
+            withreplacement: true);
       });
     }
 
