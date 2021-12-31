@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:ride_sharing/config/app_config.dart';
-import 'package:ride_sharing/view/complete_profile_viewmodel.dart';
-import 'package:uuid/uuid.dart';
-import '../../address_search.dart';
+import 'package:ride_sharing/view/post_ride_viewmodel.dart';
 
 class Header extends StatelessWidget {
-  final CompleteProfileViewModel model;
+  final PostRideViewModel model;
   const Header({Key? key, required this.model}) : super(key: key);
 
   @override
@@ -15,7 +12,7 @@ class Header extends StatelessWidget {
       children: [
         SizedBox(
           width: double.infinity,
-          height: App(context).appHeight(180),
+          height: getProportionateScreenHeight(250),
           child: Image.asset(
             'assets/images/bg_map.png',
             fit: BoxFit.cover,
@@ -32,25 +29,13 @@ class Header extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: TextFormField(
-              controller: model.addressController,
-              onTap: () async {
-                final Position currentLocation =
-                    await Geolocator.getCurrentPosition(
-                  desiredAccuracy: LocationAccuracy.medium,
-                );
-                final sessionToken = const Uuid().v4();
-                final result = await showSearch(
-                  context: context,
-                  delegate: AddressSearch(sessionToken, currentLocation),
-                );
-                model.updateLocation(result!.description);
-              },
+              onTap: () async {},
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(
                     vertical: 18.0, horizontal: 10.0),
-                hintText: 'Pick your location',
+                hintText: 'Search for drivers',
                 hintStyle: const TextStyle(
                   fontSize: 15,
                 ),
@@ -59,13 +44,7 @@ class Header extends StatelessWidget {
                   size: 35,
                 ),
                 suffixIcon: GestureDetector(
-                  onTap: () async {
-                    final result =
-                        await Navigator.pushNamed(context, "/choose-location");
-                    print(result);
-                    print("============================");
-                    model.updateLocation(result.toString());
-                  },
+                  onTap: () async {},
                   child: const Icon(
                     Icons.gps_fixed,
                     size: 20,
