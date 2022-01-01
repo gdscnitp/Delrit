@@ -1,13 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/src/models/drivers.dart';
+import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/screens/driver_details/driver_details.dart';
+import 'package:ride_sharing/src/utils/dateutils.dart';
 
 class DriverDetailsCard extends StatefulWidget {
   final DriverModel driver;
-  const DriverDetailsCard({Key? key, required this.driver}) : super(key: key);
+  final String? rideId;
+  const DriverDetailsCard(
+      {Key? key, required this.driver, required this.rideId})
+      : super(key: key);
 
   @override
   _DriverDetailsCardState createState() => _DriverDetailsCardState();
@@ -15,14 +21,15 @@ class DriverDetailsCard extends StatefulWidget {
 
 class _DriverDetailsCardState extends State<DriverDetailsCard> {
   //---------VARIABLES-------//
+  UserProfileModel? driverInfo;
   String? source, destination, time;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getSourceAndDestination();
     getTime();
+    getDriverInfo();
   }
 
   getTime() {
@@ -41,12 +48,26 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
     place = (await placemarkFromCoordinates(
         widget.driver.source.latitude, widget.driver.source.longitude))[0];
     setState(() {
+      widget.driver.setSourceName(
+          "${place.name}, ${place.locality}, ${place.postalCode}");
       source = "${place.name}, ${place.locality}, ${place.postalCode}";
     });
     place = (await placemarkFromCoordinates(widget.driver.destination.latitude,
         widget.driver.destination.longitude))[0];
     setState(() {
+      widget.driver.setDestinationName(
+          "${place.name}, ${place.locality}, ${place.postalCode}");
       destination = "${place.name}, ${place.locality}, ${place.postalCode}";
+    });
+  }
+
+  void getDriverInfo() async {
+    final db = FirebaseFirestore.instance;
+    var data =
+        (await db.collection('users').doc(widget.driver.uid).get()).data();
+    print(data);
+    setState(() {
+      driverInfo = userProfileFromJson(data);
     });
   }
 
@@ -83,9 +104,7 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.driver.uid!.length < 15
-                              ? widget.driver.uid as String
-                              : widget.driver.uid!.substring(0, 15),
+                          driverInfo?.name ?? "",
                           style: Theme.of(context).textTheme.headline1,
                         ),
                         SizedBox(
@@ -128,7 +147,7 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
                       height: config.getProportionateScreenHeight(10),
                     ),
                     Text(
-                      'On $time',
+                      "On ${timestampToHumanReadable(widget.driver.time)}",
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     SizedBox(
@@ -140,18 +159,14 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
                   alignment: Alignment.centerLeft,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => DriverDetails(
-                            driverDetails: {
-                              'uid': widget.driver.uid,
-                              'source': source,
-                              'dest': destination,
-                              'time': time,
-                              'vehicle': widget.driver.vehicle,
-                            },
-                          ),
-                        ),
+                      Navigator.pushNamed(
+                        context,
+                        "/driver-details",
+                        arguments: {
+                          'driver': widget.driver,
+                          'driverInfo': driverInfo,
+                          'rideId': widget.rideId,
+                        },
                       );
                     },
                     child: const Text(

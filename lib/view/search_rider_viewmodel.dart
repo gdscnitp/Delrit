@@ -55,15 +55,15 @@ class SearchRiderViewModel extends BaseModel {
 
   DateTime selectedDate = DateTime(0);
 
-  init(args) async {
+  init(Map<String, dynamic> args) async {
     getCurrentLocation();
     print("==========================================");
     print(startAddressController.text);
     print(destinationAddressController.text);
     print(args);
     print("==========================================");
-    startAddressController.text = args?["startAddress"] ?? '';
-    destinationAddressController.text = args?["destinationAddress"] ?? '';
+    startAddressController.text = args["startAddress"] ?? '';
+    destinationAddressController.text = args["destinationAddress"] ?? '';
 
     List<Location> l = await locationFromAddress(startAddressController.text);
     print(l);
@@ -337,27 +337,29 @@ class SearchRiderViewModel extends BaseModel {
   }
 
   Future<void> addDriver() async {
-    // String? uid = FirebaseAuth.instance.currentUser?.uid;
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
 
-    // if (uid == null) {
-    //   print("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-    //   AppConstant.showFailToast("Please Login First");
-    //   navigationService.navigateTo('/landing');
-    //   return;
-    // }
-    // setState(ViewState.Busy);
-    // var sourceCord = await locationFromAddress(startAddressController.text);
-    // var destinationCord =
-    //     await locationFromAddress(destinationAddressController.text);
-    // await db.collection("availableDrivers").add({
-    //   "uid": FirebaseAuth.instance.currentUser?.uid,
-    //   "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
-    //   "destination":
-    //       GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
-    //   "time": selectedDate.millisecondsSinceEpoch,
-    //   "vehicle": selectedVehicle
-    // }).then((value) => print("added"));
-    // setState(ViewState.Idle);
+    if (uid == null) {
+      print("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+      AppConstant.showFailToast("Please Login First");
+      navigationService.navigateTo('/landing');
+      return;
+    }
+    setState(ViewState.Busy);
+    var sourceCord = await locationFromAddress(startAddressController.text);
+    var destinationCord =
+        await locationFromAddress(destinationAddressController.text);
+    await db.collection("availableDrivers").add({
+      "uid": FirebaseAuth.instance.currentUser?.uid,
+      "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
+      "destination":
+          GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
+      "sourceName": startAddressController.text,
+      "destinationName": destinationAddressController.text,
+      "time": selectedDate.millisecondsSinceEpoch,
+      "vehicle": selectedVehicle
+    }).then((value) => print("added"));
+    setState(ViewState.Idle);
     navigationService.navigateTo(
       '/nearby-riders',
       arguments: {

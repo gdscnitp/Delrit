@@ -27,44 +27,50 @@ Widget Body(AvailableDriversViewModel model) {
               style:
                   // TextStyle(fontSize: 22.0),
                   TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w600,
-                      color: config.ThemeColors.mainTextColor(1)),
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600,
+                color: config.ThemeColors.mainTextColor(1),
+              ),
             ),
             const SizedBox(
               width: 30.0,
             ),
             DropdownButton(
-                icon: const Icon(Icons.arrow_drop_down),
-                elevation: 0,
-                hint: const Text('Select'),
-                value: valueChoose,
-                items: listItem.map((valueItem) {
-                  return DropdownMenuItem<String>(
-                      value: valueItem, child: Text(valueItem));
-                }).toList(),
-                onChanged: (newValue) {
-                  // setState(() {
-                  //   valueChoose = newValue.toString();
-                  // });
-                })
+              icon: const Icon(Icons.arrow_drop_down),
+              elevation: 0,
+              hint: const Text('Select'),
+              value: valueChoose,
+              items: listItem.map((valueItem) {
+                return DropdownMenuItem<String>(
+                    value: valueItem, child: Text(valueItem));
+              }).toList(),
+              onChanged: (newValue) {
+                // setState(() {
+                //   valueChoose = newValue.toString();
+                // });
+              },
+            )
           ],
         ),
       ),
       ListView.builder(
-          itemCount: model.availableDrivers.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            if (model.availableDrivers.isEmpty) {
-              ///Return no riders available widget
-              return Text(
-                'No Riders available in your locality',
-                style: Theme.of(context).textTheme.headline3,
-              );
-            } else {
-              return DriverDetailsCard(driver: model.availableDrivers[index]);
-            }
-          }),
+        itemCount: model.availableDrivers.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          if (model.availableDrivers.isEmpty) {
+            ///Return no riders available widget
+            return Text(
+              'No Riders available in your locality',
+              style: Theme.of(context).textTheme.headline3,
+            );
+          } else {
+            return DriverDetailsCard(
+              driver: model.availableDrivers[index],
+              rideId: model.currentRideId,
+            );
+          }
+        },
+      ),
     ],
   );
 }

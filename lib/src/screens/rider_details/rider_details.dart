@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/provider/base_view.dart';
-import 'package:ride_sharing/src/models/riders.dart';
 import 'package:ride_sharing/view/rider_details_viewmodel.dart';
 import 'components/body.dart';
 
 class RiderDetails extends StatelessWidget {
-  final Map<String, dynamic>? riderDetails;
-  const RiderDetails({Key? key, this.riderDetails}) : super(key: key);
+  final Map<String, dynamic>? args;
+  const RiderDetails({Key? key, this.args}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,8 @@ class RiderDetails extends StatelessWidget {
         ),
         body: Body(
           model: model,
-          rider: riderDetails,
+          rider: args?["rider"],
+          riderInfo: args?["riderInfo"],
         ),
       );
     });

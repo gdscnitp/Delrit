@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/src/models/riders.dart';
+import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/screens/rider_details/rider_details.dart';
+import 'package:ride_sharing/src/utils/dateutils.dart';
 
 class RiderDetailsCard extends StatefulWidget {
   final RiderModel rider;
@@ -16,6 +19,7 @@ class RiderDetailsCard extends StatefulWidget {
 class _RiderDetailsCardState extends State<RiderDetailsCard> {
   //---------VARIABLES-------//
   String? source, destination, time;
+  UserProfileModel? riderInfo;
 
   @override
   void initState() {
@@ -23,6 +27,7 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
     super.initState();
     getSourceAndDestination();
     getTime();
+    getRiderInfo();
   }
 
   getTime() {
@@ -41,12 +46,28 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
     place = (await placemarkFromCoordinates(
         widget.rider.source.latitude, widget.rider.source.longitude))[0];
     setState(() {
+      widget.rider.setSourceName =
+          "${place.name}, ${place.locality}, ${place.postalCode}";
       source = "${place.name}, ${place.locality}, ${place.postalCode}";
     });
     place = (await placemarkFromCoordinates(widget.rider.destination.latitude,
         widget.rider.destination.longitude))[0];
     setState(() {
+      widget.rider.setDestinationName =
+          "${place.name}, ${place.locality}, ${place.postalCode}";
       destination = "${place.name}, ${place.locality}, ${place.postalCode}";
+    });
+  }
+
+  void getRiderInfo() async {
+    final db = FirebaseFirestore.instance;
+    // print(widget.rider.uid);
+    // print("======================");
+    var data =
+        (await db.collection('users').doc(widget.rider.uid).get()).data();
+    print(data);
+    setState(() {
+      riderInfo = userProfileFromJson(data);
     });
   }
 
@@ -76,16 +97,14 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
                       'assets/images/user_img.png',
                       height: config.getProportionateScreenHeight(70),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15.0,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.rider.uid.length < 15
-                              ? widget.rider.uid
-                              : widget.rider.uid.substring(0, 15),
+                          riderInfo?.name ?? "",
                           style: Theme.of(context).textTheme.headline3,
                         ),
                         SizedBox(
@@ -120,7 +139,7 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
                       height: config.getProportionateScreenHeight(10),
                     ),
                     Text(
-                      'Time : $time',
+                      "On ${timestampToHumanReadable(widget.rider.time)}",
                       //'On 8th Dec,2021 at 8:30 A.M.'
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
@@ -133,20 +152,14 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
                   alignment: Alignment.centerLeft,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => RiderDetails(
-                            riderDetails: {
-                              'uid': widget.rider.uid,
-                              'source': source,
-                              'dest': destination,
-                              'time': time,
-                            },
-                          ),
-                        ),
+                      Navigator.pushNamed(
+                        context,
+                        '/rider-details',
+                        arguments: {
+                          'rider': widget.rider,
+                          'riderInfo': riderInfo,
+                        },
                       );
-                      // Navigator.pushNamed(context, '/rider-details',
-                      //     arguments: widget.rider);
                       //type 'Null' is not a subtype of type 'RiderModel' in type cast
                     },
                     child: const Text(

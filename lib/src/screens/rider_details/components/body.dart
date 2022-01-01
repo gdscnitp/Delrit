@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/src/models/riders.dart';
+import 'package:ride_sharing/src/models/user.dart';
+import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
+import 'package:ride_sharing/src/utils/dateutils.dart';
 import 'package:ride_sharing/view/rider_details_viewmodel.dart';
 import 'reusable_button.dart';
 import 'ride_confirmed.dart';
@@ -7,8 +11,14 @@ import 'package:ride_sharing/config/app_config.dart';
 
 class Body extends StatelessWidget {
   final RiderDetailsViewModel model;
-  final Map<String, dynamic>? rider;
-  Body({Key? key, required this.model, required this.rider}) : super(key: key);
+  final RiderModel rider;
+  final UserProfileModel riderInfo;
+  Body(
+      {Key? key,
+      required this.model,
+      required this.rider,
+      required this.riderInfo})
+      : super(key: key);
 
   final double sizedHeight = getProportionateScreenHeight(7);
 
@@ -23,7 +33,7 @@ class Body extends StatelessWidget {
       ),
       builder: (builder) {
         return model.isRideConfirmed
-            ? rideConfirmed(ridername: rider!['uid'], context: context)
+            ? rideConfirmed(ridername: riderInfo.name ?? "", context: context)
             : rideNotConfirmed(
                 context: context, ridername: 'New user', model: model);
       },
@@ -36,7 +46,7 @@ class Body extends StatelessWidget {
       children: [
         SizedBox(
           width: double.infinity,
-          height: getProportionateScreenHeight(200), //change to app height
+          height: getProportionateScreenHeight(170), //change to app height
           child: Image.asset(
             'assets/images/map.png',
             fit: BoxFit.cover,
@@ -72,9 +82,7 @@ class Body extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        rider!['uid'].length < 15
-                            ? rider!['uid']
-                            : rider!['uid'].substring(0, 15),
+                        riderInfo.name ?? "",
                         style: Theme.of(context).textTheme.headline1,
                       ),
                       SizedBox(
@@ -132,21 +140,21 @@ class Body extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Source : ${rider!['source']}',
+                      'Source : ${rider.sourceName}',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     SizedBox(
                       height: getProportionateScreenHeight(10),
                     ),
                     Text(
-                      'Destination : ${rider!['dest']}',
+                      'Destination : ${rider.destinationName}',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     SizedBox(
                       height: getProportionateScreenHeight(10),
                     ),
                     Text(
-                      'On ${rider!['time']}',
+                      "On ${timestampToHumanReadable(rider.time)}",
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     SizedBox(
@@ -193,6 +201,18 @@ class Body extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: getProportionateScreenHeight(40),
+                    ),
+                    Center(
+                      child: resuableButton(
+                        text: 'Request Ride',
+                        onPress: () {
+                          model.requestRide(rider);
+                        },
+                        buttoncolor: null,
+                      ),
+                    )
                   ],
                 ),
               ),

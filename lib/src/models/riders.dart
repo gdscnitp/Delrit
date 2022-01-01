@@ -29,6 +29,11 @@ class RiderModel {
   final String uid;
   final GeoPoint source, destination;
   final int time;
+  // final String docId;
+  late String sourceName, destinationName;
+
+  set setSourceName(String name) => sourceName = name;
+  set setDestinationName(String name) => destinationName = name;
 
   factory RiderModel.fromJson(Map<String, dynamic> json) => RiderModel(
         uid: json["uid"],

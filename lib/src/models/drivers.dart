@@ -2,20 +2,29 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Driver {
-  final String docId, uid;
-  final String name;
-  final DateTime timestamp;
-  final GeoPoint source, destination;
-  Driver({
-    required this.docId,
-    required this.uid,
-    required this.name,
-    required this.timestamp,
-    required this.source,
-    required this.destination,
-  });
-}
+// class Driver {
+//   final String docId, uid;
+//   final String name;
+//   final DateTime timestamp;
+//   final GeoPoint source, destination;
+//   late String sourceName, destinationName;
+//   Driver({
+//     required this.docId,
+//     required this.uid,
+//     required this.name,
+//     required this.timestamp,
+//     required this.source,
+//     required this.destination,
+//   });
+
+//   setSourceName(String name) {
+//     sourceName = name;
+//   }
+
+//   setDestionaName(String name) {
+//     destinationName = name;
+//   }
+// }
 
 DriverModel driverModelFromJson(Map<String, dynamic>? data) =>
     DriverModel.fromJson(data!);
@@ -35,6 +44,7 @@ class DriverModel {
   final int time;
   final String? uid;
   final String vehicle;
+  late String sourceName, destinationName;
 
   factory DriverModel.fromJson(Map<String, dynamic> json) => DriverModel(
         destination: json["destination"],
@@ -51,4 +61,12 @@ class DriverModel {
         "uid": uid,
         "vehicle": vehicle,
       };
+
+  setSourceName(String name) {
+    sourceName = name;
+  }
+
+  setDestinationName(String name) {
+    destinationName = name;
+  }
 }
