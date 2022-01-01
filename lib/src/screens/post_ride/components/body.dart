@@ -64,6 +64,9 @@ Widget Body(BuildContext context, PostRideViewModel model) {
                           // if (value != null) {
                           //   model.getNewPosition(value);
                           // }
+
+                          //-----------OR---------------
+                          model.locationCallBackStarting(value);
                         },
                       ),
                       const SizedBox(height: 10),
@@ -84,6 +87,9 @@ Widget Body(BuildContext context, PostRideViewModel model) {
                           //   model.destinationAddressController.text =
                           //       value ?? "";
                           // });
+
+                          //----------OR---------
+                          model.locationCallBackDestination(value);
                         },
                       ),
                       const SizedBox(height: 10),
