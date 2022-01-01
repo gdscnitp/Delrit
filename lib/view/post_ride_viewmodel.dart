@@ -191,4 +191,19 @@ class PostRideViewModel extends BaseModel {
     clear();
     setState(ViewState.Idle);
   }
+
+  void locationCallBackStarting(String? value) {
+    startAddress = value ?? "";
+    startAddressController.text = value ?? "";
+    notifyListeners();
+    if (value != null) {
+      getNewPosition(value);
+    }
+  }
+
+  void locationCallBackDestination(String? value) {
+    destinationAddress = value ?? "";
+    destinationAddressController.text = value ?? "";
+    notifyListeners();
+  }
 }

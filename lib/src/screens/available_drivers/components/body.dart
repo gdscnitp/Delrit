@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
-import 'package:ride_sharing/src/screens/available_drivers/components/driver_details_card.dart';
+import 'package:ride_sharing/view/available_drivers_viewmodel.dart';
+import 'driver_details_card.dart';
 
 String valueChoose = 'Location';
 List listItem = [
@@ -10,7 +11,7 @@ List listItem = [
   'Rating',
 ];
 
-Widget Body(BuildContext context) {
+Widget Body(AvailableDriversViewModel model) {
   return Column(
     children: [
       Padding(
@@ -50,8 +51,20 @@ Widget Body(BuildContext context) {
           ],
         ),
       ),
-      driverDetailsCard(context),
-      driverDetailsCard(context),
+      ListView.builder(
+          itemCount: model.availableDrivers.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            if (model.availableDrivers.isEmpty) {
+              ///Return no riders available widget
+              return Text(
+                'No Riders available in your locality',
+                style: Theme.of(context).textTheme.headline3,
+              );
+            } else {
+              return DriverDetailsCard(driver: model.availableDrivers[index]);
+            }
+          }),
     ],
   );
 }

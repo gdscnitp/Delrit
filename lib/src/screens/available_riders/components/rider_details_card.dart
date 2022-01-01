@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
-import 'package:ride_sharing/src/models/drivers.dart';
-import 'package:ride_sharing/src/screens/driver_details/driver_details.dart';
+import 'package:ride_sharing/src/models/riders.dart';
+import 'package:ride_sharing/src/screens/rider_details/rider_details.dart';
 
-class DriverDetailsCard extends StatefulWidget {
-  final DriverModel driver;
-  const DriverDetailsCard({Key? key, required this.driver}) : super(key: key);
+class RiderDetailsCard extends StatefulWidget {
+  final RiderModel rider;
+  const RiderDetailsCard({Key? key, required this.rider}) : super(key: key);
 
   @override
-  _DriverDetailsCardState createState() => _DriverDetailsCardState();
+  _RiderDetailsCardState createState() => _RiderDetailsCardState();
 }
 
-class _DriverDetailsCardState extends State<DriverDetailsCard> {
+class _RiderDetailsCardState extends State<RiderDetailsCard> {
   //---------VARIABLES-------//
   String? source, destination, time;
 
@@ -27,7 +27,7 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
 
   getTime() {
     ///Pass the timestamp and use it
-    final ridetime = DateTime.fromMillisecondsSinceEpoch(widget.driver.time);
+    final ridetime = DateTime.fromMillisecondsSinceEpoch(widget.rider.time);
 
     setState(() {
       time = DateFormat.yMMMd().add_jm().format(ridetime);
@@ -39,12 +39,12 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
   void getSourceAndDestination() async {
     Placemark place;
     place = (await placemarkFromCoordinates(
-        widget.driver.source.latitude, widget.driver.source.longitude))[0];
+        widget.rider.source.latitude, widget.rider.source.longitude))[0];
     setState(() {
       source = "${place.name}, ${place.locality}, ${place.postalCode}";
     });
-    place = (await placemarkFromCoordinates(widget.driver.destination.latitude,
-        widget.driver.destination.longitude))[0];
+    place = (await placemarkFromCoordinates(widget.rider.destination.latitude,
+        widget.rider.destination.longitude))[0];
     setState(() {
       destination = "${place.name}, ${place.locality}, ${place.postalCode}";
     });
@@ -57,7 +57,7 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
       child: Container(
-        height: height / 2.9,
+        height: height / 3.2,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -76,39 +76,31 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
                       'assets/images/user_img.png',
                       height: config.getProportionateScreenHeight(70),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 15.0,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.driver.uid!.length < 15
-                              ? widget.driver.uid as String
-                              : widget.driver.uid!.substring(0, 15),
-                          style: Theme.of(context).textTheme.headline1,
-                        ),
-                        SizedBox(
-                          height: config.getProportionateScreenHeight(7),
-                        ),
-                        Text(
-                          widget.driver.vehicle,
-                          textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.headline3,
-                        ),
-                        SizedBox(
-                          height: config.getProportionateScreenHeight(7),
-                        ),
-                        Text(
-                          '3.5 Stars',
+                          widget.rider.uid.length < 15
+                              ? widget.rider.uid
+                              : widget.rider.uid.substring(0, 15),
                           style: Theme.of(context).textTheme.headline3,
                         ),
                         SizedBox(
                           height: config.getProportionateScreenHeight(10),
                         ),
+                        Text(
+                          '3.5 Stars',
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
                       ],
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: config.getProportionateScreenHeight(20),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +120,8 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
                       height: config.getProportionateScreenHeight(10),
                     ),
                     Text(
-                      'On $time',
+                      'Time : $time',
+                      //'On 8th Dec,2021 at 8:30 A.M.'
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     SizedBox(
@@ -142,17 +135,19 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => DriverDetails(
-                            driverDetails: {
-                              'uid': widget.driver.uid,
+                          builder: (context) => RiderDetails(
+                            riderDetails: {
+                              'uid': widget.rider.uid,
                               'source': source,
                               'dest': destination,
                               'time': time,
-                              'vehicle': widget.driver.vehicle,
                             },
                           ),
                         ),
                       );
+                      // Navigator.pushNamed(context, '/rider-details',
+                      //     arguments: widget.rider);
+                      //type 'Null' is not a subtype of type 'RiderModel' in type cast
                     },
                     child: const Text(
                       'See Details',

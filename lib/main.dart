@@ -128,9 +128,11 @@ class _MyAppState extends State<MyApp> {
 
           /// Headline 1 style ---- Use it --- Do not change ----///
           headline1: TextStyle(
-              fontSize: 21.0,
-              fontWeight: FontWeight.w700,
-              color: config.ThemeColors.mainTextColor(1)),
+            fontSize: 21.0,
+            fontWeight: FontWeight.w700,
+            color: config.ThemeColors.mainTextColor(1),
+            //overflow: TextOverflow.ellipsis,
+          ),
 
           /// Headline 2 style ---- Use it --- Do not change ----///
           headline2: TextStyle(

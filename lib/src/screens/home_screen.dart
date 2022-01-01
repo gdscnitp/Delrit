@@ -131,6 +131,12 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Text('Available Riders'),
           ),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     Navigator.pushNamed(context, '/rider-details');
+          //   },
+          //   child: const Text('Rider Details'),
+          // ),
           ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, '/available-drivers');

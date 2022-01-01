@@ -1,14 +1,14 @@
-import 'package:ride_sharing/provider/base_view.dart';
-import 'package:ride_sharing/view/available_drivers_viewmodel.dart';
-import 'components/body.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/provider/base_view.dart';
+import 'package:ride_sharing/view/available_riders_viewmodel.dart';
+import 'components/body.dart';
 
-class AvailableDrivers extends StatelessWidget {
-  const AvailableDrivers({Key? key}) : super(key: key);
+class AvailableRiders extends StatelessWidget {
+  const AvailableRiders({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<AvailableDriversViewModel>(
+    return BaseView<AvailableRidersViewModel>(
         onModelReady: (model) => model.init(),
         builder: (context, model, child) {
           return Scaffold(
@@ -19,13 +19,13 @@ class AvailableDrivers extends StatelessWidget {
                 color: Colors.black,
               ),
               title: const Text(
-                'Available Drivers',
+                'Available Riders',
                 style: TextStyle(color: Colors.black),
               ),
               backgroundColor: Colors.white,
               centerTitle: true,
             ),
-            body: Body(model),
+            body: Body(context, model),
           );
         });
   }
