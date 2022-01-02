@@ -35,13 +35,13 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 5),
                 ElevatedButton(
                   onPressed: () {
-                    model.signInWithNumber(context);
+                    model.signInWithPhone(context);
                   },
                   child: const Text('Sign In with Phone Number'),
                 ),
                 const SizedBox(height: 5),
                 TextFormField(
-                  controller: model.phoneNum,
+                  controller: model.phoneController,
                   decoration: const InputDecoration(
                     hintText: 'enter phone number',
                     border: InputBorder.none,
