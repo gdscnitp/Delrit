@@ -12,7 +12,6 @@ import 'package:ride_sharing/view/rider_details_viewmodel.dart';
 import 'package:ride_sharing/view/search_rider_viewmodel.dart';
 import 'package:ride_sharing/view/user_profile_viewmodel.dart';
 import 'package:ride_sharing/view/available_riders_viewmodel.dart';
-import 'package:ride_sharing/view/verification_viewmodel.dart';
 
 GetIt getIt = GetIt.instance;
 void setupLocator() {
@@ -27,7 +26,6 @@ void setupLocator() {
   getIt.registerFactory(() => AvailableDriversViewModel());
   getIt.registerFactory(() => ChatScreenModel());
   getIt.registerFactory(() => PostRideViewModel());
-  getIt.registerFactory(() => PhoneVerification());
   getIt.registerFactory(() => RiderDetailsViewModel());
   getIt.registerFactory(() => DriverDetailsViewModel());
 }

@@ -1,14 +1,15 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_view.dart';
-import 'package:ride_sharing/view/verification_viewmodel.dart';
+import 'package:ride_sharing/view/login_viewmodel.dart';
 
 class PhoneScreen extends StatelessWidget {
   const PhoneScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<PhoneVerification>(
+    return BaseView<LoginViewModel>(
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
         body: model.currentState ==
