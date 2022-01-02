@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:ride_sharing/config/app_config.dart';
-import 'package:ride_sharing/constant/text_style.dart';
 import 'package:ride_sharing/provider/base_view.dart';
-import 'package:ride_sharing/view/available_riders_viewmodel.dart';
+import 'package:ride_sharing/view/driver_details_viewmodel.dart';
 import 'components/body.dart';
 
-class AvailableRiders extends StatelessWidget {
-  const AvailableRiders({Key? key}) : super(key: key);
+class DriverDetails extends StatelessWidget {
+  final Map<String, dynamic>? driverDetails;
+  const DriverDetails({Key? key, this.driverDetails}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ///Taking devices exact height and widths
-    SizeConfig().init(context);
-    return BaseView<AvailableRidersViewModel>(builder: (context, model, child) {
+    return BaseView<DriverDetailsViewModel>(builder: (context, model, child) {
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            'Available Riders',
+            'Driver Details',
             style: Theme.of(context).textTheme.headline2,
           ),
           leading: GestureDetector(
@@ -34,6 +31,7 @@ class AvailableRiders extends StatelessWidget {
         ),
         body: Body(
           model: model,
+          driver: driverDetails,
         ),
       );
     });

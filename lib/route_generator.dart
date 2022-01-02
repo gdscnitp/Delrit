@@ -1,6 +1,8 @@
 import 'package:ride_sharing/src/screens/access_permission_page.dart';
 import 'package:ride_sharing/src/screens/available_drivers/available_drivers.dart';
-import 'package:ride_sharing/src/screens/available_riders/available_riders.dart';
+import 'package:ride_sharing/src/screens/available_riders/available_rider.dart';
+import 'package:ride_sharing/src/screens/driver_details/driver_details.dart';
+import 'package:ride_sharing/src/screens/rider_details/rider_details.dart';
 import 'package:ride_sharing/src/screens/chat_screen/chat_screen.dart';
 import 'package:ride_sharing/src/screens/choose_location.dart';
 import 'package:ride_sharing/src/screens/home_screen.dart';
@@ -45,8 +47,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => NearbyRiders(args: args));
       case '/user-profile':
         return MaterialPageRoute(builder: (_) => const UserProfile());
-      case '/available-riders':
-        return MaterialPageRoute(builder: (_) => const AvailableRiders());
       case '/ride-details':
         return MaterialPageRoute(builder: (_) => const RideDetails());
       case '/chats':
@@ -57,6 +57,12 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const AccessPermission());
       case '/available-drivers':
         return MaterialPageRoute(builder: (_) => const AvailableDrivers());
+      case '/available-riders':
+        return MaterialPageRoute(builder: (_) => const AvailableRiders());
+      case '/rider-details':
+        return MaterialPageRoute(builder: (_) => const RiderDetails());
+      case '/driver-details':
+        return MaterialPageRoute(builder: (_) => const DriverDetails());
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {

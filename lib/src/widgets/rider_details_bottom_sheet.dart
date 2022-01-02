@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:ride_sharing/config/app_config.dart';
 import 'package:ride_sharing/src/models/riders.dart';
 import 'package:ride_sharing/src/models/user.dart';
-import 'package:ride_sharing/src/screens/available_riders/components/reusable_button.dart';
-import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
+import 'package:ride_sharing/src/screens/rider_details/components/reusable_button.dart';
 
 class RiderDetailsBottomSheet extends StatefulWidget {
   final Rider rider;
