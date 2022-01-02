@@ -64,7 +64,7 @@ Widget Body(BuildContext context, AvailableRidersViewModel model) {
                   style: Theme.of(context).textTheme.headline3,
                 );
               } else {
-                return RiderDetailsCard(rider: model.availableRiders[index]);
+                return RiderDetailsCard(rider: model.availableRiders[index],                driveId: model.currentDriveId,);
               }
             }),
       ],

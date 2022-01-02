@@ -10,7 +10,9 @@ import 'package:ride_sharing/src/utils/dateutils.dart';
 
 class RiderDetailsCard extends StatefulWidget {
   final RiderModel rider;
-  const RiderDetailsCard({Key? key, required this.rider}) : super(key: key);
+  final String? driveId;
+  const RiderDetailsCard({Key? key, required this.rider, required this.driveId})
+      : super(key: key);
 
   @override
   _RiderDetailsCardState createState() => _RiderDetailsCardState();
@@ -158,6 +160,7 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
                         arguments: {
                           'rider': widget.rider,
                           'riderInfo': riderInfo,
+                          'driveId': widget.driveId,
                         },
                       );
                       //type 'Null' is not a subtype of type 'RiderModel' in type cast

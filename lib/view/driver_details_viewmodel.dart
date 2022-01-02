@@ -59,10 +59,8 @@ class DriverDetailsViewModel extends BaseModel {
       prefs.setRideId(data[0].id);
     }
 
-    var token =
-        "cuiqIW3wT2ycOyijjoOdJK:APA91bFbPRFj6wRNowB7jo7xAuVE_KGvnZy-wIPQPkT936djHz1GT_Bxss_B2bH427EAz4aIp8mPiInV0fINchIlHPhZHjm3KeAGqBQtc8knkfTirHwTGqkzN6NCiYuqepWgROstaB3M";
     final ApiResponse response =
-        await apiService.sendFirebaseNotification(token);
+        await apiService.sendFirebaseNotification(driverInfo?.id ?? "");
   }
 
   void rideStatus(bool newStatus) {

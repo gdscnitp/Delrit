@@ -9,7 +9,9 @@ class RiderDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<RiderDetailsViewModel>(builder: (context, model, child) {
+    return BaseView<RiderDetailsViewModel>(
+      onModelReady: (model) => model.init(args),
+      builder: (context, model, child) {
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,

@@ -38,11 +38,11 @@ class ApiService extends BaseApi {
     return response;
   }
 
-  Future<ApiResponse> sendFirebaseNotification(String token) async {
+  Future<ApiResponse> sendFirebaseNotification(String uid) async {
     ApiResponse response;
     try {
       response = await postRequest("/firebase/send", {
-        "tokens": token,
+        "uid": uid,
       });
     } catch (e) {
       response = ApiResponse(error: true, errorMessage: e.toString());
