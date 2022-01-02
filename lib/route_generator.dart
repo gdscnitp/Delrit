@@ -59,7 +59,7 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => AvailableDrivers(rideId: args));
       case '/available-riders':
-        return MaterialPageRoute(builder: (_) => const AvailableRiders());
+        return MaterialPageRoute(builder: (_) => AvailableRiders(driveId: args));
       case '/rider-details':
         return MaterialPageRoute(builder: (_) => RiderDetails(args: args));
       case '/driver-details':

@@ -320,7 +320,7 @@ class SearchRiderViewModel extends BaseModel {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime(2022),
+      lastDate: DateTime(2023),
     );
     print(date);
     final time = await showTimePicker(
@@ -346,26 +346,26 @@ class SearchRiderViewModel extends BaseModel {
       return;
     }
     setState(ViewState.Busy);
-    var sourceCord = await locationFromAddress(startAddressController.text);
-    var destinationCord =
-        await locationFromAddress(destinationAddressController.text);
-    await db.collection("availableDrivers").add({
-      "uid": FirebaseAuth.instance.currentUser?.uid,
-      "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
-      "destination":
-          GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
-      "sourceName": startAddressController.text,
-      "destinationName": destinationAddressController.text,
-      "time": selectedDate.millisecondsSinceEpoch,
-      "vehicle": selectedVehicle
-    }).then((value) => print("added"));
+    // var sourceCord = await locationFromAddress(startAddressController.text);
+    // var destinationCord =
+    //     await locationFromAddress(destinationAddressController.text);
+    // String driveId = (await db.collection("availableDrivers").add({
+    //   "uid": FirebaseAuth.instance.currentUser?.uid,
+    //   "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
+    //   "destination":
+    //       GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
+    //   "sourceName": startAddressController.text,
+    //   "destinationName": destinationAddressController.text,
+    //   "time": selectedDate.millisecondsSinceEpoch,
+    //   "vehicle": selectedVehicle
+    // }))
+    //     .id;
+
+    String driveId = "hjb6uRGcdNpp9H64ZAa1";
     setState(ViewState.Idle);
     navigationService.navigateTo(
-      '/nearby-riders',
-      arguments: {
-        'startAddress': startAddressController.text,
-        'destinationAddress': destinationAddressController.text,
-      },
+      '/available-riders',
+      arguments: driveId,
     );
   }
 }

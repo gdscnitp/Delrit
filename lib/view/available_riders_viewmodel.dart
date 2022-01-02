@@ -7,8 +7,9 @@ class AvailableRidersViewModel extends BaseModel {
   //-----------VARIABLES----------//
   final FirebaseFirestore db = FirebaseFirestore.instance;
   List<RiderModel> availableRiders = [];
+  String? currentDriveId;
 
-  void init() async {
+  void init(String driveId) async {
     ///Get the list of all the available riders and display
 
     // (await db.collection('availableRiders').get()).docs.map((e) async {
@@ -29,6 +30,8 @@ class AvailableRidersViewModel extends BaseModel {
     // });
     //
     // notifyListeners();
+
+    currentDriveId = driveId;
 
     var data = (await db.collection('availableRiders').get()).docs;
 
