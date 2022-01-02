@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/src/models/drivers.dart';
+import 'package:ride_sharing/src/models/user.dart';
+import 'package:ride_sharing/src/utils/dateutils.dart';
 import 'package:ride_sharing/view/driver_details_viewmodel.dart';
 import 'reusable_button.dart';
 import 'ride_confirmed.dart';
@@ -7,8 +10,7 @@ import 'package:ride_sharing/config/app_config.dart';
 
 class Body extends StatelessWidget {
   final DriverDetailsViewModel model;
-  final Map<String, dynamic>? driver;
-  Body({Key? key, required this.model, required this.driver}) : super(key: key);
+  Body({Key? key, required this.model}) : super(key: key);
 
   final double sizedHeight = getProportionateScreenHeight(7);
 
@@ -23,7 +25,8 @@ class Body extends StatelessWidget {
       ),
       builder: (builder) {
         return model.isRideConfirmed
-            ? rideConfirmed(drivername: driver!['uid'], context: context)
+            ? rideConfirmed(
+                drivername: model.driverInfo!.name ?? "", context: context)
             : rideNotConfirmed(
                 context: context, drivername: 'New user', model: model);
       },
@@ -36,7 +39,7 @@ class Body extends StatelessWidget {
       children: [
         SizedBox(
           width: double.infinity,
-          height: getProportionateScreenHeight(200), //change to app height
+          height: getProportionateScreenHeight(140), //change to app height
           child: Image.asset(
             'assets/images/map.png',
             fit: BoxFit.cover,
@@ -72,9 +75,7 @@ class Body extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        driver!['uid'].length < 15
-                            ? driver!['uid']
-                            : driver!['uid'].substring(0, 15),
+                        model.driverInfo!.name ?? "",
                         style: Theme.of(context).textTheme.headline1,
                       ),
                       SizedBox(
@@ -121,7 +122,7 @@ class Body extends StatelessWidget {
                         height: sizedHeight,
                       ),
                       Text(
-                        driver!['vehicle'],
+                        model.driver?.vehicle ?? "",
                         style: Theme.of(context).textTheme.headline3,
                       ),
                       SizedBox(
@@ -139,21 +140,21 @@ class Body extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Source : ${driver!['source']}',
+                      'Source : ${model.driver?.sourceName}',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     SizedBox(
                       height: getProportionateScreenHeight(10),
                     ),
                     Text(
-                      'Destination : ${driver!['dest']}',
+                      'Destination : ${model.driver?.destinationName}',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     SizedBox(
                       height: getProportionateScreenHeight(10),
                     ),
                     Text(
-                      'On ${driver!['time']}',
+                      "On ${timestampToHumanReadable(model.driver!.time)}",
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     SizedBox(
@@ -200,6 +201,18 @@ class Body extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: getProportionateScreenHeight(20),
+                    ),
+                    Center(
+                      child: resuableButton(
+                        text: 'Request Ride',
+                        buttoncolor: null,
+                        onPress: () {
+                          model.requestRide();
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),

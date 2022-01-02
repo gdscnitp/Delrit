@@ -151,10 +151,16 @@ Widget Body(BuildContext context, PostRideViewModel model) {
                       SizedBox(
                         width: width * 0.8,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             print(model.startAddressController.text);
                             print(model.destinationAddressController.text);
-                            model.addRideToDb(context);
+                            // String rideId = await model.addRideToDb(context);
+                            String rideId = "aOG5i3YIccmhMnADEEqb";
+                            Navigator.pushNamed(
+                              context,
+                              "/available-drivers",
+                              arguments: rideId,
+                            );
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(8.0),

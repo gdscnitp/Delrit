@@ -22,7 +22,7 @@ import 'package:ride_sharing/src/screens/post_ride/post_ride.dart';
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
-    final args = settings.arguments;
+    final args = settings.arguments as dynamic;
 
     switch (settings.name) {
       case '/':
@@ -56,13 +56,14 @@ class RouteGenerator {
       case '/access-permission':
         return MaterialPageRoute(builder: (_) => const AccessPermission());
       case '/available-drivers':
-        return MaterialPageRoute(builder: (_) => const AvailableDrivers());
+        return MaterialPageRoute(
+            builder: (_) => AvailableDrivers(rideId: args));
       case '/available-riders':
         return MaterialPageRoute(builder: (_) => const AvailableRiders());
       case '/rider-details':
-        return MaterialPageRoute(builder: (_) => const RiderDetails());
+        return MaterialPageRoute(builder: (_) => RiderDetails(args: args));
       case '/driver-details':
-        return MaterialPageRoute(builder: (_) => const DriverDetails());
+        return MaterialPageRoute(builder: (_) => DriverDetails(args: args));
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {

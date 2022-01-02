@@ -14,9 +14,12 @@ class AvailableRiders extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               elevation: 0,
-              leading: const Icon(
-                Icons.arrow_back,
-                color: Colors.black,
+              leading: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
               ),
               title: const Text(
                 'Available Riders',

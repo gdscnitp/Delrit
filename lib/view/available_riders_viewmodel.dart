@@ -33,7 +33,7 @@ class AvailableRidersViewModel extends BaseModel {
     var data = (await db.collection('availableRiders').get()).docs;
 
     availableRiders = data.map((e) {
-      return riderModelFromJson(e.data());
+      return riderModelFromJson(e.data(), e.id);
     }).toList();
     notifyListeners();
   }

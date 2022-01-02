@@ -176,20 +176,24 @@ class PostRideViewModel extends BaseModel {
     notifyListeners();
   }
 
-  void addRideToDb(BuildContext context) async {
+  Future<String> addRideToDb(BuildContext context) async {
     setState(ViewState.Busy);
     var sourceCord = await locationFromAddress(startAddressController.text);
     var destinationCord =
         await locationFromAddress(destinationAddressController.text);
-    await db.collection("availableRiders").add({
+    String id = (await db.collection("availableRiders").add({
       "uid": FirebaseAuth.instance.currentUser?.uid ?? "",
       "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
       "destination":
           GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
+      "sourceName": startAddressController.text,
+      "destinationName": destinationAddressController.text,
       "time": selectedDate.millisecondsSinceEpoch,
-    }).then((value) => print("added"));
+    }))
+        .id;
     clear();
     setState(ViewState.Idle);
+    return id;
   }
 
   void locationCallBackStarting(String? value) {
