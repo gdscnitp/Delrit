@@ -15,7 +15,7 @@ class AvailableDriversViewModel extends BaseModel {
     var data = (await db.collection('availableDrivers').get()).docs;
 
     availableDrivers = data.map((e) {
-      return driverModelFromJson(e.data());
+      return driverModelFromJson(e.data(), e.id);
     }).toList();
     notifyListeners();
   }

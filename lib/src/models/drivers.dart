@@ -26,8 +26,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //   }
 // }
 
-DriverModel driverModelFromJson(Map<String, dynamic>? data) =>
-    DriverModel.fromJson(data!);
+DriverModel driverModelFromJson(Map<String, dynamic>? data, String? id) =>
+    DriverModel.fromJson(data!, id!);
 
 String driverModelToJson(DriverModel data) => json.encode(data.toJson());
 
@@ -38,20 +38,23 @@ class DriverModel {
     required this.time,
     required this.uid,
     required this.vehicle,
+    required this.docId,
   });
 
   final GeoPoint destination, source;
   final int time;
-  final String? uid;
+  final String? uid, docId;
   final String vehicle;
   late String sourceName, destinationName;
 
-  factory DriverModel.fromJson(Map<String, dynamic> json) => DriverModel(
+  factory DriverModel.fromJson(Map<String, dynamic> json, String id) =>
+      DriverModel(
         destination: json["destination"],
         source: json["source"],
         time: json["time"],
         uid: json["uid"],
         vehicle: json["vehicle"],
+        docId: id,
       );
 
   Map<String, dynamic> toJson() => {
