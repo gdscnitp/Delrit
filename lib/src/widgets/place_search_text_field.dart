@@ -107,3 +107,40 @@ Widget riderSearchTextField({
     ),
   );
 }
+
+Widget addVehicleStyle({
+  required TextEditingController controller,
+  required double width,
+  required String hint,
+}) {
+  return SizedBox(
+    width: 0.8 * width,
+    child: TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: hint,
+        filled: true,
+        fillColor: Colors.grey.shade300,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10.0),
+          ),
+          borderSide: BorderSide(
+            color: Colors.grey.shade400,
+            width: 1,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10.0),
+          ),
+          borderSide: BorderSide(
+            color: Colors.blue.shade300,
+            width: 2,
+          ),
+        ),
+        contentPadding: const EdgeInsets.all(15),
+      ),
+    ),
+  );
+}

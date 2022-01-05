@@ -1,4 +1,5 @@
 import 'package:ride_sharing/src/screens/access_permission_page.dart';
+import 'package:ride_sharing/src/screens/add_vehicle.dart';
 import 'package:ride_sharing/src/screens/available_drivers/available_drivers.dart';
 import 'package:ride_sharing/src/screens/available_riders/available_rider.dart';
 import 'package:ride_sharing/src/screens/driver_details/driver_details.dart';
@@ -39,6 +40,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const PhoneScreen());
       case '/searchrider':
         return MaterialPageRoute(builder: (_) => const SearchRider());
+      case '/addVehicle':
+        return MaterialPageRoute(builder: (_) => const AddVehicle());
       case '/complete-profile':
         return MaterialPageRoute(builder: (_) => const CompleteProfile());
       case '/choose-location':
@@ -59,7 +62,8 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => AvailableDrivers(rideId: args));
       case '/available-riders':
-        return MaterialPageRoute(builder: (_) => AvailableRiders(driveId: args));
+        return MaterialPageRoute(
+            builder: (_) => AvailableRiders(driveId: args));
       case '/rider-details':
         return MaterialPageRoute(builder: (_) => RiderDetails(args: args));
       case '/driver-details':

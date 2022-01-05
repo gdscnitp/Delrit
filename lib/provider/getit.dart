@@ -1,6 +1,7 @@
 import 'package:ride_sharing/services/api_services.dart';
 import 'package:ride_sharing/services/navigation_service.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ride_sharing/view/add_vehicle_viewmodel.dart';
 import 'package:ride_sharing/view/available_drivers_viewmodel.dart';
 import 'package:ride_sharing/view/chat_viewmodel.dart';
 import 'package:ride_sharing/view/choose_location_viewmodel.dart';
@@ -28,4 +29,5 @@ void setupLocator() {
   getIt.registerFactory(() => PostRideViewModel());
   getIt.registerFactory(() => RiderDetailsViewModel());
   getIt.registerFactory(() => DriverDetailsViewModel());
+  getIt.registerFactory(() => AddVehicleViewModel());
 }
