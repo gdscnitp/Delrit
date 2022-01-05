@@ -37,33 +37,61 @@ class RiderDetailsViewModel extends BaseModel {
 
     var data = (await db
             .collection("trips")
-            .where("driveId", isEqualTo: currentDriveId)
+            .where("driver.driveId", isEqualTo: currentDriveId)
             .get())
         .docs;
     print(data);
+    String tripId;
     if (data.isEmpty) {
-      String pendingRideId = (await db.collection("trips").add({
-        "driverUid": FirebaseAuth.instance.currentUser?.uid,
-        "ridersUid": [riderInfo?.id],
-        "driveId": currentDriveId,
-        "ridesId": [rider.docId],
-        "status": "pending"
-      }))
+      tripId = (await db.collection("trips").add(
+        {
+          "driver": {
+            "driveId": currentDriveId,
+            "driverUid": FirebaseAuth.instance.currentUser!.uid,
+            "driverStatus": "confirmed"
+          },
+          "riders": [
+            {
+              "rideId": rider.docId,
+              "riderUid": riderInfo?.id,
+              "riderStatus": "pending",
+            }
+          ]
+        },
+      ))
           .id;
-      print(pendingRideId);
+      print(tripId);
       print("added in db");
-      prefs.setRideId(pendingRideId);
+      prefs.setRideId(tripId);
     } else {
-      await db.collection("trips").doc(data[0].id).update({
-        "ridersUid": FieldValue.arrayUnion([riderInfo!.id]),
-        "ridesId": FieldValue.arrayUnion([rider.docId]),
-      });
-      print(data[0].id);
-      print("already in db");
-      prefs.setRideId(data[0].id);
+      tripId = data[0].id;
+      var currentRiders = data[0].data()["riders"];
+      var existingRider =
+          currentRiders.where((r) => r["riderUid"] == riderInfo?.id).toList();
+
+      if (existingRider.isEmpty) {
+        await db.collection("trips").doc(data[0].id).update({
+          "riders": FieldValue.arrayUnion([
+            {
+              "rideId": rider.docId,
+              "riderUid": riderInfo?.id,
+              "riderStatus": "pending",
+            }
+          ])
+        });
+        print(data[0].id);
+        print("already in db");
+        prefs.setRideId(data[0].id);
+      }
     }
 
+    Map<String, dynamic> body = {
+      "tripId": tripId,
+      "riderUid": riderInfo?.id,
+      "driverUid": FirebaseAuth.instance.currentUser!.uid,
+    };
+
     final ApiResponse response =
-        await apiService.sendFirebaseNotification(riderInfo?.id ?? "");
+        await apiService.sendFirebaseNotification(body);
   }
 }

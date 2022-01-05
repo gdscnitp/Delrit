@@ -1,12 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/provider/base_view.dart';
+import 'package:ride_sharing/src/screens/rider_details/components/reusable_button.dart';
 import 'package:ride_sharing/src/screens/test_screen.dart';
 import 'package:ride_sharing/src/widgets/app_drawer.dart';
-import 'package:ride_sharing/src/screens/home_screen/components/next_rider_bottom_sheet.dart';
-import 'package:ride_sharing/src/screens/home_screen/components/ride_completed_bottom_sheet.dart';
-import 'package:ride_sharing/view/home_screen_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,36 +22,29 @@ class _HomeScreenState extends State<HomeScreen> {
       _handleMessage(initialMessage);
     }
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Notification"),
-            content: const Text("yoo"),
-            actions: [
-              TextButton(
-                child: const Text("Ok"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        },
-      );
-    });
+    FirebaseMessaging.onMessage.listen(_handleMessage);
   }
 
   void _handleMessage(RemoteMessage message) {
-    print("Handling Here");
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(15),
+          topLeft: Radius.circular(15),
+        ),
+      ),
+      builder: (builder) {
+        return DriverRequestBottomSheet(message.data);
+      },
+    );
   }
 
   // void _showModalSheet(BuildContext context) {
@@ -195,5 +187,93 @@ class _HomeScreenState extends State<HomeScreen> {
       // ),
     );
     //});
+  }
+}
+
+class DriverRequestBottomSheet extends StatefulWidget {
+  final Map<String, dynamic> message;
+  const DriverRequestBottomSheet(this.message, {Key? key}) : super(key: key);
+
+  @override
+  _DriverRequestBottomSheetState createState() =>
+      _DriverRequestBottomSheetState();
+}
+
+class _DriverRequestBottomSheetState extends State<DriverRequestBottomSheet> {
+  String driverName = "";
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  void getDriverInfo(String uid) async {
+    print(uid);
+    var data = (await db.collection("users").doc(uid).get()).data();
+
+    setState(() {
+      driverName = data!["name"];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getDriverInfo(widget.message["driverUid"]);
+  }
+
+  void handleAccept() async {
+    print("Accepted");
+    var data =
+        (await db.collection("trips").doc(widget.message["tripId"]).get())
+            .data();
+    var riders = data!["riders"] as List;
+
+    var newRiders = riders.map((e) {
+      if (e["riderUid"] == widget.message["riderUid"]) {
+        e["riderStatus"] = "confirmed";
+      }
+      return e;
+    }).toList();
+
+    db.collection("trips").doc(widget.message["tripId"]).update({
+      "riders": newRiders,
+    });
+
+    print(newRiders);
+
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 40),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '$driverName has requested a ride with you.',
+            style: Theme.of(context).textTheme.headline2,
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              resuableButton(
+                text: 'Deny',
+                buttoncolor: Color(0xFFf46647),
+                onPress: () {},
+              ),
+              resuableButton(
+                text: 'Accept',
+                buttoncolor: Color(0xFF65cb14),
+                onPress: () {
+                  handleAccept();
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

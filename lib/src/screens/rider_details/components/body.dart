@@ -202,7 +202,7 @@ class Body extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: getProportionateScreenHeight(40),
+                      height: getProportionateScreenHeight(24),
                     ),
                     Center(
                       child: resuableButton(
