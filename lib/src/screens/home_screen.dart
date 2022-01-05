@@ -1,9 +1,12 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
+import 'package:ride_sharing/provider/base_view.dart';
+import 'package:ride_sharing/src/screens/test_screen.dart';
 import 'package:ride_sharing/src/widgets/app_drawer.dart';
 import 'package:ride_sharing/src/screens/home_screen/components/next_rider_bottom_sheet.dart';
 import 'package:ride_sharing/src/screens/home_screen/components/ride_completed_bottom_sheet.dart';
+import 'package:ride_sharing/view/home_screen_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -52,18 +55,18 @@ class _HomeScreenState extends State<HomeScreen> {
     print("Handling Here");
   }
 
-  void _showModalSheet(BuildContext context) {
-    showModalBottomSheet<dynamic>(
-      context: context,
-      isScrollControlled: true,
-      builder: (builder) {
-        return Container(
-          height: config.getProportionateScreenHeight(310),
-          child: nextRiderBottomSheet(context),
-        );
-      },
-    );
-  }
+  // void _showModalSheet(BuildContext context) {
+  //   showModalBottomSheet<dynamic>(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     builder: (builder) {
+  //       return Container(
+  //         height: config.getProportionateScreenHeight(310),
+  //         child: rideCompleted(context),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   void initState() {
@@ -74,6 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     config.SizeConfig().init(context);
+    // return BaseView<HomeScreenViewModel>(
+    //     onModelReady: (model) => model.init(),
+    //     builder: (context, model, child) {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(
@@ -171,15 +177,23 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Text('Access Permission'),
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const TestScreen()));
+            },
+            child: const Text('Test Screen'),
+          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showModalSheet(context);
-          //Navigator.pushNamed(context, '/detail');
-        },
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     _showModalSheet(context);
+      //     //Navigator.pushNamed(context, '/detail');
+      //   },
+      //   child: const Icon(Icons.add),
+      // ),
     );
+    //});
   }
 }
