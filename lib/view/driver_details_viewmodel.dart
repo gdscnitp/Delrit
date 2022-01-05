@@ -36,8 +36,9 @@ class DriverDetailsViewModel extends BaseModel {
             .get())
         .docs;
     print(data);
+    String tripId;
     if (data.isEmpty) {
-      String pendingRideId = (await db.collection("trips").add({
+      tripId = (await db.collection("trips").add({
         "driverUid": driver!.docId,
         "ridersUid": [FirebaseAuth.instance.currentUser?.uid],
         "driveId": driver!.docId,
@@ -45,10 +46,11 @@ class DriverDetailsViewModel extends BaseModel {
         "status": "pending"
       }))
           .id;
-      print(pendingRideId);
+      print(tripId);
       print("added in db");
-      prefs.setRideId(pendingRideId);
+      prefs.setRideId(tripId);
     } else {
+      tripId = data[0].id;
       await db.collection("trips").doc(data[0].id).update({
         "ridersUid":
             FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid]),
@@ -59,8 +61,14 @@ class DriverDetailsViewModel extends BaseModel {
       prefs.setRideId(data[0].id);
     }
 
+    Map<String, dynamic> body = {
+      "tripId": tripId,
+      "driverUid": driverInfo?.id,
+      "riderUid": FirebaseAuth.instance.currentUser!.uid,
+    };
+
     final ApiResponse response =
-        await apiService.sendFirebaseNotification(driverInfo?.id ?? "");
+        await apiService.sendFirebaseNotification(body);
   }
 
   void rideStatus(bool newStatus) {

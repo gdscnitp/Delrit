@@ -10,7 +10,7 @@ import 'dart:convert';
 
 abstract class BaseApi {
   final String _baseUrl = 'ride-sharing-server.herokuapp.com';
-  // final String _baseUrl = '192.168.1.5:3000';
+  // final String _baseUrl = '192.168.46.196:3000';
   final String _authToken = Prefs().getToken();
 
   Future<ApiResponse> signUp(Map data, String endpoint) async {

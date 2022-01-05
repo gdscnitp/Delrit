@@ -295,12 +295,12 @@ class SearchRiderViewModel extends BaseModel {
   }
 
   void acceptRide(Rider r) async {
-    print("yoooooooooooooooooooo");
-    var token =
-        "cuiqIW3wT2ycOyijjoOdJK:APA91bFbPRFj6wRNowB7jo7xAuVE_KGvnZy-wIPQPkT936djHz1GT_Bxss_B2bH427EAz4aIp8mPiInV0fINchIlHPhZHjm3KeAGqBQtc8knkfTirHwTGqkzN6NCiYuqepWgROstaB3M";
-    final ApiResponse response =
-        await _apiService.sendFirebaseNotification(token);
-    print(response.data);
+    // print("yoooooooooooooooooooo");
+    // var token =
+    //     "cuiqIW3wT2ycOyijjoOdJK:APA91bFbPRFj6wRNowB7jo7xAuVE_KGvnZy-wIPQPkT936djHz1GT_Bxss_B2bH427EAz4aIp8mPiInV0fINchIlHPhZHjm3KeAGqBQtc8knkfTirHwTGqkzN6NCiYuqepWgROstaB3M";
+    // final ApiResponse response =
+    //     await _apiService.sendFirebaseNotification(token);
+    // print(response.data);
     // final uri = Uri.parse("http://192.168.1.11:3000/firebase/send");
     // final response = await http.post(uri, body: {"tokens": token});
 

@@ -30,7 +30,7 @@ Widget rideNotConfirmed(
             resuableButton(
                 text: 'Accept',
                 buttoncolor: Color(0xFF65cb14),
-                onPress: () {
+                onPress: () { 
                   model.rideStatus(true);
                 }),
           ],
