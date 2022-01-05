@@ -17,6 +17,8 @@ class ChatScreenBody extends StatefulWidget {
 class _ChatScreenBodyState extends State<ChatScreenBody> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double height = MediaQuery.of(context).size.height;
     return BaseView<ChatScreenModel>(
         builder: (ctx, model, child) => StreamBuilder<DocumentSnapshot>(
               stream: FirebaseFirestore.instance
@@ -30,7 +32,7 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
                 var chatDocument = snapshot.data;
 
                 return Container(
-                    height: 500,
+                    height: height * 0.78,
                     child: ListView.builder(
                         itemCount: chatDocument!["chats"].length,
                         itemBuilder: (document, index) {
