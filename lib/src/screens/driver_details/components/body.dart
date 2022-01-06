@@ -181,12 +181,17 @@ class Body extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Expanded(
-                            child: resuableButton(
-                                text: 'Chat',
-                                onPress: () {
-                                  model.rideStatus(true);
-                                },
-                                buttoncolor: null)),
+                          child: resuableButton(
+                              text: 'Chat',
+                              onPress: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/chats',
+                                  arguments: model.driverInfo,
+                                );
+                              },
+                              buttoncolor: null),
+                        ),
                         const SizedBox(
                           width: 10,
                         ),
@@ -204,15 +209,6 @@ class Body extends StatelessWidget {
                     SizedBox(
                       height: getProportionateScreenHeight(20),
                     ),
-                    Center(
-                      child: resuableButton(
-                        text: 'Request Ride',
-                        buttoncolor: null,
-                        onPress: () {
-                          model.requestRide();
-                        },
-                      ),
-                    )
                   ],
                 ),
               ),

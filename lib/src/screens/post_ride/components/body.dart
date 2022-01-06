@@ -154,14 +154,14 @@ Widget Body(BuildContext context, PostRideViewModel model) {
                           onPressed: () async {
                             print(model.startAddressController.text);
                             print(model.destinationAddressController.text);
-                            String rideId = await model.addRideToDb(context);
-                            // String rideId = "aOG5i3YIccmhMnADEEqb";
+                            // String rideId = await model.addRideToDb(context);
+                            String rideId = "aOG5i3YIccmhMnADEEqb";
                             print(rideId);
-                            // Navigator.pushNamed(
-                            //   context,
-                            //   "/available-drivers",
-                            //   arguments: rideId,
-                            // );
+                            Navigator.pushNamed(
+                              context,
+                              "/available-drivers",
+                              arguments: rideId,
+                            );
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(8.0),

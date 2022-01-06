@@ -53,7 +53,7 @@ class RouteGenerator {
       case '/ride-details':
         return MaterialPageRoute(builder: (_) => const RideDetails());
       case '/chats':
-        return MaterialPageRoute(builder: (_) => ChatScreen());
+        return MaterialPageRoute(builder: (_) => ChatScreen(peer: args));
       case '/post-ride':
         return MaterialPageRoute(builder: (_) => const PostRide());
       case '/access-permission':

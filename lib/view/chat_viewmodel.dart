@@ -5,22 +5,27 @@ import 'package:ride_sharing/provider/base_model.dart';
 
 class ChatScreenModel extends BaseModel {
   String message = '';
-  String meUid = "3rhCMkQqCjf7yZO9CyYvxnwP4uh1";
-  String peerUid = "";
-  String chatRoomId =
-      "3rhCMkQqCjf7yZO9CyYvxnwP4uh1-I8humTJNWDNAnDVN82j6iiTcqvE2";
+  late String meUid;
+  late String peerUid;
+  late String chatRoomId;
 
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  getChatUsers() {
-    final User meUser = auth.currentUser!;
-    meUid = meUser.uid.toString();
-    final User peerUser;
-
-    //id taken for testing
-    peerUid = 'I8humTJNWDNAnDVN82j6iiTcqvE2';
+  void init(String peerId) {
+    meUid = FirebaseAuth.instance.currentUser!.uid;
+    peerUid = peerId;
+    createChatRoom();
   }
+
+  // getChatUsers() {
+  //   final User meUser = auth.currentUser!;
+  //   meUid = meUser.uid.toString();
+  //   final User peerUser;
+
+  //   //id taken for testing
+  //   peerUid = 'I8humTJNWDNAnDVN82j6iiTcqvE2';
+  // }
 
   createChatRoom() {
     if (meUid.hashCode <= peerUid.hashCode) {
@@ -28,6 +33,15 @@ class ChatScreenModel extends BaseModel {
     } else {
       chatRoomId = peerUid + '-' + meUid;
     }
+
+    // chatRoomId = "3rhCMkQqCjf7yZO9CyYvxnwP4uh1-I8humTJNWDNAnDVN82j6iiTcqvE2";
+  }
+
+  createChatRoomInDB() async {
+    await db.collection('chats').doc(chatRoomId).set({
+      'chatRoomId': chatRoomId,
+      'users': [meUid, peerUid]
+    });
   }
 
   saveChatMessage() async {
@@ -37,10 +51,7 @@ class ChatScreenModel extends BaseModel {
         "sendBy": meUid,
         "createdAt": DateTime.now()
       };
-      db.collection('chats').doc(chatRoomId).set({
-        'id': chatRoomId,
-        "chats": FieldValue.arrayUnion([chatData])
-      }, SetOptions(merge: true));
+      db.collection('chats').doc(chatRoomId).collection("room").add(chatData);
     }
   }
 }

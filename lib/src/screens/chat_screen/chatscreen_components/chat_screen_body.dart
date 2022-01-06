@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
-import 'package:ride_sharing/provider/base_view.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_5.dart';
 import 'package:ride_sharing/view/chat_viewmodel.dart';
 
 class ChatScreenBody extends StatefulWidget {
-  const ChatScreenBody({Key? key}) : super(key: key);
+  ChatScreenModel model;
+  ChatScreenBody(this.model, {Key? key}) : super(key: key);
 
   @override
   _ChatScreenBodyState createState() => _ChatScreenBodyState();
@@ -19,41 +19,52 @@ class _ChatScreenBodyState extends State<ChatScreenBody> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double height = MediaQuery.of(context).size.height;
-    return BaseView<ChatScreenModel>(
-        builder: (ctx, model, child) => StreamBuilder<DocumentSnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('chats')
-                  .doc(model.chatRoomId)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return CircularProgressIndicator();
-                }
-                var chatDocument = snapshot.data;
+    return Expanded(
+      child: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('chats')
+            .doc(widget.model.chatRoomId)
+            .collection("room")
+            .orderBy("createdAt")
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-                return Container(
-                    height: height * 0.78,
-                    child: ListView.builder(
-                        itemCount: chatDocument!["chats"].length,
-                        itemBuilder: (document, index) {
-                          return chatDocument["chats"][index]["sendBy"]
-                                      .toString() ==
-                                  model.meUid
-                              ? getSenderView(
-                                  ChatBubbleClipper1(
-                                      type: BubbleType.sendBubble),
-                                  context,
-                                  chatDocument["chats"][index]["message"]
-                                      .toString())
-                              : getReceiverView(
-                                  ChatBubbleClipper1(
-                                      type: BubbleType.receiverBubble),
-                                  context,
-                                  chatDocument["chats"][index]["message"]
-                                      .toString());
-                        }));
+          if (snapshot.data!.docs.isEmpty) {
+            widget.model.createChatRoomInDB();
+            return const Text("Start a conversation!");
+          }
+          var chatDocument = snapshot.data!.docs.reversed.toList();
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ListView.builder(
+              shrinkWrap: true,
+              reverse: true,
+              itemCount: chatDocument.length,
+              itemBuilder: (document, index) {
+                return chatDocument[index]["sendBy"].toString() ==
+                        widget.model.meUid
+                    ? getSenderView(
+                        ChatBubbleClipper5(type: BubbleType.sendBubble),
+                        context,
+                        chatDocument[index]["message"].toString(),
+                      )
+                    : getReceiverView(
+                        ChatBubbleClipper5(type: BubbleType.receiverBubble),
+                        context,
+                        chatDocument[index]["message"].toString(),
+                      );
               },
-            ));
+            ),
+          );
+        },
+      ),
+    );
   }
 }
 
