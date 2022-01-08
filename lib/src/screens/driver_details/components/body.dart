@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/src/models/drivers.dart';
 import 'package:ride_sharing/src/models/user.dart';
@@ -184,11 +185,19 @@ class Body extends StatelessWidget {
                           child: resuableButton(
                               text: 'Chat',
                               onPress: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  '/chats',
-                                  arguments: model.driverInfo,
-                                );
+                                print(model.driverInfo?.id ?? "dd");
+                                var meUid =
+                                    FirebaseAuth.instance.currentUser?.uid;
+                                if (meUid == null) {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context, "/landing", (route) => false);
+                                } else {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/chats',
+                                    arguments: model.driverInfo,
+                                  );
+                                }
                               },
                               buttoncolor: null),
                         ),
@@ -209,6 +218,15 @@ class Body extends StatelessWidget {
                     SizedBox(
                       height: getProportionateScreenHeight(20),
                     ),
+                    Center(
+                      child: resuableButton(
+                        text: 'Request Ride',
+                        onPress: () {
+                          model.requestRide();
+                        },
+                        buttoncolor: null,
+                      ),
+                    )
                   ],
                 ),
               ),

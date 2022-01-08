@@ -154,8 +154,8 @@ Widget Body(BuildContext context, PostRideViewModel model) {
                           onPressed: () async {
                             print(model.startAddressController.text);
                             print(model.destinationAddressController.text);
-                            // String rideId = await model.addRideToDb(context);
-                            String rideId = "aOG5i3YIccmhMnADEEqb";
+                            String rideId = await model.addRideToDb(context);
+                            // String rideId = "s80xwaWczIMlqJT1Uf77";
                             print(rideId);
                             Navigator.pushNamed(
                               context,

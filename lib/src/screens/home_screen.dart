@@ -3,8 +3,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/provider/base_view.dart';
+import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/screens/rider_details/components/reusable_button.dart';
 import 'package:ride_sharing/src/screens/test_screen.dart';
+import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
 import 'package:ride_sharing/src/widgets/app_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,13 +17,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+
   Future<void> setupInteractedMessage() async {
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
       _handleMessage(initialMessage);
     }
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleBackgroundMessage);
     FirebaseMessaging.onMessage.listen(_handleMessage);
   }
 
@@ -33,18 +37,58 @@ class _HomeScreenState extends State<HomeScreen> {
       print('Message also contained a notification: ${message.notification}');
     }
 
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(15),
-          topLeft: Radius.circular(15),
+    if (message.data["requestType"] == "RequestByDriver" ||
+        message.data["requestType"] == "RequestByRider") {
+      showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(15),
+            topLeft: Radius.circular(15),
+          ),
         ),
-      ),
-      builder: (builder) {
-        return DriverRequestBottomSheet(message.data);
-      },
-    );
+        builder: (builder) {
+          return DriverRequestBottomSheet(message.data);
+        },
+      );
+    }
+  }
+
+  void _handleBackgroundMessage(RemoteMessage message) async {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+
+    if (message.data["requestType"] == "Chat") {
+      var data =
+          (await db.collection('users').doc(message.data["senderUid"]).get())
+              .data();
+      UserProfileModel user = UserProfileModel.fromJson(data!);
+      print("here===");
+      print(user.name);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        "/chats",
+        (route) => true,
+        arguments: user,
+      );
+    } else {
+      showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(15),
+            topLeft: Radius.circular(15),
+          ),
+        ),
+        builder: (builder) {
+          return DriverRequestBottomSheet(message.data);
+        },
+      );
+    }
   }
 
   // void _showModalSheet(BuildContext context) {
@@ -200,21 +244,23 @@ class DriverRequestBottomSheet extends StatefulWidget {
 }
 
 class _DriverRequestBottomSheetState extends State<DriverRequestBottomSheet> {
-  String driverName = "";
+  String requesterName = "";
   final FirebaseFirestore db = FirebaseFirestore.instance;
-  void getDriverInfo(String uid) async {
+  void getUserInfo(String uid) async {
     print(uid);
     var data = (await db.collection("users").doc(uid).get()).data();
 
     setState(() {
-      driverName = data!["name"];
+      requesterName = data!["name"];
     });
   }
 
   @override
   void initState() {
     super.initState();
-    getDriverInfo(widget.message["driverUid"]);
+    widget.message["requestType"] == "RequestByDriver"
+        ? getUserInfo(widget.message["driverUid"])
+        : getUserInfo(widget.message["riderUid"]);
   }
 
   void handleAccept() async {
@@ -238,7 +284,6 @@ class _DriverRequestBottomSheetState extends State<DriverRequestBottomSheet> {
     print(newRiders);
 
     Navigator.of(context).pop();
-    Navigator.of(context).pop();
   }
 
   @override
@@ -249,7 +294,9 @@ class _DriverRequestBottomSheetState extends State<DriverRequestBottomSheet> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            '$driverName has requested a ride with you.',
+            widget.message["requestType"] == "RequestByDriver"
+                ? "You have asked to join $requesterName's trip"
+                : "$requesterName has requested to join your trip",
             style: Theme.of(context).textTheme.headline2,
           ),
           const SizedBox(

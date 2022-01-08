@@ -11,14 +11,7 @@ import 'package:ride_sharing/config/app_config.dart';
 
 class Body extends StatelessWidget {
   final RiderDetailsViewModel model;
-  final RiderModel rider;
-  final UserProfileModel riderInfo;
-  Body(
-      {Key? key,
-      required this.model,
-      required this.rider,
-      required this.riderInfo})
-      : super(key: key);
+  Body({Key? key, required this.model}) : super(key: key);
 
   final double sizedHeight = getProportionateScreenHeight(7);
 
@@ -33,7 +26,8 @@ class Body extends StatelessWidget {
       ),
       builder: (builder) {
         return model.isRideConfirmed
-            ? rideConfirmed(ridername: riderInfo.name ?? "", context: context)
+            ? rideConfirmed(
+                ridername: model.riderInfo?.name ?? "", context: context)
             : rideNotConfirmed(
                 context: context, ridername: 'New user', model: model);
       },
@@ -82,7 +76,7 @@ class Body extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        riderInfo.name ?? "",
+                        model.riderInfo?.name ?? "",
                         style: Theme.of(context).textTheme.headline1,
                       ),
                       SizedBox(
@@ -140,21 +134,21 @@ class Body extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Source : ${rider.sourceName}',
+                      'Source : ${model.rider?.sourceName}',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     SizedBox(
                       height: getProportionateScreenHeight(10),
                     ),
                     Text(
-                      'Destination : ${rider.destinationName}',
+                      'Destination : ${model.rider?.destinationName}',
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     SizedBox(
                       height: getProportionateScreenHeight(10),
                     ),
                     Text(
-                      "On ${timestampToHumanReadable(rider.time)}",
+                      "On ${timestampToHumanReadable(model.rider?.time ?? 0)}",
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     SizedBox(
@@ -181,12 +175,17 @@ class Body extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Expanded(
-                            child: resuableButton(
-                                text: 'Chat',
-                                onPress: () {
-                                  model.rideStatus(true);
-                                },
-                                buttoncolor: null)),
+                          child: resuableButton(
+                              text: 'Chat',
+                              onPress: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/chats',
+                                  arguments: model.riderInfo,
+                                );
+                              },
+                              buttoncolor: null),
+                        ),
                         const SizedBox(
                           width: 10,
                         ),
@@ -206,9 +205,9 @@ class Body extends StatelessWidget {
                     ),
                     Center(
                       child: resuableButton(
-                        text: 'Request Ride',
+                        text: 'Ask for a  Ride',
                         onPress: () {
-                          model.requestRide(rider);
+                          model.requestRide();
                         },
                         buttoncolor: null,
                       ),

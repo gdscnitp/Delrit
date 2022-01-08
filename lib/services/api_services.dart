@@ -4,28 +4,6 @@ import 'package:ride_sharing/services/base_api.dart';
 
 class ApiService extends BaseApi {
   // Login ViewModel
-  Future<ApiResponse> signupMethod(data) async {
-    ApiResponse response;
-    try {
-      response = await signUp(data, '/users/register/');
-    } catch (e) {
-      response = ApiResponse(error: true, errorMessage: e.toString());
-    }
-
-    return response;
-  }
-
-  Future<ApiResponse> loginMethod(data) async {
-    ApiResponse response;
-    try {
-      response = await signUp(data, "users/login");
-      print('no error');
-    } catch (e) {
-      response = ApiResponse(error: true, errorMessage: e.toString());
-    }
-
-    return response;
-  }
 
   Future<ApiResponse> getArticlesMethod({required String endpoint}) async {
     ApiResponse response;
@@ -38,11 +16,32 @@ class ApiService extends BaseApi {
     return response;
   }
 
-  Future<ApiResponse> sendFirebaseNotification(
+  Future<ApiResponse> sendRequestNotificationToDriver(
       Map<String, dynamic> body) async {
     ApiResponse response;
     try {
-      response = await postRequest("/firebase/send", body);
+      response = await postRequest("/firebase/send-req-to-driver", body);
+    } catch (e) {
+      response = ApiResponse(error: true, errorMessage: e.toString());
+    }
+    return response;
+  }
+
+  Future<ApiResponse> sendRequestNotificationToRider(
+      Map<String, dynamic> body) async {
+    ApiResponse response;
+    try {
+      response = await postRequest("/firebase/send-req-to-rider", body);
+    } catch (e) {
+      response = ApiResponse(error: true, errorMessage: e.toString());
+    }
+    return response;
+  }
+
+  Future<ApiResponse> sendChatNotification(Map<String, dynamic> body) async {
+    ApiResponse response;
+    try {
+      response = await postRequest("/firebase/send-chat-notification", body);
     } catch (e) {
       response = ApiResponse(error: true, errorMessage: e.toString());
     }

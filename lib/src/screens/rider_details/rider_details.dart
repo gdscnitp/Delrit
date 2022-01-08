@@ -33,8 +33,6 @@ class RiderDetails extends StatelessWidget {
         ),
         body: Body(
           model: model,
-          rider: args?["rider"],
-          riderInfo: args?["riderInfo"],
         ),
       );
     });
