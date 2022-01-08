@@ -273,7 +273,8 @@ class _SearchRiderState extends State<SearchRider> {
                                   print(model.startAddressController.text);
                                   print(
                                       model.destinationAddressController.text);
-                                  await model.addDriver();
+                                  String driveId = await model.addDriver();
+                                  await model.addTrip(driveId);
                                   // Navigator.pushNamed(
                                   //   context,
                                   //   '/nearby-riders',

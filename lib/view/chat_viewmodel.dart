@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/constant/appconstant.dart';
 import 'package:ride_sharing/provider/base_model.dart';
+import 'package:ride_sharing/services/api_response.dart';
+import 'package:ride_sharing/services/api_services.dart';
 
 class ChatScreenModel extends BaseModel {
   String message = '';
@@ -12,8 +15,10 @@ class ChatScreenModel extends BaseModel {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+  final ApiService apiService = ApiService();
+
   void init(String peerId) {
-    meUid = FirebaseAuth.instance.currentUser!.uid;
+    meUid = FirebaseAuth.instance.currentUser?.uid ?? "";
     peerUid = peerId;
     createChatRoom();
   }
@@ -52,6 +57,14 @@ class ChatScreenModel extends BaseModel {
         "createdAt": DateTime.now()
       };
       db.collection('chats').doc(chatRoomId).collection("room").add(chatData);
+
+      var body = {
+        "receiverUid": peerUid,
+        "senderUid": meUid,
+        "message": message,
+      };
+
+      final ApiResponse response = await apiService.sendChatNotification(body);
     }
   }
 }

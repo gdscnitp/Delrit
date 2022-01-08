@@ -27,13 +27,13 @@ class RiderDetailsViewModel extends BaseModel {
     riderInfo = args?["riderInfo"];
   }
 
-  void requestRide(RiderModel rider) async {
+  void requestRide() async {
     print("ffff");
     print("yo");
     print(FirebaseAuth.instance.currentUser?.uid ?? "ddddddddddddddddddddd");
     print(riderInfo?.id);
     print(currentDriveId);
-    print(rider.docId);
+    print(rider?.docId);
 
     var data = (await db
             .collection("trips")
@@ -52,7 +52,7 @@ class RiderDetailsViewModel extends BaseModel {
           },
           "riders": [
             {
-              "rideId": rider.docId,
+              "rideId": rider!.docId,
               "riderUid": riderInfo?.id,
               "riderStatus": "pending",
             }
@@ -73,7 +73,7 @@ class RiderDetailsViewModel extends BaseModel {
         await db.collection("trips").doc(data[0].id).update({
           "riders": FieldValue.arrayUnion([
             {
-              "rideId": rider.docId,
+              "rideId": rider!.docId,
               "riderUid": riderInfo?.id,
               "riderStatus": "pending",
             }
@@ -92,6 +92,6 @@ class RiderDetailsViewModel extends BaseModel {
     };
 
     final ApiResponse response =
-        await apiService.sendFirebaseNotification(body);
+        await apiService.sendRequestNotificationToRider(body);
   }
 }

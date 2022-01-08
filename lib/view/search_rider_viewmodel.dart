@@ -336,36 +336,48 @@ class SearchRiderViewModel extends BaseModel {
     }
   }
 
-  Future<void> addDriver() async {
+  Future<String> addDriver() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
 
     if (uid == null) {
       print("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
       AppConstant.showFailToast("Please Login First");
       navigationService.navigateTo('/landing');
-      return;
+      return "";
     }
     setState(ViewState.Busy);
-    // var sourceCord = await locationFromAddress(startAddressController.text);
-    // var destinationCord =
-    //     await locationFromAddress(destinationAddressController.text);
-    // String driveId = (await db.collection("availableDrivers").add({
-    //   "uid": FirebaseAuth.instance.currentUser?.uid,
-    //   "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
-    //   "destination":
-    //       GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
-    //   "sourceName": startAddressController.text,
-    //   "destinationName": destinationAddressController.text,
-    //   "time": selectedDate.millisecondsSinceEpoch,
-    //   "vehicle": selectedVehicle
-    // }))
-    //     .id;
+    var sourceCord = await locationFromAddress(startAddressController.text);
+    var destinationCord =
+        await locationFromAddress(destinationAddressController.text);
+    String driveId = (await db.collection("availableDrivers").add({
+      "uid": FirebaseAuth.instance.currentUser?.uid,
+      "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
+      "destination":
+          GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
+      "sourceName": startAddressController.text,
+      "destinationName": destinationAddressController.text,
+      "time": selectedDate.millisecondsSinceEpoch,
+      "vehicle": selectedVehicle
+    }))
+        .id;
 
-    String driveId = "hjb6uRGcdNpp9H64ZAa1";
-    setState(ViewState.Idle);
+    // String driveId = "55ZIuuSBk2T26i8olinP";
+    return driveId;
+  }
+
+  Future<void> addTrip(String driveId) async {
+    await db.collection("trips").add({
+      "driver": {
+        "driveId": driveId,
+        "driverUid": FirebaseAuth.instance.currentUser!.uid,
+        "driverStatus": "confirmed",
+      },
+      "riders": [],
+    });
     navigationService.navigateTo(
       '/available-riders',
       arguments: driveId,
     );
+    setState(ViewState.Idle);
   }
 }

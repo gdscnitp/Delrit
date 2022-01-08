@@ -25,25 +25,33 @@ class DriverDetailsViewModel extends BaseModel {
 
   void requestRide() async {
     print("yo");
-    print(FirebaseAuth.instance.currentUser?.uid ?? "ddddddddddddddddddddd");
-    print(driverInfo?.id);
-    print(currentRideId);
-    print(driver?.docId);
+    print(
+        "Rider: ${FirebaseAuth.instance.currentUser?.uid ?? "ddddddddddddddddddddd"}");
+    print("Driver: ${driverInfo?.id}");
+    print("Rideid: ${currentRideId}");
+    print("DriveId: ${driver?.docId}");
 
     var data = (await db
             .collection("trips")
-            .where("driveId", isEqualTo: driver!.docId)
+            .where("driver.driveId", isEqualTo: driver!.docId)
             .get())
         .docs;
     print(data);
     String tripId;
     if (data.isEmpty) {
       tripId = (await db.collection("trips").add({
-        "driverUid": driver!.docId,
-        "ridersUid": [FirebaseAuth.instance.currentUser?.uid],
-        "driveId": driver!.docId,
-        "ridesId": [currentRideId],
-        "status": "pending"
+        "driver": {
+          "driveId": driver!.docId,
+          "driverStatus": "pending",
+          "driverUid": driverInfo?.id,
+        },
+        "riders": [
+          {
+            "riderUid": FirebaseAuth.instance.currentUser?.uid,
+            "riderStatus": "confirmed",
+            "rideId": currentRideId,
+          }
+        ]
       }))
           .id;
       print(tripId);
@@ -52,9 +60,13 @@ class DriverDetailsViewModel extends BaseModel {
     } else {
       tripId = data[0].id;
       await db.collection("trips").doc(data[0].id).update({
-        "ridersUid":
-            FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid]),
-        "ridesId": FieldValue.arrayUnion([currentRideId]),
+        "riders": FieldValue.arrayUnion([
+          {
+            "riderUid": FirebaseAuth.instance.currentUser?.uid,
+            "riderStatus": "pending",
+            "rideId": currentRideId,
+          }
+        ])
       });
       print(data[0].id);
       print("already in db");
@@ -68,7 +80,7 @@ class DriverDetailsViewModel extends BaseModel {
     };
 
     final ApiResponse response =
-        await apiService.sendFirebaseNotification(body);
+        await apiService.sendRequestNotificationToDriver(body);
   }
 
   void rideStatus(bool newStatus) {
