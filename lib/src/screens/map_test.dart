@@ -218,6 +218,11 @@ class _MapTestState extends State<MapTest> {
             onMapCreated: (GoogleMapController controller) {
               _mapController = controller;
             },
+            onCameraMove: (CameraPosition position) {
+              // _mapController?.animateCamera(
+              //   CameraUpdate.newLatLngZoom(position.target, 13.0),
+              // );
+            },
           ),
           // Show zoom buttons
           SafeArea(

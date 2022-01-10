@@ -9,7 +9,7 @@ class AvailableRidersViewModel extends BaseModel {
   List<RiderModel> availableRiders = [];
   String? currentDriveId;
 
-  void init(String driveId) async {
+  void init(String? driveId) async {
     ///Get the list of all the available riders and display
 
     // (await db.collection('availableRiders').get()).docs.map((e) async {

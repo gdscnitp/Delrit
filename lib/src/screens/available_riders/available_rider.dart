@@ -10,7 +10,7 @@ class AvailableRiders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<AvailableRidersViewModel>(
-        onModelReady: (model) => model.init(driveId!),
+        onModelReady: (model) => model.init(driveId),
         builder: (context, model, child) {
           return Scaffold(
             appBar: AppBar(
