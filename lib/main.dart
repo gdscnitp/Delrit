@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -108,21 +109,7 @@ class _MyAppState extends State<MyApp> {
       //     ),
       //   ),
       // ),
-      theme: ThemeData(
-        // fontFamily: 'Poppins',
-        colorScheme: const ColorScheme.light(
-          primary: Color(0xFF478DF4),
-          secondary: Color(0xFFF4AE47),
-          surface: Color(0xFFC4C4C4),
-          background: Color(0xFFFFFFFF),
-          error: Color(0xFFB00020),
-          onPrimary: Colors.white,
-          onSecondary: Colors.white,
-          onSurface: Colors.black,
-          onBackground: Colors.black,
-          onError: Colors.white,
-          brightness: Brightness.light,
-        ),
+      theme: FlexThemeData.light(scheme: FlexScheme.indigo).copyWith(
         textTheme: TextTheme(
           button: const TextStyle(color: Colors.white),
 
@@ -171,6 +158,126 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
+      // The material dark theme.
+      darkTheme: FlexThemeData.dark(scheme: FlexScheme.indigo).copyWith(
+        textTheme: TextTheme(
+          button: const TextStyle(color: Colors.white),
+
+          /// Headline 1 style ---- Use it --- Do not change ----///
+          headline1: const TextStyle(
+            fontSize: 21.0,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+            //overflow: TextOverflow.ellipsis,
+          ),
+
+          /// Headline 2 style ---- Use it --- Do not change ----///
+          headline2: const TextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+          headline3: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w600,
+              color: config.ThemeColors.mainTextSecondaryColor(1)),
+          headline4: TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.w700,
+              color: config.ThemeColors().secondColor(1)),
+          headline5: const TextStyle(
+            fontSize: 22.0,
+            fontWeight: FontWeight.w300,
+            color: Colors.white,
+          ),
+          subtitle1: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.w500,
+              color: config.ThemeColors().secondColor(1)),
+          subtitle2: const TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+          bodyText1: const TextStyle(
+            fontSize: 15.0,
+            color: Colors.white,
+          ),
+          bodyText2: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.w600,
+              color: config.ThemeColors.mainTextSecondaryColor(1)),
+          caption: TextStyle(
+            fontSize: 12.0,
+            color: config.ThemeColors().secondColor(0.6),
+          ),
+        ),
+      ),
+      // Use dark or light theme based on system setting.
+      themeMode: ThemeMode.system,
+      // theme: ThemeData(
+      //   // fontFamily: 'Poppins',
+      //   colorScheme: const ColorScheme.light(
+      //     primary: Color(0xFF478DF4),
+      //     secondary: Color(0xFFF4AE47),
+      //     surface: Color(0xFFC4C4C4),
+      //     background: Color(0xFFFFFFFF),
+      //     error: Color(0xFFB00020),
+      //     onPrimary: Colors.white,
+      //     onSecondary: Colors.white,
+      //     onSurface: Colors.black,
+      //     onBackground: Colors.black,
+      //     onError: Colors.white,
+      //     brightness: Brightness.light,
+      //   ),
+      //   textTheme: TextTheme(
+      //     button: const TextStyle(color: Colors.white),
+      //
+      //     /// Headline 1 style ---- Use it --- Do not change ----///
+      //     headline1: TextStyle(
+      //       fontSize: 21.0,
+      //       fontWeight: FontWeight.w700,
+      //       color: config.ThemeColors.mainTextColor(1),
+      //       //overflow: TextOverflow.ellipsis,
+      //     ),
+      //
+      //     /// Headline 2 style ---- Use it --- Do not change ----///
+      //     headline2: TextStyle(
+      //         fontSize: 18.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.ThemeColors.mainTextColor(1)),
+      //     headline3: TextStyle(
+      //         fontSize: 18.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.ThemeColors.mainTextSecondaryColor(1)),
+      //     headline4: TextStyle(
+      //         fontSize: 22.0,
+      //         fontWeight: FontWeight.w700,
+      //         color: config.ThemeColors().secondColor(1)),
+      //     headline5: TextStyle(
+      //         fontSize: 22.0,
+      //         fontWeight: FontWeight.w300,
+      //         color: config.ThemeColors().mainColor(1)),
+      //     subtitle1: TextStyle(
+      //         fontSize: 15.0,
+      //         fontWeight: FontWeight.w500,
+      //         color: config.ThemeColors().secondColor(1)),
+      //     subtitle2: TextStyle(
+      //         fontSize: 16.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.ThemeColors().mainColor(1)),
+      //     bodyText1: TextStyle(
+      //         fontSize: 15.0, color: config.ThemeColors.mainTextColor(1)),
+      //     bodyText2: TextStyle(
+      //         fontSize: 15.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.ThemeColors.mainTextSecondaryColor(1)),
+      //     caption: TextStyle(
+      //       fontSize: 12.0,
+      //       color: config.ThemeColors().secondColor(0.6),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

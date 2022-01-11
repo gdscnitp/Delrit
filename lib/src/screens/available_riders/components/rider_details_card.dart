@@ -80,7 +80,7 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
       child: Container(
-        height: height / 3.2,
+        height: height / 2.8,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -128,6 +128,7 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
                   children: [
                     Text(
                       'From : $source',
+                      maxLines: 2,
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     SizedBox(
@@ -135,6 +136,7 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
                     ),
                     Text(
                       'To : $destination',
+                      maxLines: 2,
                       style: Theme.of(context).textTheme.bodyText2,
                     ),
                     SizedBox(

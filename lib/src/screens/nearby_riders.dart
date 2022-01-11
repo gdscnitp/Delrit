@@ -36,6 +36,9 @@ class _NearbyRidersState extends State<NearbyRiders> {
               onMapCreated: (GoogleMapController controller) {
                 model.mapController = controller;
               },
+              onCameraMove: (CameraPosition position) {
+                //model.onCameraMove(position: position);
+              },
             ),
             // Show zoom buttons
             SafeArea(
