@@ -26,13 +26,33 @@ Widget Body(BuildContext context, UserProfileViewModel model) {
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       SizedBox(height: getProportionateScreenHeight(15)),
-      ProfileWidget(
-        imagePath: 'assets/images/user_img.png',
-        onClicked: () {
-          _showModalSheet(context, model);
+      Stack(
+        children: [
+          CircleAvatar(
+            backgroundImage: NetworkImage(model.imgUrl),
+            radius: 80,
+            backgroundColor: Colors.transparent,
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: () {
+                _showModalSheet(context, model);
 
-          ///Fetch the data
-        },
+                ///Fetch the data
+              },
+              child: const CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.blue,
+                child: Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       SizedBox(height: getProportionateScreenHeight(20)),
       Text(

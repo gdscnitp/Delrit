@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ride_sharing/config/app_config.dart';
+import 'package:ride_sharing/src/screens/user_profile/components/profile_widget.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
 import 'package:ride_sharing/view/user_profile_viewmodel.dart';
 
@@ -18,6 +22,31 @@ class CustomModelSheet extends StatelessWidget {
         child: SizedBox(
           child: Column(
             children: [
+              Stack(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(model.imgUrl),
+                    radius: 50,
+                    backgroundColor: Colors.transparent,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () => model.pickImage(),
+                      child: const CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.blue,
+                        child: Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: getProportionateScreenHeight(20)),
               Text(
                 'Edit Your Profile',
                 style: Theme.of(context).textTheme.headline3!.copyWith(

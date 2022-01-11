@@ -15,6 +15,7 @@ class UserProfileModel {
     required this.address,
     required this.gender,
     required this.age,
+    required this.profile,
   });
 
   final String? name;
@@ -25,6 +26,8 @@ class UserProfileModel {
   final String? address;
   final String? gender;
   final String? age;
+  String profile =
+      "https://firebasestorage.googleapis.com/v0/b/ride-share-a1e6e.appspot.com/o/profile_photos%2Fuser_img.png?alt=media&token=1ac398e6-0e34-417c-9cc6-652cae3b6e5b";
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
       UserProfileModel(
@@ -36,6 +39,8 @@ class UserProfileModel {
         address: json["address"],
         gender: json["gender"],
         age: json["age"],
+        profile: json["profile"] ??
+            "https://firebasestorage.googleapis.com/v0/b/ride-share-a1e6e.appspot.com/o/profile_photos%2Fuser_img.png?alt=media&token=1ac398e6-0e34-417c-9cc6-652cae3b6e5b",
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,5 +52,6 @@ class UserProfileModel {
         "address": address,
         "gender": gender,
         "age": age,
+        "profile": profile,
       };
 }
