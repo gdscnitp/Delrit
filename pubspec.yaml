@@ -60,6 +60,8 @@ dependencies:
   permission_handler: ^8.3.0
   #User ride rating
   flutter_rating_bar: ^4.0.0
+  #App theming
+  flex_color_scheme: ^4.1.1
 
 dev_dependencies:
   flutter_test:

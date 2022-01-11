@@ -380,4 +380,13 @@ class SearchRiderViewModel extends BaseModel {
     );
     setState(ViewState.Idle);
   }
+
+  void onCameraMove({required CameraPosition position}) {
+    mapController?.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: position.target, zoom: 13.0),
+      ),
+    );
+    notifyListeners();
+  }
 }

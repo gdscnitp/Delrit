@@ -27,7 +27,7 @@ class HomeScreenViewModel extends BaseModel {
     ///We are storing map with extra details who has rated
     db.collection("users").doc(uid).update({
       "rating": FieldValue.arrayUnion([
-        {currentUser: starCount}
+        {'time': Timestamp.now().millisecondsSinceEpoch, 'count': starCount}
       ]),
     }).then((value) {
       print("User saved to db");

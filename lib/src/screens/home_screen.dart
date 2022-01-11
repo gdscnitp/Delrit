@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text('Home'),
-        backgroundColor: config.ThemeColors().mainColor(1),
+        //backgroundColor: config.ThemeColors().mainColor(1),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Text('Available Riders'),
           ),
+
           // ElevatedButton(
           //   onPressed: () {
           //     Navigator.pushNamed(context, '/rider-details');
