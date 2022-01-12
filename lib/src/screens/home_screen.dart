@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart' as config;
+import 'package:ride_sharing/provider/base_view.dart';
+import 'package:ride_sharing/src/models/user.dart';
+import 'package:ride_sharing/src/screens/rider_details/components/reusable_button.dart';
+import 'package:ride_sharing/src/screens/test_screen.dart';
+import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
 import 'package:ride_sharing/src/widgets/app_drawer.dart';
-import 'package:ride_sharing/src/screens/home_screen/components/next_rider_bottom_sheet.dart';
-import 'package:ride_sharing/src/screens/home_screen/components/ride_completed_bottom_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,57 +17,92 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+
   Future<void> setupInteractedMessage() async {
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
       _handleMessage(initialMessage);
     }
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Notification"),
-            content: const Text("yoo"),
-            actions: [
-              TextButton(
-                child: const Text("Ok"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        },
-      );
-    });
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleBackgroundMessage);
+    FirebaseMessaging.onMessage.listen(_handleMessage);
   }
 
   void _handleMessage(RemoteMessage message) {
-    print("Handling Here");
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+
+    if (message.data["requestType"] == "RequestByDriver" ||
+        message.data["requestType"] == "RequestByRider") {
+      showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(15),
+            topLeft: Radius.circular(15),
+          ),
+        ),
+        builder: (builder) {
+          return DriverRequestBottomSheet(message.data);
+        },
+      );
+    }
   }
 
-  void _showModalSheet(BuildContext context) {
-    showModalBottomSheet<dynamic>(
-      context: context,
-      isScrollControlled: true,
-      builder: (builder) {
-        return Container(
-          height: config.getProportionateScreenHeight(310),
-          child: nextRiderBottomSheet(context),
-        );
-      },
-    );
+  void _handleBackgroundMessage(RemoteMessage message) async {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+
+    if (message.data["requestType"] == "Chat") {
+      var data =
+          (await db.collection('users').doc(message.data["senderUid"]).get())
+              .data();
+      UserProfileModel user = UserProfileModel.fromJson(data!);
+      print("here===");
+      print(user.name);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        "/chats",
+        (route) => true,
+        arguments: user,
+      );
+    } else {
+      showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(15),
+            topLeft: Radius.circular(15),
+          ),
+        ),
+        builder: (builder) {
+          return DriverRequestBottomSheet(message.data);
+        },
+      );
+    }
   }
+
+  // void _showModalSheet(BuildContext context) {
+  //   showModalBottomSheet<dynamic>(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     builder: (builder) {
+  //       return Container(
+  //         height: config.getProportionateScreenHeight(310),
+  //         child: rideCompleted(context),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   void initState() {
@@ -74,11 +113,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     config.SizeConfig().init(context);
+    // return BaseView<HomeScreenViewModel>(
+    //     onModelReady: (model) => model.init(),
+    //     builder: (context, model, child) {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text('Home'),
-        backgroundColor: config.ThemeColors().mainColor(1),
+        //backgroundColor: config.ThemeColors().mainColor(1),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,12 +145,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/addride');
-            },
-            child: const Text('Add Ride'),
-          ),
-          ElevatedButton(
-            onPressed: () {
               Navigator.pushNamed(context, '/post-ride');
             },
             child: const Text('Post Ride'),
@@ -118,6 +154,12 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.pushNamed(context, '/searchrider');
             },
             child: const Text('Search Rider'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/addVehicle');
+            },
+            child: const Text('Add Vehicle'),
           ),
           ElevatedButton(
             onPressed: () {
@@ -137,20 +179,148 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Text('Available Riders'),
           ),
+
+          // ElevatedButton(
+          //   onPressed: () {
+          //     Navigator.pushNamed(context, '/rider-details');
+          //   },
+          //   child: const Text('Rider Details'),
+          // ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                '/available-drivers',
+                arguments: "aOG5i3YIccmhMnADEEqb",
+              );
+            },
+            child: const Text('Available Drivers'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/chats');
+            },
+            child: const Text('Chats'),
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, '/ride-details');
             },
             child: const Text('Ride Details'),
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/access-permission');
+            },
+            child: const Text('Access Permission'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const TestScreen()));
+            },
+            child: const Text('Test Screen'),
+          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showModalSheet(context);
-          //Navigator.pushNamed(context, '/detail');
-        },
-        child: const Icon(Icons.add),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     _showModalSheet(context);
+      //     //Navigator.pushNamed(context, '/detail');
+      //   },
+      //   child: const Icon(Icons.add),
+      // ),
+    );
+    //});
+  }
+}
+
+class DriverRequestBottomSheet extends StatefulWidget {
+  final Map<String, dynamic> message;
+  const DriverRequestBottomSheet(this.message, {Key? key}) : super(key: key);
+
+  @override
+  _DriverRequestBottomSheetState createState() =>
+      _DriverRequestBottomSheetState();
+}
+
+class _DriverRequestBottomSheetState extends State<DriverRequestBottomSheet> {
+  String requesterName = "";
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  void getUserInfo(String uid) async {
+    print(uid);
+    var data = (await db.collection("users").doc(uid).get()).data();
+
+    setState(() {
+      requesterName = data!["name"];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.message["requestType"] == "RequestByDriver"
+        ? getUserInfo(widget.message["driverUid"])
+        : getUserInfo(widget.message["riderUid"]);
+  }
+
+  void handleAccept() async {
+    print("Accepted");
+    var data =
+        (await db.collection("trips").doc(widget.message["tripId"]).get())
+            .data();
+    var riders = data!["riders"] as List;
+
+    var newRiders = riders.map((e) {
+      if (e["riderUid"] == widget.message["riderUid"]) {
+        e["riderStatus"] = "confirmed";
+      }
+      return e;
+    }).toList();
+
+    db.collection("trips").doc(widget.message["tripId"]).update({
+      "riders": newRiders,
+    });
+
+    print(newRiders);
+
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 40),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            widget.message["requestType"] == "RequestByDriver"
+                ? "You have asked to join $requesterName's trip"
+                : "$requesterName has requested to join your trip",
+            style: Theme.of(context).textTheme.headline2,
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              resuableButton(
+                text: 'Deny',
+                buttoncolor: Color(0xFFf46647),
+                onPress: () {},
+              ),
+              resuableButton(
+                text: 'Accept',
+                buttoncolor: Color(0xFF65cb14),
+                onPress: () {
+                  handleAccept();
+                },
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

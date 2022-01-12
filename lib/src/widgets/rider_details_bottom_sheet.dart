@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:ride_sharing/config/app_config.dart';
-import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/src/models/riders.dart';
-import 'package:ride_sharing/src/screens/available_riders/components/reusable_button.dart';
-import 'package:ride_sharing/view/search_rider_viewmodel.dart';
+import 'package:ride_sharing/src/models/user.dart';
+import 'package:ride_sharing/src/screens/rider_details/components/reusable_button.dart';
 
 class RiderDetailsBottomSheet extends StatefulWidget {
   final Rider rider;
+  final UserProfileModel riderInfo;
   final Function func;
   const RiderDetailsBottomSheet(
-      {Key? key, required this.rider, required this.func})
+      {Key? key,
+      required this.rider,
+      required this.riderInfo,
+      required this.func})
       : super(key: key);
   @override
   _RiderDetailsBottomSheetState createState() =>
@@ -19,6 +23,27 @@ class RiderDetailsBottomSheet extends StatefulWidget {
 class _RiderDetailsBottomSheetState extends State<RiderDetailsBottomSheet> {
   String buttonText = "Accept Ride";
   final double sizedHeight = getProportionateScreenHeight(7);
+  String? source, destination;
+
+  void getSourceAndDestination() async {
+    Placemark place;
+    place = (await placemarkFromCoordinates(
+        widget.rider.source.latitude, widget.rider.source.longitude))[0];
+    setState(() {
+      source = "${place.name}, ${place.locality}, ${place.postalCode}";
+    });
+    place = (await placemarkFromCoordinates(widget.rider.destination.latitude,
+        widget.rider.destination.longitude))[0];
+    setState(() {
+      destination = "${place.name}, ${place.locality}, ${place.postalCode}";
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getSourceAndDestination();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +81,7 @@ class _RiderDetailsBottomSheetState extends State<RiderDetailsBottomSheet> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Rider Name',
+                          widget.riderInfo.name ?? "",
                           style: Theme.of(context).textTheme.headline1,
                         ),
                         SizedBox(
@@ -85,14 +110,14 @@ class _RiderDetailsBottomSheetState extends State<RiderDetailsBottomSheet> {
                           height: sizedHeight,
                         ),
                         Text(
-                          'Gender : Female',
+                          'Gender : ${widget.riderInfo.gender ?? ""}',
                           style: Theme.of(context).textTheme.headline2,
                         ),
                         SizedBox(
                           height: sizedHeight,
                         ),
                         Text(
-                          'Age : 35 years',
+                          'Age : ${widget.riderInfo.age ?? ""}',
                           style: Theme.of(context).textTheme.headline2,
                         ),
                         SizedBox(
@@ -117,14 +142,14 @@ class _RiderDetailsBottomSheetState extends State<RiderDetailsBottomSheet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Source : Patliputra, Patna',
+                        'Source : $source',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       SizedBox(
                         height: getProportionateScreenHeight(10),
                       ),
                       Text(
-                        'Destination : Mahendru Ghat, Patna',
+                        'Destination : $destination',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       SizedBox(

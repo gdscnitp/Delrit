@@ -53,9 +53,15 @@ dependencies:
   google_fonts: ^2.1.0
   flutter_config: ^2.0.0
   firebase_messaging: ^11.2.3
+  flutter_chat_bubble: ^2.0.0
   country_code_picker: ^2.0.2
   # DateTime Formating
   intl: ^0.17.0
+  permission_handler: ^8.3.0
+  #User ride rating
+  flutter_rating_bar: ^4.0.0
+  #App theming
+  flex_color_scheme: ^4.1.1
 
 
 

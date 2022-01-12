@@ -6,7 +6,7 @@ import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
 import 'package:ride_sharing/view/search_rider_viewmodel.dart';
 
 class NearbyRiders extends StatefulWidget {
-  final Object? args;
+  final Map<String, dynamic> args;
   const NearbyRiders({Key? key, required this.args}) : super(key: key);
 
   @override
@@ -35,6 +35,9 @@ class _NearbyRidersState extends State<NearbyRiders> {
               zoomControlsEnabled: false,
               onMapCreated: (GoogleMapController controller) {
                 model.mapController = controller;
+              },
+              onCameraMove: (CameraPosition position) {
+                //model.onCameraMove(position: position);
               },
             ),
             // Show zoom buttons

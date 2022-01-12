@@ -50,9 +50,9 @@ class Header extends StatelessWidget {
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(
                     vertical: 18.0, horizontal: 10.0),
-                hintText: 'Pick your current location',
+                hintText: 'Pick your location',
                 hintStyle: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 15,
                 ),
                 prefixIcon: const Icon(
                   Icons.menu,

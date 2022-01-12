@@ -5,6 +5,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ride_sharing/constant/appconstant.dart';
 import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 
@@ -153,7 +154,7 @@ class PostRideViewModel extends BaseModel {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime(2022),
+      lastDate: DateTime(2023),
     );
     print(date);
     final time = await showTimePicker(
@@ -176,19 +177,45 @@ class PostRideViewModel extends BaseModel {
     notifyListeners();
   }
 
-  void addRideToDb(BuildContext context) async {
+  Future<String> addRideToDb(BuildContext context) async {
+    String uid = FirebaseAuth.instance.currentUser?.uid ?? "";
+
+    if (uid == "") {
+      AppConstant.showFailToast("Please login to continue");
+      navigationService.navigateTo("/landing");
+      return "";
+    }
     setState(ViewState.Busy);
     var sourceCord = await locationFromAddress(startAddressController.text);
     var destinationCord =
         await locationFromAddress(destinationAddressController.text);
-    await db.collection("availableRiders").add({
+    String id = (await db.collection("availableRiders").add({
       "uid": FirebaseAuth.instance.currentUser?.uid ?? "",
       "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
       "destination":
           GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
+      "sourceName": startAddressController.text,
+      "destinationName": destinationAddressController.text,
       "time": selectedDate.millisecondsSinceEpoch,
-    }).then((value) => print("added"));
+    }))
+        .id;
     clear();
     setState(ViewState.Idle);
+    return id;
+  }
+
+  void locationCallBackStarting(String? value) {
+    startAddress = value ?? "";
+    startAddressController.text = value ?? "";
+    notifyListeners();
+    if (value != null) {
+      getNewPosition(value);
+    }
+  }
+
+  void locationCallBackDestination(String? value) {
+    destinationAddress = value ?? "";
+    destinationAddressController.text = value ?? "";
+    notifyListeners();
   }
 }

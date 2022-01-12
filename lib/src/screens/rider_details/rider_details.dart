@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:ride_sharing/config/app_config.dart';
-import 'package:ride_sharing/constant/text_style.dart';
 import 'package:ride_sharing/provider/base_view.dart';
-import 'package:ride_sharing/view/available_riders_viewmodel.dart';
+import 'package:ride_sharing/view/rider_details_viewmodel.dart';
 import 'components/body.dart';
 
-class AvailableRiders extends StatelessWidget {
-  const AvailableRiders({Key? key}) : super(key: key);
+class RiderDetails extends StatelessWidget {
+  final Map<String, dynamic>? args;
+  const RiderDetails({Key? key, this.args}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ///Taking devices exact height and widths
-    SizeConfig().init(context);
-    return BaseView<AvailableRidersViewModel>(builder: (context, model, child) {
+    return BaseView<RiderDetailsViewModel>(
+      onModelReady: (model) => model.init(args),
+      builder: (context, model, child) {
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            'Available Riders',
+            'Rider Details',
             style: Theme.of(context).textTheme.headline2,
           ),
           leading: GestureDetector(

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -9,16 +10,20 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ride_sharing/constant/appconstant.dart';
+import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_services.dart';
 import 'package:ride_sharing/src/models/riders.dart';
+import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/widgets/get_bytes_from_asset.dart';
 import 'package:ride_sharing/src/widgets/rider_details_bottom_sheet.dart';
 import 'package:http/http.dart' as http;
 
 class SearchRiderViewModel extends BaseModel {
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
+  final FirebaseFirestore db = FirebaseFirestore.instance;
   final ApiService _apiService = ApiService();
   final CameraPosition initialLocation = const CameraPosition(
     target: LatLng(26.8876621, 80.995846),
@@ -37,9 +42,11 @@ class SearchRiderViewModel extends BaseModel {
   String startAddress = '';
   String destinationAddress = '';
 
+  final List<String> vehicles = ['Choose vehicle', 'Car', 'Bike'];
+  String selectedVehicle = 'Choose vehicle';
+
   Set<Marker> markers = {};
 
-  final db = FirebaseFirestore.instance;
   List<Rider> nearbyRiders = [];
 
   late PolylinePoints polylinePoints;
@@ -48,18 +55,15 @@ class SearchRiderViewModel extends BaseModel {
 
   DateTime selectedDate = DateTime(0);
 
-  final List<String> vehicles = ['Choose vehicle', 'Car', 'Bike'];
-  String selectedVehicle = 'Choose vehicle';
-
-  init(args) async {
+  init(Map<String, dynamic> args) async {
     getCurrentLocation();
     print("==========================================");
     print(startAddressController.text);
     print(destinationAddressController.text);
     print(args);
     print("==========================================");
-    startAddressController.text = args?["startAddress"] ?? '';
-    destinationAddressController.text = args?["destinationAddress"] ?? '';
+    startAddressController.text = args["startAddress"] ?? '';
+    destinationAddressController.text = args["destinationAddress"] ?? '';
 
     List<Location> l = await locationFromAddress(startAddressController.text);
     print(l);
@@ -137,8 +141,8 @@ class SearchRiderViewModel extends BaseModel {
         (await db.collection('availableRiders').get()).docs.map((e) {
       var data = e.data();
       return Rider(
-          id: e.id,
-          name: data["name"],
+          docId: e.id,
+          uid: data['uid'] ?? "",
           source: data["source"],
           destination: data["destination"]);
     }).toList();
@@ -160,24 +164,27 @@ class SearchRiderViewModel extends BaseModel {
 
     markers.clear();
     for (Rider r in nearbyRiders) {
+      var user = (await db.collection('users').doc(r.uid).get()).data();
+      UserProfileModel userProfile = userProfileFromJson(user);
       markers.add(
         Marker(
-          onTap: () {
+          onTap: () async {
+            print(r);
             String buttonText = "Accept Ride";
             showModalBottomSheet(
               isScrollControlled: true,
               context: context,
-              builder: (context) =>
-                  RiderDetailsBottomSheet(rider: r, func: () => acceptRide(r)),
+              builder: (context) => RiderDetailsBottomSheet(
+                  rider: r, riderInfo: userProfile, func: () => acceptRide(r)),
               enableDrag: true,
             );
           },
-          markerId: MarkerId(r.id),
+          markerId: MarkerId(r.docId),
           icon: BitmapDescriptor.fromBytes(markerIcon),
           position: LatLng(r.source.latitude, r.source.longitude),
           infoWindow: InfoWindow(
-            title: r.name,
-            snippet: r.name,
+            title: userProfile.name,
+            snippet: userProfile.email,
           ),
         ),
       );
@@ -288,12 +295,12 @@ class SearchRiderViewModel extends BaseModel {
   }
 
   void acceptRide(Rider r) async {
-    print("yoooooooooooooooooooo");
-    var token =
-        "cuiqIW3wT2ycOyijjoOdJK:APA91bFbPRFj6wRNowB7jo7xAuVE_KGvnZy-wIPQPkT936djHz1GT_Bxss_B2bH427EAz4aIp8mPiInV0fINchIlHPhZHjm3KeAGqBQtc8knkfTirHwTGqkzN6NCiYuqepWgROstaB3M";
-    final ApiResponse response =
-        await _apiService.sendFirebaseNotification(token);
-    print(response.data);
+    // print("yoooooooooooooooooooo");
+    // var token =
+    //     "cuiqIW3wT2ycOyijjoOdJK:APA91bFbPRFj6wRNowB7jo7xAuVE_KGvnZy-wIPQPkT936djHz1GT_Bxss_B2bH427EAz4aIp8mPiInV0fINchIlHPhZHjm3KeAGqBQtc8knkfTirHwTGqkzN6NCiYuqepWgROstaB3M";
+    // final ApiResponse response =
+    //     await _apiService.sendFirebaseNotification(token);
+    // print(response.data);
     // final uri = Uri.parse("http://192.168.1.11:3000/firebase/send");
     // final response = await http.post(uri, body: {"tokens": token});
 
@@ -313,7 +320,7 @@ class SearchRiderViewModel extends BaseModel {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime(2022),
+      lastDate: DateTime(2023),
     );
     print(date);
     final time = await showTimePicker(
@@ -327,5 +334,59 @@ class SearchRiderViewModel extends BaseModel {
           DateTime(date.year, date.month, date.day, time.hour, time.minute);
       notifyListeners();
     }
+  }
+
+  Future<String> addDriver() async {
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
+
+    if (uid == null) {
+      print("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+      AppConstant.showFailToast("Please Login First");
+      navigationService.navigateTo('/landing');
+      return "";
+    }
+    setState(ViewState.Busy);
+    var sourceCord = await locationFromAddress(startAddressController.text);
+    var destinationCord =
+        await locationFromAddress(destinationAddressController.text);
+    String driveId = (await db.collection("availableDrivers").add({
+      "uid": FirebaseAuth.instance.currentUser?.uid,
+      "source": GeoPoint(sourceCord[0].latitude, sourceCord[0].longitude),
+      "destination":
+          GeoPoint(destinationCord[0].latitude, destinationCord[0].longitude),
+      "sourceName": startAddressController.text,
+      "destinationName": destinationAddressController.text,
+      "time": selectedDate.millisecondsSinceEpoch,
+      "vehicle": selectedVehicle
+    }))
+        .id;
+
+    // String driveId = "55ZIuuSBk2T26i8olinP";
+    return driveId;
+  }
+
+  Future<void> addTrip(String driveId) async {
+    await db.collection("trips").add({
+      "driver": {
+        "driveId": driveId,
+        "driverUid": FirebaseAuth.instance.currentUser!.uid,
+        "driverStatus": "confirmed",
+      },
+      "riders": [],
+    });
+    navigationService.navigateTo(
+      '/available-riders',
+      arguments: driveId,
+    );
+    setState(ViewState.Idle);
+  }
+
+  void onCameraMove({required CameraPosition position}) {
+    mapController?.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: position.target, zoom: 13.0),
+      ),
+    );
+    notifyListeners();
   }
 }

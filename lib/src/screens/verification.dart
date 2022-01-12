@@ -1,44 +1,37 @@
-
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:country_code_picker/country_localizations.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
-void main() => runApp(const MaterialApp(
-      home: PhoneScreen(),
-    ));
+import 'package:ride_sharing/enum/view_state.dart';
+import 'package:ride_sharing/provider/base_view.dart';
+import 'package:ride_sharing/view/login_viewmodel.dart';
 
 class PhoneScreen extends StatelessWidget {
   const PhoneScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      supportedLocales: [
-        Locale('en','US'),
-      ],
-      localizationsDelegates: [
-        CountryLocalizations.delegate
-      ],
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        
+    return BaseView<LoginViewModel>(
+      builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: SafeArea(
-            
-            child: Stack(
-            children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 70,left:15,right: 15,bottom: 0),
-                  
+        body: model.currentState ==
+                MobileVerificationState.SHOW_MOBILE_FORM_STATE
+            ? SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 70, left: 15, right: 15, bottom: 0),
                   child: Column(
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      const Text(
-                        'Enter your phone number\nfor verification',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 24),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () => Navigator.pop(context),
+                              icon: const Icon(Icons.arrow_back)),
+                          const Text(
+                            'Enter your phone number\nfor verification',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 24),
+                          ),
+                        ],
                       ),
                       const SizedBox(
                         height: 30,
@@ -51,59 +44,57 @@ class PhoneScreen extends StatelessWidget {
                         height: 70,
                       ),
                       Padding(
-                        
-                        padding: const EdgeInsets.only(right: 10,),
+                        padding: const EdgeInsets.only(
+                          right: 10,
+                        ),
                         child: Row(
-                          
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisSize: MainAxisSize.max,
                           children: [
-                        
                             Expanded(
-                              flex:4,
+                              flex: 2,
                               child: CountryCodePicker(
                                 initialSelection: 'IN',
-                                showCountryOnly: true,
-                                favorite: const ['+91','IN'],
-                                alignLeft:false,
-                                padding: const EdgeInsets.all(15),
-                                
-                                
-                                
-                            
+                                favorite: const ['+91', 'IN'],
+                                alignLeft: true,
+                                showDropDownButton: true,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 0,
+                                  horizontal: 0,
+                                ),
+                                showCountryOnly: false,
+                                dialogSize: const Size(300, 400),
                               ),
                             ),
-                           
-                            const Expanded(
-                                flex: 8,
-                                child: TextField(
-                                  keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                      hintText: 'Your Number',
-                                      enabledBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.blue))),
+                            Expanded(
+                              flex: 3,
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  hintText: 'Your Number',
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
                                 ),
+                                controller: model.phoneController,
                               ),
-                            
+                            ),
                           ],
                         ),
                       ),
-                      
-                      const SizedBox(height:330),
-                      
-                      Positioned(
-                        bottom: 10,
+                      const SizedBox(height: 20),
+                      Expanded(
                         child: Container(
-                          //padding: EdgeInsets.only(bottom: 30),
-                          
+                          alignment: Alignment.bottomCenter,
                           width: 300,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30)),
                           child: ElevatedButton(
-                            onPressed: (){},
+                            onPressed: () {
+                              model.signInWithPhone(context);
+                            },
                             child: const FractionallySizedBox(
+                              heightFactor: 0.1,
                               widthFactor: 1.2,
                               child: Center(
                                 child: Text(
@@ -114,19 +105,20 @@ class PhoneScreen extends StatelessWidget {
                             ),
                             style: ButtonStyle(
                               shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10))),
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              )
+            : model.getOtpFormWidget(context),
       ),
     );
   }
