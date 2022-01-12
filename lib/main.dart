@@ -170,7 +170,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home:  Scaffold(
+      home:  const Scaffold(
         body: Rider(),
       ),
     );
