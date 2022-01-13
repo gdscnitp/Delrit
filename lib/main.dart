@@ -10,6 +10,9 @@ import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/provider/getit.dart';
 import 'package:ride_sharing/route_generator.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/src/screens/riderRequest.dart';
+import './src/screens/verification.dart';
+import './src/screens/riderRequest.dart';
 import 'package:ride_sharing/services/navigation_service.dart';
 
 Future<void> saveTokenToDatabase(String? token) async {
@@ -158,6 +161,9 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
+
+     
+
       // The material dark theme.
       darkTheme: FlexThemeData.dark(scheme: FlexScheme.indigo).copyWith(
         textTheme: TextTheme(
@@ -278,6 +284,9 @@ class _MyAppState extends State<MyApp> {
       //     ),
       //   ),
       // ),
+       home:  const Scaffold(
+        body: Rider(),
+        ),
     );
   }
 }
