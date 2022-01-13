@@ -34,47 +34,6 @@ Widget Body(BuildContext context, UserProfileViewModel model) {
       SizedBox(height: getProportionateScreenHeight(15)),
       Stack(
         children: [
-          // CircleAvatar(
-          // backgroundImage: Image.network(
-          //   model.imgUrl,
-          //   fit: BoxFit.fill,
-          //   loadingBuilder: (BuildContext context, Widget child,
-          //       ImageChunkEvent? loadingProgress) {
-          //     if (loadingProgress == null) return child;
-          //     return Center(
-          //       child: CircularProgressIndicator(
-          //         value: loadingProgress.expectedTotalBytes != null
-          //             ? loadingProgress.cumulativeBytesLoaded /
-          //                 loadingProgress.expectedTotalBytes!
-          //             : null,
-          //       ),
-          //     );
-          //   },
-          // ).image,
-          //   radius: 80,
-          //   backgroundColor: Colors.transparent,
-          //   child: ClipOval(
-          //     child: SizedBox.fromSize(
-          //       size: Size.fromRadius(80), // Image radius
-          //       child: Image.network(
-          //   model.imgUrl,
-          //   fit: BoxFit.fill,
-          //   loadingBuilder: (BuildContext context, Widget child,
-          //       ImageChunkEvent? loadingProgress) {
-          //     if (loadingProgress == null) return child;
-          //     return Center(
-          //       child: CircularProgressIndicator(
-          //         value: loadingProgress.expectedTotalBytes != null
-          //             ? loadingProgress.cumulativeBytesLoaded /
-          //                 loadingProgress.expectedTotalBytes!
-          //             : null,
-          //       ),
-          //     );
-          //   },
-          // ),
-          //     ),
-          //   ),
-          // ),
           ClipOval(
             child: SizedBox.fromSize(
               size: const Size.fromRadius(80), // Image radius
@@ -118,16 +77,6 @@ Widget Body(BuildContext context, UserProfileViewModel model) {
               ),
             ),
           ),
-          // Positioned(
-          //   right: 0,
-          //   top: 0,
-          //   child: ElevatedButton(
-          //     child: const Text("Edit Profile"),
-          //     onPressed: () {
-          //       _showModalSheet(context, model);
-          //     },
-          //   ),
-          // ),
         ],
       ),
       SizedBox(height: getProportionateScreenHeight(20)),
