@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart';
+import 'package:ride_sharing/constant/appconstant.dart';
 import 'custom_model_sheet.dart';
-import 'profile_widget.dart';
 import 'itemrow_widget.dart';
 import 'package:ride_sharing/view/user_profile_viewmodel.dart';
 import 'stars_column_widget.dart';
@@ -25,20 +25,86 @@ Widget Body(BuildContext context, UserProfileViewModel model) {
     //physics: const BouncingScrollPhysics(),
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
+      ElevatedButton(
+        child: const Text("Edit Profile"),
+        onPressed: () {
+          _showModalSheet(context, model);
+        },
+      ),
       SizedBox(height: getProportionateScreenHeight(15)),
       Stack(
         children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(model.imgUrl),
-            radius: 80,
-            backgroundColor: Colors.transparent,
+          // CircleAvatar(
+          // backgroundImage: Image.network(
+          //   model.imgUrl,
+          //   fit: BoxFit.fill,
+          //   loadingBuilder: (BuildContext context, Widget child,
+          //       ImageChunkEvent? loadingProgress) {
+          //     if (loadingProgress == null) return child;
+          //     return Center(
+          //       child: CircularProgressIndicator(
+          //         value: loadingProgress.expectedTotalBytes != null
+          //             ? loadingProgress.cumulativeBytesLoaded /
+          //                 loadingProgress.expectedTotalBytes!
+          //             : null,
+          //       ),
+          //     );
+          //   },
+          // ).image,
+          //   radius: 80,
+          //   backgroundColor: Colors.transparent,
+          //   child: ClipOval(
+          //     child: SizedBox.fromSize(
+          //       size: Size.fromRadius(80), // Image radius
+          //       child: Image.network(
+          //   model.imgUrl,
+          //   fit: BoxFit.fill,
+          //   loadingBuilder: (BuildContext context, Widget child,
+          //       ImageChunkEvent? loadingProgress) {
+          //     if (loadingProgress == null) return child;
+          //     return Center(
+          //       child: CircularProgressIndicator(
+          //         value: loadingProgress.expectedTotalBytes != null
+          //             ? loadingProgress.cumulativeBytesLoaded /
+          //                 loadingProgress.expectedTotalBytes!
+          //             : null,
+          //       ),
+          //     );
+          //   },
+          // ),
+          //     ),
+          //   ),
+          // ),
+          ClipOval(
+            child: SizedBox.fromSize(
+              size: const Size.fromRadius(80), // Image radius
+              child: Image.network(
+                model.imgUrl,
+                fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
           Positioned(
             bottom: 0,
             right: 0,
             child: GestureDetector(
-              onTap: () {
-                _showModalSheet(context, model);
+              onTap: () async {
+                await model.pickImage(context);
+                AppConstant.showSuccessToast(
+                    'Profile pic successfully changed');
+                Navigator.pop(context);
 
                 ///Fetch the data
               },
@@ -52,6 +118,16 @@ Widget Body(BuildContext context, UserProfileViewModel model) {
               ),
             ),
           ),
+          // Positioned(
+          //   right: 0,
+          //   top: 0,
+          //   child: ElevatedButton(
+          //     child: const Text("Edit Profile"),
+          //     onPressed: () {
+          //       _showModalSheet(context, model);
+          //     },
+          //   ),
+          // ),
         ],
       ),
       SizedBox(height: getProportionateScreenHeight(20)),
