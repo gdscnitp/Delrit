@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:ride_sharing/config/app_config.dart' as config;
 
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/src/screens/splaceScrn1.dart';
+import 'package:ride_sharing/src/widgets/SlideRightRoute.dart';
 import 'package:ride_sharing/src/widgets/text.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -16,7 +18,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Timer(
       const Duration(seconds: 1),
-      () => Navigator.of(context).pushReplacementNamed('/'),
+      // () => Navigator.pushReplacementNamed(context, '/splace1'),
+      () => Navigator.pushReplacement(
+          context, SlideRightRoute(widget: SplaceScreen1())),
     );
     super.initState();
   }
