@@ -14,7 +14,7 @@ import 'package:ride_sharing/src/screens/map_test.dart';
 import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
 import 'package:ride_sharing/src/screens/nearby_riders.dart';
 import 'package:ride_sharing/src/screens/search_riders.dart';
-import 'package:ride_sharing/src/screens/splaceScrn1.dart';
+import 'package:ride_sharing/src/screens/splashScrn1.dart';
 import 'package:ride_sharing/src/screens/splashScrn2.dart';
 import 'package:ride_sharing/src/screens/splash_screen.dart';
 import 'package:ride_sharing/src/screens/complete_profile/complete_profile.dart';

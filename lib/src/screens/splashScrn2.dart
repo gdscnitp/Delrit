@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'dart:async';
 
-class SplaceScreen2 extends StatefulWidget {
-  const SplaceScreen2({Key? key}) : super(key: key);
+class SplashScreen2 extends StatefulWidget {
+  const SplashScreen2({Key? key}) : super(key: key);
 
   @override
-  State<SplaceScreen2> createState() => _SplaceScreen2State();
+  State<SplashScreen2> createState() => _SplashScreen2State();
 }
 
-class _SplaceScreen2State extends State<SplaceScreen2> {
+class _SplashScreen2State extends State<SplashScreen2> {
   @override
   void initState() {
     Timer(
@@ -33,7 +33,7 @@ class _SplaceScreen2State extends State<SplaceScreen2> {
           ),
           Image.asset('assets/images/splash_2.png'),
           Container(
-            child: Padding(
+            child: const Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 2.0, 20.0, 2.0),
               child: Text(
                 'Maps assistance to pick up your partenaire and there you go!! Enjoy thy ride!!',

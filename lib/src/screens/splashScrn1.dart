@@ -4,20 +4,20 @@ import 'dart:async';
 import 'package:ride_sharing/src/screens/splashScrn2.dart';
 import 'package:ride_sharing/src/widgets/SlideRightRoute.dart';
 
-class SplaceScreen1 extends StatefulWidget {
-  const SplaceScreen1({Key? key}) : super(key: key);
+class SplashScreen1 extends StatefulWidget {
+  const SplashScreen1({Key? key}) : super(key: key);
 
   @override
-  State<SplaceScreen1> createState() => _SplaceScreen1State();
+  State<SplashScreen1> createState() => _SplashScreen1State();
 }
 
-class _SplaceScreen1State extends State<SplaceScreen1> {
+class _SplashScreen1State extends State<SplashScreen1> {
   @override
   void initState() {
     Timer(
       const Duration(seconds: 3),
       () => Navigator.pushReplacement(
-          context, SlideRightRoute(widget: SplaceScreen2())),
+          context, SlideRightRoute(widget: SplashScreen2())),
     );
     super.initState();
   }
@@ -44,7 +44,7 @@ class _SplaceScreen1State extends State<SplaceScreen1> {
           Padding(
             padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
             child: Container(
-              child: Text(
+              child: const Text(
                 'Finding companions for your rides is now easy and fast with just one post',
                 style: TextStyle(
                   fontSize: 20.0,

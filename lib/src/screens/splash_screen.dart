@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:ride_sharing/config/app_config.dart' as config;
 
 import 'package:flutter/material.dart';
-import 'package:ride_sharing/src/screens/splaceScrn1.dart';
+import 'package:ride_sharing/src/screens/splashScrn1.dart';
 import 'package:ride_sharing/src/widgets/SlideRightRoute.dart';
 import 'package:ride_sharing/src/widgets/text.dart';
 
@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 1),
       // () => Navigator.pushReplacementNamed(context, '/splace'),
       () => Navigator.pushReplacement(
-          context, SlideRightRoute(widget: SplaceScreen1())),
+          context, SlideRightRoute(widget: SplashScreen1())),
     );
     super.initState();
   }
