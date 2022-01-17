@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ride_sharing/provider/base_model.dart';
+import 'package:ride_sharing/services/prefs_services.dart';
 import 'package:ride_sharing/src/models/trips.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,12 +13,13 @@ class HomeScreenViewModel extends BaseModel {
   final Map<String, int> users = {};
   String? currentUser;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  Prefs prefs = Prefs();
 
   init() async {
     ///Todo: Fetch Doc from shared Preferences
     // String docId = 'Qd7cMaAId31pj0C06s4A';
 
-    String docId = await getMyTripId();
+    String docId = await prefs.getMyTripId();
     print("------------------------------docId------------------------------");
     print(docId);
     var data = (await db.collection('trips').get()).docs;
@@ -25,15 +27,6 @@ class HomeScreenViewModel extends BaseModel {
 
     trip = tripsModelFromJson(
         data.firstWhere((element) => element.id == docId).data());
-  }
-
-  Future<String> getMyTripId() async {
-    final pref = await SharedPreferences.getInstance();
-
-    String myTripId = pref.getString("trip_id") ?? " ";
-    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-    print(myTripId);
-    return myTripId;
   }
 
   void rateUsers({required String uid, required int starCount}) async {

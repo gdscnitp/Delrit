@@ -15,6 +15,7 @@ import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_services.dart';
+import 'package:ride_sharing/services/prefs_services.dart';
 import 'package:ride_sharing/src/models/riders.dart';
 import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/widgets/get_bytes_from_asset.dart';
@@ -26,6 +27,8 @@ class SearchRiderViewModel extends BaseModel {
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final ApiService _apiService = ApiService();
+  Prefs prefs = Prefs();
+
   final CameraPosition initialLocation = const CameraPosition(
     target: LatLng(26.8876621, 80.995846),
     zoom: 15.0,
@@ -377,20 +380,12 @@ class SearchRiderViewModel extends BaseModel {
       "rideOtp": "",
     });
     var documentId = docRef.id;
-    saveTripIdLocally(documentId);
+    prefs.saveTripIdLocally(documentId);
     navigationService.navigateTo(
       '/available-riders',
       arguments: driveId,
     );
     setState(ViewState.Idle);
-  }
-
-  Future<void> saveTripIdLocally(String tripId) async {
-    final pref = await SharedPreferences.getInstance();
-    pref.setString("trip_id", tripId);
-    print(
-        "triiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiipIIIIIIIIIIIIIIIIIIIdddddddddd");
-    print(tripId);
   }
 
   void onCameraMove({required CameraPosition position}) {
