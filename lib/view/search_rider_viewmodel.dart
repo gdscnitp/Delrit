@@ -373,6 +373,7 @@ class SearchRiderViewModel extends BaseModel {
         "driverStatus": "confirmed",
       },
       "riders": [],
+      "rideOtp": "",
     });
     navigationService.navigateTo(
       '/available-riders',
