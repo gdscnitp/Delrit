@@ -20,6 +20,7 @@ import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/widgets/get_bytes_from_asset.dart';
 import 'package:ride_sharing/src/widgets/rider_details_bottom_sheet.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchRiderViewModel extends BaseModel {
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
@@ -366,7 +367,7 @@ class SearchRiderViewModel extends BaseModel {
   }
 
   Future<void> addTrip(String driveId) async {
-    await db.collection("trips").add({
+    var docRef = await db.collection("trips").add({
       "driver": {
         "driveId": driveId,
         "driverUid": FirebaseAuth.instance.currentUser!.uid,
@@ -375,11 +376,21 @@ class SearchRiderViewModel extends BaseModel {
       "riders": [],
       "rideOtp": "",
     });
+    var documentId = docRef.id;
+    saveTripIdLocally(documentId);
     navigationService.navigateTo(
       '/available-riders',
       arguments: driveId,
     );
     setState(ViewState.Idle);
+  }
+
+  Future<void> saveTripIdLocally(String tripId) async {
+    final pref = await SharedPreferences.getInstance();
+    pref.setString("trip_id", tripId);
+    print(
+        "triiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiipIIIIIIIIIIIIIIIIIIIdddddddddd");
+    print(tripId);
   }
 
   void onCameraMove({required CameraPosition position}) {
