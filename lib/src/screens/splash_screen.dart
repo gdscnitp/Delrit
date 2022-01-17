@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Timer(
       const Duration(seconds: 1),
-      // () => Navigator.pushReplacementNamed(context, '/splace1'),
+      // () => Navigator.pushReplacementNamed(context, '/splace'),
       () => Navigator.pushReplacement(
           context, SlideRightRoute(widget: SplaceScreen1())),
     );

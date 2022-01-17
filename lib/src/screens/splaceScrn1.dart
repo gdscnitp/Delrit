@@ -1,19 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:ride_sharing/config/app_config.dart' as config;
-import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/src/screens/splashScrn2.dart';
 import 'package:ride_sharing/src/widgets/SlideRightRoute.dart';
-import 'package:ride_sharing/view/login_viewmodel.dart';
-
-// void main() {
-//   runApp(const MaterialApp(
-//     home: SplaceScreen1(),
-//   ));
-// }
 
 class SplaceScreen1 extends StatefulWidget {
   const SplaceScreen1({Key? key}) : super(key: key);
@@ -27,7 +16,6 @@ class _SplaceScreen1State extends State<SplaceScreen1> {
   void initState() {
     Timer(
       const Duration(seconds: 3),
-      // () => Navigator.of(context).pushReplacementNamed('/splace2'),
       () => Navigator.pushReplacement(
           context, SlideRightRoute(widget: SplaceScreen2())),
     );
