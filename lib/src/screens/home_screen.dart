@@ -92,24 +92,26 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // void showTripModalSheet(BuildContext context) {
-  //   showModalBottomSheet<dynamic>(
-  //     context: context,
-  //     isScrollControlled: true,
-  //     builder: (builder) {
-  //       return Container(
-  //         height: config.getProportionateScreenHeight(310),
-  //         child: Text("Trip aapki"),
-  //       );
-  //     },
-  //   );
-  // }
+  void showTripModalSheet(BuildContext context) {
+    showModalBottomSheet<dynamic>(
+      context: context,
+      isScrollControlled: true,
+      builder: (builder) {
+        return BaseView<HomeScreenViewModel>(builder: (context, model, child) {
+          return Container(
+            height: config.getProportionateScreenHeight(310),
+            child: Text(model.driverStatus),
+          );
+        });
+      },
+    );
+  }
 
   @override
   void initState() {
     super.initState();
     setupInteractedMessage();
-    // showTripModalSheet(context);
+    showTripModalSheet(context);
   }
 
   @override
@@ -127,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(model.driverStatus),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/login');
