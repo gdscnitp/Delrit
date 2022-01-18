@@ -22,11 +22,12 @@ class HomeScreenViewModel extends BaseModel {
     print(
         "------------------------------driverStatus------------------------------");
     print(driverStatus);
-    var data = (await db.collection('trips').get()).docs;
-    currentUser = auth.currentUser?.uid;
 
-    trip = tripsModelFromJson(
-        data.firstWhere((element) => element.id == docId).data());
+    // var data = (await db.collection('trips').get()).docs;
+    // currentUser = auth.currentUser?.uid;
+
+    // trip = tripsModelFromJson(
+    //     data.firstWhere((element) => element.id == docId).data());
   }
 
   void rateUsers({required String uid, required int starCount}) async {

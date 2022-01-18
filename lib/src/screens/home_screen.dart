@@ -9,6 +9,7 @@ import 'package:ride_sharing/src/screens/test_screen.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
 import 'package:ride_sharing/src/widgets/app_drawer.dart';
 import 'package:ride_sharing/view/home_screen_view_model.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -92,26 +93,45 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void showTripModalSheet(BuildContext context) {
-    showModalBottomSheet<dynamic>(
-      context: context,
-      isScrollControlled: true,
-      builder: (builder) {
-        return BaseView<HomeScreenViewModel>(builder: (context, model, child) {
-          return Container(
-            height: config.getProportionateScreenHeight(310),
-            child: Text(model.driverStatus),
-          );
-        });
-      },
-    );
-  }
+  // class ShowTripStatus extends StatefulWidget {
+  //   const ShowTripStatus({ Key? key }) : super(key: key);
+
+  //   @override
+  //   _ShowTripStatusState createState() => _ShowTripStatusState();
+  // }
+
+  // class _ShowTripStatusState extends State<ShowTripStatus> {
+  //   @override
+  //   Widget build(BuildContext context) {
+  //     return Container(
+
+  //     );
+  //   }
+  // }
+
+  // void showTripModalSheet(BuildContext context) {
+  //   showModalBottomSheet<dynamic>(
+  //       context: context,
+  //       isScrollControlled: true,
+  //       builder: (builder) {
+  //         return BaseView<HomeScreenViewModel>(
+  //             onModelReady: (model) => model.init(),
+  //             builder: (context, model, child) {
+  //               return Container(
+  //                 height: config.getProportionateScreenHeight(310),
+  //                 child: Text(model.driverStatus),
+  //               );
+  //             });
+  //       });
+  // }
 
   @override
   void initState() {
     super.initState();
     setupInteractedMessage();
-    showTripModalSheet(context);
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    // showTripModalSheet(context);
+    // });
   }
 
   @override
@@ -121,6 +141,8 @@ class _HomeScreenState extends State<HomeScreen> {
         onModelReady: (model) => model.init(),
         builder: (context, model, child) {
           return Scaffold(
+            bottomSheet: Text(model.driverStatus),
+
             drawer: const AppDrawer(),
             appBar: AppBar(
               title: const Text('Home'),
