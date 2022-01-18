@@ -122,106 +122,108 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Home'),
         //backgroundColor: config.ThemeColors().mainColor(1),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/login');
-            },
-            child: const Text('Login'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/landing');
-            },
-            child: const Text('Landing Page'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/test');
-            },
-            child: const Text('Map Test'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/post-ride');
-            },
-            child: const Text('Post Ride'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/searchrider');
-            },
-            child: const Text('Search Rider'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/addVehicle');
-            },
-            child: const Text('Add Vehicle'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/complete-profile');
-            },
-            child: const Text('Complete Profile'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/user-profile');
-            },
-            child: const Text('User Profile'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/available-riders');
-            },
-            child: const Text('Available Riders'),
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/login');
+              },
+              child: const Text('Login'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/landing');
+              },
+              child: const Text('Landing Page'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/test');
+              },
+              child: const Text('Map Test'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/post-ride');
+              },
+              child: const Text('Post Ride'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/searchrider');
+              },
+              child: const Text('Search Rider'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/addVehicle');
+              },
+              child: const Text('Add Vehicle'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/complete-profile');
+              },
+              child: const Text('Complete Profile'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/user-profile');
+              },
+              child: const Text('User Profile'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/available-riders');
+              },
+              child: const Text('Available Riders'),
+            ),
 
-          // ElevatedButton(
-          //   onPressed: () {
-          //     Navigator.pushNamed(context, '/rider-details');
-          //   },
-          //   child: const Text('Rider Details'),
-          // ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/available-drivers',
-                arguments: "aOG5i3YIccmhMnADEEqb",
-              );
-            },
-            child: const Text('Available Drivers'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/chats');
-            },
-            child: const Text('Chats'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/ride-details');
-            },
-            child: const Text('Ride Details'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/access-permission');
-            },
-            child: const Text('Access Permission'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const TestScreen()));
-            },
-            child: const Text('Test Screen'),
-          ),
-        ],
+            // ElevatedButton(
+            //   onPressed: () {
+            //     Navigator.pushNamed(context, '/rider-details');
+            //   },
+            //   child: const Text('Rider Details'),
+            // ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  '/available-drivers',
+                  arguments: "aOG5i3YIccmhMnADEEqb",
+                );
+              },
+              child: const Text('Available Drivers'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/chats');
+              },
+              child: const Text('Chats'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/ride-details');
+              },
+              child: const Text('Ride Details'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/access-permission');
+              },
+              child: const Text('Access Permission'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const TestScreen()));
+              },
+              child: const Text('Test Screen'),
+            ),
+          ],
+        ),
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
