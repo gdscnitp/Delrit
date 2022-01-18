@@ -112,7 +112,7 @@ class _MyAppState extends State<MyApp> {
       //     ),
       //   ),
       // ),
-      theme: FlexThemeData.light(scheme: FlexScheme.indigo).copyWith(
+      theme: FlexThemeData.light(scheme: FlexScheme.blue).copyWith(
         textTheme: TextTheme(
           button: const TextStyle(color: Colors.white),
 

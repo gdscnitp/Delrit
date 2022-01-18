@@ -9,7 +9,7 @@ Widget nextRiderBottomSheet(BuildContext context) {
         height: getProportionateScreenHeight(15),
       ),
       Text(
-        'Your Partner For Next Ride',
+        'Your Next Ride',
         style: Theme.of(context).textTheme.headline2,
       ),
       Padding(

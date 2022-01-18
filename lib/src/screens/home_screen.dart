@@ -141,7 +141,17 @@ class _HomeScreenState extends State<HomeScreen> {
         onModelReady: (model) => model.init(),
         builder: (context, model, child) {
           return Scaffold(
-            bottomSheet: Text(model.driverStatus),
+            bottomSheet: Row(
+              children: [
+                Text(model.driverStatus),
+                ElevatedButton(
+                  child: Text(model.rideStatusText),
+                  onPressed: () {
+                    model.pressedOnce ? null : model.generateAndSaveOtp();
+                  },
+                )
+              ],
+            ),
 
             drawer: const AppDrawer(),
             appBar: AppBar(

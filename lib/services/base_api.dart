@@ -1,3 +1,5 @@
+/*-----------File to manage all kinds of http requests---------------*/
+
 import 'dart:io';
 import 'package:ride_sharing/services/prefs_services.dart';
 import 'package:flutter/services.dart';
@@ -8,12 +10,15 @@ import 'http_exception.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+//TODO: need of making this class abstract
 abstract class BaseApi {
   final String _baseUrl = 'ride-sharing-server.herokuapp.com';
   // final String _baseUrl = '192.168.1.12:3000';
   final String _authToken = Prefs().getToken();
 
+//TODO: need of api for sign up
   Future<ApiResponse> signUp(Map data, String endpoint) async {
+    //TODO:need of this line
     var responseBody = json.decode('{"data": "", "status": "NOK"}');
 
     try {
@@ -42,6 +47,7 @@ abstract class BaseApi {
     }
   }
 
+//TODO: need of api for google login
   Future<void> googleLogIn(Map data, String endpoint) async {
     var responseBody = json.decode('{"data": "", "status": "NOK"}');
 
@@ -71,6 +77,7 @@ abstract class BaseApi {
     }
   }
 
+//TODO: need of diff get req with & w/o auth
   //GET
   Future<ApiResponse> getRequest(
       {required String endpoint, Map<String, Object>? query}) async {
@@ -127,6 +134,7 @@ abstract class BaseApi {
     ));
   }
 
+  //function to process responses for all kind of requests - POST,PUT,DELETE,GET
   Future<ApiResponse> processResponse(Response response) async {
     // if (_authToken.isEmpty || _authToken == null) {
     //   print('not logged in');
@@ -151,6 +159,7 @@ abstract class BaseApi {
       print('socket');
       throw HttpException(message: 'No Internet Connection');
     } on PlatformException catch (error) {
+      //TODO:Understand about platform exception
       print('plt');
       throw HttpException(message: error.toString());
     } catch (e) {
