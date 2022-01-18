@@ -162,8 +162,6 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
 
-     
-
       // The material dark theme.
       darkTheme: FlexThemeData.dark(scheme: FlexScheme.indigo).copyWith(
         textTheme: TextTheme(
@@ -284,9 +282,6 @@ class _MyAppState extends State<MyApp> {
       //     ),
       //   ),
       // ),
-       home:  const Scaffold(
-        body: Rider(),
-        ),
     );
   }
 }

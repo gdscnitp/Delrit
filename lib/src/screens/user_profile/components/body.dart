@@ -25,12 +25,6 @@ Widget Body(BuildContext context, UserProfileViewModel model) {
     //physics: const BouncingScrollPhysics(),
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      ElevatedButton(
-        child: const Text("Edit Profile"),
-        onPressed: () {
-          _showModalSheet(context, model);
-        },
-      ),
       SizedBox(height: getProportionateScreenHeight(15)),
       Stack(
         children: [
@@ -108,6 +102,16 @@ Widget Body(BuildContext context, UserProfileViewModel model) {
       starsColumnWidget(starscount: 5, type: 'Your ride stars'),
       SizedBox(height: getProportionateScreenHeight(24)),
       starsColumnWidget(starscount: 4, type: 'Your drive stars'),
+      SizedBox(height: getProportionateScreenHeight(24)),
+      SizedBox(
+        width: getProportionateScreenWidth(300),
+        child: ElevatedButton(
+          child: const Text("Edit Profile"),
+          onPressed: () {
+            _showModalSheet(context, model);
+          },
+        ),
+      ),
     ],
   );
 }

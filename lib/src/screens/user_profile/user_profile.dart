@@ -14,16 +14,15 @@ class UserProfile extends StatelessWidget {
           return Scaffold(
             key: model.scaffoldkey,
             appBar: AppBar(
+              centerTitle: true,
               leading: Icon(
                 Icons.arrow_back_outlined,
                 color: Theme.of(context).primaryColorDark,
               ),
               elevation: 0,
-              title: Center(
-                child: Text(
-                  'My Profile',
-                  style: Theme.of(context).textTheme.headline2,
-                ),
+              title: Text(
+                'My Profile',
+                style: Theme.of(context).textTheme.headline2,
               ),
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             ),
