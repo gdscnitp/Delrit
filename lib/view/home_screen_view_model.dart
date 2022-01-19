@@ -61,11 +61,10 @@ class HomeScreenViewModel extends BaseModel {
     return status;
   }
 
-  sendRideOtp(String otpcode) async {
+  sendRideOtp(String otpcode, List<String> recipients) async {
     var body = {
-      //TODO:get receiver's & senders id
-      "receivers": [],
-      "senderUid": "",
+      "receivers": recipients,
+      "senderUid": auth.currentUser!.uid,
       "message": otpcode,
     };
 
@@ -73,22 +72,27 @@ class HomeScreenViewModel extends BaseModel {
   }
 
   generateAndSaveOtp() async {
-    String otp = Random().nextInt(999999).toString();
-    print(otp);
-    await db
-        .collection("trips")
-        .doc(docId)
-        .update({"rideOtp": otp}).then((value) {
-      print("Otp saved $otp");
-      pressedOnce = true;
-      rideStatusText = "";
-      sendRideOtp(otp);
-    });
+    var data = await db.collection("trips").doc(docId).get();
+    var data2 = data.data();
+    if (data2!["riders"].length > 0) {
+      List<String> recipients = [];
+      data2["riders"]
+          .forEach((element) => {recipients.add(element["riderUid"])});
+      print(recipients);
 
-    // await db.collection("trips").doc(docId).update({"driver"["driverStatus"]: "started"}).then((value) {
-    //   print("Otp saved $otp");
-    //   pressedOnce = true;
-    //   rideStatusText = "";
-    // });
+      String otp = Random().nextInt(999999).toString();
+      print(otp);
+      await db
+          .collection("trips")
+          .doc(docId)
+          .update({"rideOtp": otp}).then((value) {
+        print("Otp saved $otp");
+        pressedOnce = true;
+        rideStatusText = "";
+        sendRideOtp(otp, recipients);
+      });
+    } else {
+      print("No rider to send otp");
+    }
   }
 }
