@@ -36,6 +36,7 @@ class HomeScreenViewModel extends BaseModel {
 
     // trip = tripsModelFromJson(
     //     data.firstWhere((element) => element.id == docId).data());
+    notifyListeners();
   }
 
   void rateUsers({required String uid, required int starCount}) async {

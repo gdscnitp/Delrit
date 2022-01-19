@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ElevatedButton(
                   child: Text(model.rideStatusText),
                   onPressed: () {
-                    model.pressedOnce ? null : model.generateAndSaveOtp();
+                    model.generateAndSaveOtp();
                   },
                 )
               ],

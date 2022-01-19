@@ -10,42 +10,10 @@ import 'http_exception.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-//TODO: need of making this class abstract
 abstract class BaseApi {
   final String _baseUrl = 'ride-sharing-server.herokuapp.com';
   // final String _baseUrl = '192.168.1.12:3000';
   final String _authToken = Prefs().getToken();
-
-//TODO: need of api for sign up
-  Future<ApiResponse> signUp(Map data, String endpoint) async {
-    //TODO:need of this line
-    var responseBody = json.decode('{"data": "", "status": "NOK"}');
-
-    try {
-      final uri = Uri.http(_baseUrl, endpoint);
-      print(uri);
-      final response = await http.post(uri, body: data);
-      print(response.statusCode);
-      if (response.statusCode >= 200 && response.statusCode <= 207) {
-        print('==');
-        return ApiResponse(data: jsonDecode(response.body));
-      } else {
-        Map<String, dynamic> data = jsonDecode(response.body);
-        String error = 'Error occurred';
-        data.keys.forEach((String key) {
-          if (key.contains('error')) {
-            error = data[key][0];
-            print(error);
-          }
-        });
-        return ApiResponse(error: true, errorMessage: error);
-      }
-    } on SocketException catch (error) {
-      throw HttpException(message: 'No Internet Connection');
-    } catch (e) {
-      throw e;
-    }
-  }
 
 //TODO: need of api for google login
   Future<void> googleLogIn(Map data, String endpoint) async {
@@ -159,7 +127,6 @@ abstract class BaseApi {
       print('socket');
       throw HttpException(message: 'No Internet Connection');
     } on PlatformException catch (error) {
-      //TODO:Understand about platform exception
       print('plt');
       throw HttpException(message: error.toString());
     } catch (e) {

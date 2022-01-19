@@ -7,7 +7,6 @@ import 'package:ride_sharing/services/base_api.dart';
 class ApiService extends BaseApi {
   // Login ViewModel
 
-//TODO: Need of this function
   Future<ApiResponse> getArticlesMethod({required String endpoint}) async {
     ApiResponse response;
     try {
@@ -53,6 +52,8 @@ class ApiService extends BaseApi {
 
   Future<ApiResponse> sendRideOtp(Map<String, dynamic> body) async {
     ApiResponse response;
+    print("=============================================================");
+    print(body);
     try {
       response = await postRequest("/firebase/send-rideotp-notification", body);
     } catch (e) {
