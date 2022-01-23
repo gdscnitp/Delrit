@@ -10,10 +10,15 @@ import 'package:ride_sharing/config/app_config.dart' as config;
 import 'package:ride_sharing/provider/getit.dart';
 import 'package:ride_sharing/route_generator.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/src/models/user.dart';
+import 'package:ride_sharing/src/screens/chat_screen/chat_screen.dart';
 import 'package:ride_sharing/src/screens/riderRequest.dart';
+import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
+import 'package:ride_sharing/view/user_profile_viewmodel.dart';
 import './src/screens/verification.dart';
 import './src/screens/riderRequest.dart';
 import 'package:ride_sharing/services/navigation_service.dart';
+import './src/screens/chat_screen/chat_screen.dart';
 
 Future<void> saveTokenToDatabase(String? token) async {
   final String? uid = FirebaseAuth.instance.currentUser?.uid;
@@ -284,8 +289,11 @@ class _MyAppState extends State<MyApp> {
       //     ),
       //   ),
       // ),
-       home:  const Scaffold(
-        body: Rider(),
+       home:  Scaffold(
+         
+        
+        body:ChatScreen(peer:UserProfileModel(name: 'Ms.Thangabali 🙋‍♀️', tokens: [], id: "2", email:'', phone: '123456778', address: 'abcd', gender: 'gender', age: 'age', profile: "profile"),),
+        
         ),
     );
   }
