@@ -167,8 +167,6 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
 
-     
-
       // The material dark theme.
       darkTheme: FlexThemeData.dark(scheme: FlexScheme.indigo).copyWith(
         textTheme: TextTheme(
@@ -289,12 +287,18 @@ class _MyAppState extends State<MyApp> {
       //     ),
       //   ),
       // ),
+
        home:  Scaffold(
          
         
         body:ChatScreen(peer:UserProfileModel(name: 'Ms.Thangabali 🙋‍♀️', tokens: [], id: "2", email:'', phone: '123456778', address: 'abcd', gender: 'gender', age: 'age', profile: "profile"),),
         
         ),
+
+      //  home:  const Scaffold(
+      //   body: Rider(),
+      //   ),
+
     );
   }
 }
