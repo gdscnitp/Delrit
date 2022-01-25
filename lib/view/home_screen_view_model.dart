@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ride_sharing/provider/base_model.dart';
+import 'package:ride_sharing/services/prefs_services.dart';
 import 'package:ride_sharing/src/models/trips.dart';
 
 class HomeScreenViewModel extends BaseModel {
@@ -11,10 +11,17 @@ class HomeScreenViewModel extends BaseModel {
   final Map<String, int> users = {};
   String? currentUser;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  Prefs prefs = Prefs();
+  String driverStatus = "";
 
   init() async {
-    ///Todo: Fetch Doc from shared Preferences
-    String docId = 'Qd7cMaAId31pj0C06s4A';
+    String docId = await prefs.getMyTripId();
+    print("------------------------------docId------------------------------");
+    print(docId);
+    driverStatus = await getRideStatus(docId);
+    print(
+        "------------------------------driverStatus------------------------------");
+    print(driverStatus);
     var data = (await db.collection('trips').get()).docs;
     currentUser = auth.currentUser?.uid;
 
@@ -32,5 +39,16 @@ class HomeScreenViewModel extends BaseModel {
     }).then((value) {
       print("User saved to db");
     });
+  }
+
+  Future<String> getRideStatus(docId) async {
+    var data = await db.collection("trips").doc(docId).get();
+    var data2 = data.data();
+    String status = "";
+    if (data2!["rideOtp"] == "" &&
+        data2["driver"]["driverStatus"] == "confirmed") {
+      status = "Your next ride";
+    }
+    return status;
   }
 }
