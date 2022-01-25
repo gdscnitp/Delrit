@@ -8,19 +8,20 @@ import 'package:ride_sharing/src/screens/chat_screen/chat_screen.dart';
 import 'package:ride_sharing/src/screens/choose_location.dart';
 import 'package:ride_sharing/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:ride_sharing/src/screens/landing_page.dart';
+import 'package:ride_sharing/src/screens/Landing_page/landing_page.dart';
 import 'package:ride_sharing/src/screens/login_page.dart';
 import 'package:ride_sharing/src/screens/map_test.dart';
 import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
 import 'package:ride_sharing/src/screens/nearby_riders.dart';
 import 'package:ride_sharing/src/screens/search_riders.dart';
-import 'package:ride_sharing/src/screens/splashScrn1.dart';
-import 'package:ride_sharing/src/screens/splashScrn2.dart';
-import 'package:ride_sharing/src/screens/splash_screen.dart';
+import 'package:ride_sharing/src/screens/welcome_screen/components/splashScrn1.dart';
+import 'package:ride_sharing/src/screens/welcome_screen/components/splashScrn2.dart';
+import 'package:ride_sharing/src/screens/splash_screen/splash_screen.dart';
 import 'package:ride_sharing/src/screens/complete_profile/complete_profile.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
-import 'package:ride_sharing/src/screens/verification.dart';
+import 'package:ride_sharing/src/screens/phone_auth/verification.dart';
 import 'package:ride_sharing/src/screens/post_ride/post_ride.dart';
+import 'package:ride_sharing/src/screens/welcome_screen/welcome_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -32,6 +33,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case '/splash':
         return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case '/welcome':
+        return MaterialPageRoute(builder: (_) => const WelcomeScreen());
       case "/landing":
         return MaterialPageRoute(builder: (_) => const Landing_Page());
       case '/test':

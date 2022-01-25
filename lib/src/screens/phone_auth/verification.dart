@@ -10,6 +10,7 @@ class PhoneScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<LoginViewModel>(
+      onModelReady: (model) => model.init(),
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
         body: model.currentState ==
@@ -89,28 +90,33 @@ class PhoneScreen extends StatelessWidget {
                           width: 300,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30)),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              model.signInWithPhone(context);
-                            },
-                            child: const FractionallySizedBox(
-                              heightFactor: 0.1,
-                              widthFactor: 1.2,
-                              child: Center(
-                                child: Text(
-                                  'Next',
-                                  style: TextStyle(color: Colors.white),
+                          child: model.isLoadingForOtp
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : ElevatedButton(
+                                  onPressed: () {
+                                    model.setLoader(true);
+                                    model.signInWithPhone(context);
+                                  },
+                                  child: const FractionallySizedBox(
+                                    heightFactor: 0.1,
+                                    widthFactor: 1.2,
+                                    child: Center(
+                                      child: Text(
+                                        'Next',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -118,7 +124,7 @@ class PhoneScreen extends StatelessWidget {
                   ),
                 ),
               )
-            : model.getOtpFormWidget(context),
+            : model.OtpFillWidget(context),
       ),
     );
   }
