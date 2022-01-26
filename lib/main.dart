@@ -17,7 +17,6 @@ import 'package:ride_sharing/src/screens/riderRequest.dart';
 import 'src/screens/phone_auth/verification.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
 import 'package:ride_sharing/view/user_profile_viewmodel.dart';
-import './src/screens/verification.dart';
 import './src/screens/riderRequest.dart';
 import 'package:ride_sharing/services/navigation_service.dart';
 import './src/screens/chat_screen/chat_screen.dart';

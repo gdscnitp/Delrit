@@ -19,15 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 1),
       // () => Navigator.pushReplacementNamed(context, '/splace'),
       () => Navigator.pushReplacement(
-<<<<<<< HEAD:lib/src/screens/splash_screen.dart
-        context,
-        SlideRightRoute(
-          widget: const SplashScreen1(),
-        ),
-      ),
-=======
           context, SlideRightRoute(widget: WelcomeScreen())),
->>>>>>> 10106e17894fa8af22083bebf3ef8bc743eb6681:lib/src/screens/splash_screen/splash_screen.dart
     );
     super.initState();
   }
