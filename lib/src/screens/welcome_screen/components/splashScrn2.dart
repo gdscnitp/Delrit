@@ -14,7 +14,7 @@ class _SplashScreen2State extends State<SplashScreen2> {
   void initState() {
     Timer(
       const Duration(seconds: 3),
-      () => Navigator.of(context).pushReplacementNamed('/'),
+      () => Navigator.of(context).pushReplacementNamed('/landing'),
     );
     super.initState();
   }

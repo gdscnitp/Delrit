@@ -91,6 +91,7 @@ class Landing_Page extends StatelessWidget {
                 padding: EdgeInsets.all(10.0),
                 child: Text(
                   'By continuing, you agree to our terms and conditions and privacy policy',
+                  textAlign: TextAlign.center,
                   style: TextStyle(color: Color.fromRGBO(122, 73, 73, 0.72)),
                 ),
               ),

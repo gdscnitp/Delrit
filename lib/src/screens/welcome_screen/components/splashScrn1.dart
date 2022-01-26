@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:ride_sharing/src/screens/splashScrn2.dart';
+import 'package:ride_sharing/src/screens/welcome_screen/components/splashScrn2.dart';
 import 'package:ride_sharing/src/widgets/SlideRightRoute.dart';
 
 class SplashScreen1 extends StatefulWidget {

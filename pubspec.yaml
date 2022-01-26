@@ -64,6 +64,8 @@ dependencies:
   firebase_storage: ^10.2.5
   #App theming
   flex_color_scheme: ^4.1.1
+  introduction_screen: ^2.1.0
+  sms_autofill: ^2.2.0
 
 
 

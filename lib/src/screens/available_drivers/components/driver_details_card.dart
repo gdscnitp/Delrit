@@ -78,7 +78,7 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
       child: Container(
-        height: height / 2.9,
+        height: height / 2.5,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -89,6 +89,7 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
                 left: config.getProportionateScreenWidth(40),
                 top: config.getProportionateScreenHeight(10)),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
