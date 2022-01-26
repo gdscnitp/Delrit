@@ -72,31 +72,53 @@ getSenderView(CustomClipper clipper, BuildContext context, String child) =>
     ChatBubble(
       clipper: clipper,
       alignment: Alignment.topRight,
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       backGroundColor: Colors.blue,
       child: Container(
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.7,
         ),
-        child: Text(
-          child,
-          style: TextStyle(color: Colors.white),
-        ),
+        
+        child: Uri.tryParse(child)?.hasAbsolutePath ?? false
+            ? Image.network(
+                child,
+                errorBuilder: (context, error, stackTrace) {
+                  return Text(
+                    child,
+                    style: const TextStyle(color: Colors.white),
+                  );
+                },
+              )
+            : Text(
+                child,
+                style: const TextStyle(color: Colors.white),
+              ),
       ),
     );
 
 getReceiverView(CustomClipper clipper, BuildContext context, String child) =>
     ChatBubble(
       clipper: clipper,
-      backGroundColor: Color(0xffE7E7ED),
-      margin: EdgeInsets.only(top: 20),
+      backGroundColor: const Color(0xffE7E7ED),
+      margin: const EdgeInsets.only(top: 20),
       child: Container(
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.7,
         ),
-        child: Text(
-          child,
-          style: TextStyle(color: Colors.black),
-        ),
+       
+        child: Uri.tryParse(child)?.hasAbsolutePath ?? false
+            ? Image.network(
+                child,
+                errorBuilder: (context, error, stackTrace) {
+                  return Text(
+                    child,
+                    style: TextStyle(color: Colors.white),
+                  );
+                },
+              )
+            : Text(
+                child,
+                style: TextStyle(color: Colors.black),
+              ),
       ),
     );
