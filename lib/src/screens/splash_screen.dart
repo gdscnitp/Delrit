@@ -20,7 +20,11 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 1),
       // () => Navigator.pushReplacementNamed(context, '/splace'),
       () => Navigator.pushReplacement(
-          context, SlideRightRoute(widget: SplashScreen1())),
+        context,
+        SlideRightRoute(
+          widget: const SplashScreen1(),
+        ),
+      ),
     );
     super.initState();
   }
