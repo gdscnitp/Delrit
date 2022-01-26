@@ -14,6 +14,46 @@
       },
       "oauth_client": [
         {
+          "client_id": "338432717115-123mg06o6n93p854qcn939rj5brnqbte.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.asmit.ride_sharing",
+            "certificate_hash": "98bcefe16f25d5f62300cb00322ab138c3668d86"
+          }
+        },
+        {
+          "client_id": "338432717115-541k28j91gh6ko2avfpueh42q5om8q48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.asmit.ride_sharing",
+            "certificate_hash": "a54352bb98332cc467f2f06b023e53d82ed7f990"
+          }
+        },
+        {
+          "client_id": "338432717115-brmfjigd1tjdlbn92guvln43f08ou163.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.asmit.ride_sharing",
+            "certificate_hash": "6cb1a997b333b56936470e3f6190feba01485d9a"
+          }
+        },
+        {
+          "client_id": "338432717115-rudin0cbc49psec9u93c0si7t95dkko9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.asmit.ride_sharing",
+            "certificate_hash": "7648c599bf1e3d7e0c2cb582f817e8545910ae59"
+          }
+        },
+        {
+          "client_id": "338432717115-v4h2aqvak0fb9aursb1a08r5fv85knmc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.asmit.ride_sharing",
+            "certificate_hash": "13e191186aa1cdfcdea04395f650aaeedca85d68"
+          }
+        },
+        {
           "client_id": "338432717115-k5s70hqcridd6gmergbkpvqdrdktl8mk.apps.googleusercontent.com",
           "client_type": 3
         }

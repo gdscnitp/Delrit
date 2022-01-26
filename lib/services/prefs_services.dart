@@ -73,4 +73,23 @@ class Prefs {
     prefs.remove(_userIDStorageKey);
     _authToken = "";
   }
+
+  Future<void> saveTripIdLocally(String tripId) async {
+    final SharedPreferences tripPref = await _prefs;
+    tripPref.setString("trip_id", tripId);
+    print(
+        "triiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiipIIIIIIIIIIIIIIIIIIIdddddddddd");
+    print(tripId);
+  }
+
+  Future<String> getMyTripId() async {
+    final SharedPreferences getTripPref = await _prefs;
+
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+    String myTripId = getTripPref.getString("trip_id") ?? " ";
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+    print(myTripId);
+
+    return myTripId;
+  }
 }
