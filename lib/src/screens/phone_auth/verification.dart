@@ -1,5 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/config/app_config.dart';
 import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/view/login_viewmodel.dart';
@@ -27,10 +28,13 @@ class PhoneScreen extends StatelessWidget {
                           IconButton(
                               onPressed: () => Navigator.pop(context),
                               icon: const Icon(Icons.arrow_back)),
-                          const Text(
-                            'Enter your phone number\nfor verification',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 24),
+                          Expanded(
+                            child: Text(
+                              'Enter your phone number\nfor verification',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: getProportionateScreenWidth(20)),
+                            ),
                           ),
                         ],
                       ),
