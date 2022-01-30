@@ -15,16 +15,20 @@ import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_services.dart';
+import 'package:ride_sharing/services/prefs_services.dart';
 import 'package:ride_sharing/src/models/riders.dart';
 import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/widgets/get_bytes_from_asset.dart';
 import 'package:ride_sharing/src/widgets/rider_details_bottom_sheet.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchRiderViewModel extends BaseModel {
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final ApiService _apiService = ApiService();
+  Prefs prefs = Prefs();
+
   final CameraPosition initialLocation = const CameraPosition(
     target: LatLng(26.8876621, 80.995846),
     zoom: 15.0,
@@ -366,14 +370,17 @@ class SearchRiderViewModel extends BaseModel {
   }
 
   Future<void> addTrip(String driveId) async {
-    await db.collection("trips").add({
+    var docRef = await db.collection("trips").add({
       "driver": {
         "driveId": driveId,
         "driverUid": FirebaseAuth.instance.currentUser!.uid,
         "driverStatus": "confirmed",
       },
       "riders": [],
+      "rideOtp": "",
     });
+    var documentId = docRef.id;
+    prefs.saveTripIdLocally(documentId);
     navigationService.navigateTo(
       '/available-riders',
       arguments: driveId,
