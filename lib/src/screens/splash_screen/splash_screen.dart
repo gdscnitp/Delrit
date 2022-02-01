@@ -26,6 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    config.SizeConfig().init(context);
     return Scaffold(
       backgroundColor: config.ThemeColors().backgroundDarkColor(1),
       body: Center(

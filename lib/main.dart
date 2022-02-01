@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> {
 
           /// Headline 1 style ---- Use it --- Do not change ----///
           headline1: TextStyle(
-            fontSize: config.getProportionateScreenWidth(18),
+            fontSize: 18,
             fontWeight: FontWeight.w700,
             color: config.ThemeColors.mainTextColor(1),
             letterSpacing: 1,
@@ -82,39 +82,39 @@ class _MyAppState extends State<MyApp> {
 
           /// Headline 2 style ---- Use it --- Do not change ----///
           headline2: TextStyle(
-              fontSize: config.getProportionateScreenWidth(15),
+              fontSize: 15,
               fontWeight: FontWeight.w600,
               color: config.ThemeColors.mainTextColor(1)),
           headline3: TextStyle(
-              fontSize: config.getProportionateScreenWidth(15),
+              fontSize: 15,
               fontWeight: FontWeight.w600,
               color: config.ThemeColors.mainTextSecondaryColor(1)),
           headline4: TextStyle(
-              fontSize: config.getProportionateScreenWidth(20),
+              fontSize: 20,
               fontWeight: FontWeight.w700,
               color: config.ThemeColors().secondColor(1)),
           headline5: TextStyle(
-              fontSize: config.getProportionateScreenWidth(20),
+              fontSize: 20,
               fontWeight: FontWeight.w300,
               color: config.ThemeColors().mainColor(1)),
           subtitle1: TextStyle(
-              fontSize: config.getProportionateScreenWidth(13),
+              fontSize: 13,
               fontWeight: FontWeight.w500,
               color: config.ThemeColors().secondColor(1)),
           subtitle2: TextStyle(
-              fontSize: config.getProportionateScreenWidth(13),
+              fontSize: 13,
               fontWeight: FontWeight.w600,
               color: config.ThemeColors().mainColor(1)),
           bodyText1: TextStyle(
-            fontSize: config.getProportionateScreenWidth(13),
+            fontSize: 13,
             color: config.ThemeColors.mainTextColor(1),
           ),
           bodyText2: TextStyle(
-              fontSize: config.getProportionateScreenWidth(13),
+              fontSize: 13,
               fontWeight: FontWeight.w600,
               color: config.ThemeColors.mainTextSecondaryColor(1)),
           caption: TextStyle(
-            fontSize: config.getProportionateScreenWidth(10),
+            fontSize: 10,
             color: config.ThemeColors().secondColor(0.6),
           ),
         ),
@@ -240,6 +240,7 @@ class _MyAppState extends State<MyApp> {
       //     ),
       //   ),
       // ),
+// 
     );
   }
 }
