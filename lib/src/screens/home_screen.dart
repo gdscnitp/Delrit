@@ -9,7 +9,6 @@ import 'package:ride_sharing/src/screens/test_screen.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
 import 'package:ride_sharing/src/widgets/app_drawer.dart';
 import 'package:ride_sharing/view/home_screen_view_model.dart';
-import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
