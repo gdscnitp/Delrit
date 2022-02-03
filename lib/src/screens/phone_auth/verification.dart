@@ -103,16 +103,25 @@ class PhoneScreen extends StatelessWidget {
                                     model.setLoader(true);
                                     model.signInWithPhone(context);
                                   },
-                                  child: const FractionallySizedBox(
-                                    heightFactor: 0.1,
-                                    widthFactor: 1.2,
-                                    child: Center(
+                                  child: Container(
+                                    height: 30,
+                                    child: const Center(
                                       child: Text(
                                         'Next',
                                         style: TextStyle(color: Colors.white),
                                       ),
                                     ),
                                   ),
+                                  // child: const FractionallySizedBox(
+                                  //   heightFactor: 0.1,
+                                  //   widthFactor: 1.2,
+                                  //   child: Center(
+                                  //     child: Text(
+                                  //       'Next',
+                                  //       style: TextStyle(color: Colors.white),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   style: ButtonStyle(
                                     shape: MaterialStateProperty.all(
                                       RoundedRectangleBorder(
