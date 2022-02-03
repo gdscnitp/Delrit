@@ -79,17 +79,17 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
     double height = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-      child: Container(
-        height: height / 2.8,
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          elevation: 6.0,
-          child: Padding(
-            padding: EdgeInsets.only(
-                left: config.getProportionateScreenWidth(40),
-                top: config.getProportionateScreenHeight(10)),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        elevation: 6.0,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: config.getProportionateScreenWidth(40),
+              vertical: config.getProportionateScreenHeight(15)),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

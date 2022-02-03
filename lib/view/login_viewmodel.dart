@@ -4,10 +4,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:ride_sharing/config/app_config.dart';
 import 'package:ride_sharing/constant/appconstant.dart';
 import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_services.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class LoginViewModel extends BaseModel {
   final ApiService _apiService = ApiService();
@@ -15,104 +17,23 @@ class LoginViewModel extends BaseModel {
   final _auth = FirebaseAuth.instance;
   final userDb = FirebaseFirestore.instance;
 
-  // TextEditingController phoneNum = TextEditingController();
-  // TextEditingController otpC = TextEditingController();
   MobileVerificationState currentState =
       MobileVerificationState.SHOW_MOBILE_FORM_STATE;
   final phoneController = TextEditingController();
   final otpController = TextEditingController();
 
   String verificationId = '';
+  bool isLoading = false;
+  bool isLoadingForOtp = false;
 
-  var user;
-  var userUid;
+  init() async {
+    SmsAutoFill().listenForCode;
+  }
 
-  // Future signInWithNumber(BuildContext context) async {
-  //   await _auth.verifyPhoneNumber(
-  //     //for android only
-  //     phoneNumber: '+91' + phoneNum.text,
-  //     verificationCompleted: (PhoneAuthCredential credential) async {
-  //       UserCredential result = await _auth.signInWithCredential(credential);
-  //       User? user = result.user;
-
-  //       print("===================================================");
-
-  //       try {
-  //         userUid = user!.uid;
-  //         String? token = await FirebaseMessaging.instance.getToken();
-
-  //         userDb.collection('users').doc(userUid).set({
-  //           "id": userUid,
-  //           "name": user.displayName,
-  //           "email": user.email,
-  //           "tokens": FieldValue.arrayUnion([token]),
-  //         });
-  //         AppConstant.showSuccessToast("Login Successful");
-
-  //         Navigator.of(context).pushNamed('/');
-  //       } catch (e) {
-  //         AppConstant.showFailToast(e.toString());
-  //       }
-  //     },
-
-  //     verificationFailed: (FirebaseAuthException e) {
-  //       if (e.code == 'invalid-phone-number') {
-  //         print('The provided phone number is not valid.');
-  //       }
-  //     },
-
-  //     codeSent: (String verificationId, int? resendToken) {
-  //       showDialog(
-  //           context: context,
-  //           builder: (_) {
-  //             return AlertDialog(
-  //               title: const Text('Enter OTP'),
-  //               content: Column(
-  //                 children: [
-  //                   TextFormField(
-  //                     decoration: const InputDecoration(
-  //                       fillColor: Colors.grey,
-  //                     ),
-  //                     controller: otpC,
-  //                   )
-  //                 ],
-  //               ),
-  //               actions: [
-  //                 ElevatedButton(
-  //                     onPressed: () async {
-  //                       final code = otpC.text;
-  //                       AuthCredential credential =
-  //                           PhoneAuthProvider.credential(
-  //                               verificationId: verificationId, smsCode: code);
-  //                       UserCredential result =
-  //                           await _auth.signInWithCredential(credential);
-  //                       User? user = result.user;
-  //                       if (user != null) {
-  //                         String? token =
-  //                             await FirebaseMessaging.instance.getToken();
-
-  //                         userDb.collection('users').doc(user.uid).set({
-  //                           "id": user.uid,
-  //                           "name": user.displayName,
-  //                           "email": user.email,
-  //                           "tokens": FieldValue.arrayUnion([token]),
-  //                         });
-  //                         Navigator.of(context).pushNamedAndRemoveUntil(
-  //                             '/complete-profile',
-  //                             (Route<dynamic> route) => false);
-  //                         print('successfully  signed in');
-  //                       } else {
-  //                         Fluttertoast.showToast(msg: 'error signing in');
-  //                       }
-  //                     },
-  //                     child: const Text('Verify'))
-  //               ],
-  //             );
-  //           });
-  //     },
-  //     codeAutoRetrievalTimeout: (String verificationId) {},
-  //   );
-  // }
+  void setLoader(bool newval) {
+    isLoadingForOtp = newval;
+    notifyListeners();
+  }
 
   signInWithPhone(BuildContext context) async {
     await _auth.verifyPhoneNumber(
@@ -153,6 +74,7 @@ class LoginViewModel extends BaseModel {
         this.verificationId = verificationId;
         currentState = MobileVerificationState.SHOW_OTP_FORM_STATE;
         print("------code sent-----");
+        isLoadingForOtp = false;
         notifyListeners();
       },
       codeAutoRetrievalTimeout: (codeAutoRetrievalTimeout) {
@@ -165,6 +87,7 @@ class LoginViewModel extends BaseModel {
     return AlertDialog(
       content: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -191,6 +114,106 @@ class LoginViewModel extends BaseModel {
           ),
         ],
       ),
+    );
+  }
+
+  OtpFillWidget(context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: getProportionateScreenWidth(30),
+        vertical: getProportionateScreenHeight(200),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Form(
+          child: Column(
+        children: [
+          Text(
+            "OTP Verification",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline1,
+          ),
+          Text.rich(
+            TextSpan(text: 'We have sent code at \n', children: [
+              TextSpan(
+                  text: '+91${phoneController.text}',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, color: Colors.black87)),
+              const TextSpan(text: '\n please verify'),
+            ]),
+            textAlign: TextAlign.center,
+          ),
+          buildTimer(),
+          SizedBox(height: SizeConfig.screenHeight! * 0.1),
+          SizedBox(
+            height: getProportionateScreenHeight(10),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PinFieldAutoFill(
+              controller: otpController,
+              decoration: UnderlineDecoration(
+                textStyle: const TextStyle(fontSize: 20, color: Colors.black),
+                colorBuilder: FixedColorBuilder(Colors.black.withOpacity(0.3)),
+              ),
+              currentCode: otpController.text,
+              onCodeSubmitted: (code) {},
+              onCodeChanged: (code) {
+                if (code!.length == 6) {
+                  FocusScope.of(context).unfocus();
+
+                  otpController.text = code;
+                  isLoading = true;
+
+                  PhoneAuthCredential phoneAuthCredential =
+                      PhoneAuthProvider.credential(
+                          verificationId: verificationId,
+                          smsCode: otpController.text);
+                  signInWithPhoneAuthCredential(phoneAuthCredential, context);
+                  //FocusScope.of(context).requestFocus(FocusNode());
+                  notifyListeners();
+                }
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          !isLoading
+              ? ElevatedButton(
+                  onPressed: () async {
+                    PhoneAuthCredential phoneAuthCredential =
+                        PhoneAuthProvider.credential(
+                            verificationId: verificationId,
+                            smsCode: otpController.text);
+                    signInWithPhoneAuthCredential(phoneAuthCredential, context);
+                  },
+                  child: const Text('Verify'),
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
+        ],
+      )),
+    );
+  }
+
+  Row buildTimer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        //Text("This code will expired in "),
+        TweenAnimationBuilder(
+          tween: Tween(begin: 45.0, end: 0.0),
+          duration: const Duration(seconds: 45),
+          builder: (_, dynamic value, child) => Text(
+            "00:${value.toInt()}",
+            style: TextStyle(color: Colors.blue),
+          ),
+          onEnd: () {},
+        ),
+      ],
     );
   }
 

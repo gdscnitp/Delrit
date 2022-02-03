@@ -73,22 +73,25 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double height = MediaQuery.of(context).size.height;
+    final Size size = MediaQuery.of(context).size;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-      child: Container(
-        height: height / 2.9,
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          elevation: 6.0,
-          child: Padding(
-            padding: EdgeInsets.only(
-                left: config.getProportionateScreenWidth(40),
-                top: config.getProportionateScreenHeight(10)),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        elevation: 6.0,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: config.getProportionateScreenWidth(40),
+              vertical: config.getProportionateScreenHeight(15)),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+                //  minHeight: size.height / 2.5,
+                ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
@@ -169,16 +172,16 @@ class _DriverDetailsCardState extends State<DriverDetailsCard> {
                         },
                       );
                     },
-                    child: const Text(
+                    child: Text(
                       'See Details',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: config.getProportionateScreenWidth(18),
                         fontWeight: FontWeight.w400,
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(
-                        horizontal: config.getProportionateScreenWidth(90),
+                        horizontal: config.getProportionateScreenWidth(75),
                         vertical: config.getProportionateScreenHeight(7),
                       ),
                       shape: RoundedRectangleBorder(
