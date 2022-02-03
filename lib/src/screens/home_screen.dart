@@ -92,26 +92,45 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void showTripModalSheet(BuildContext context) {
-    showModalBottomSheet<dynamic>(
-      context: context,
-      isScrollControlled: true,
-      builder: (builder) {
-        return BaseView<HomeScreenViewModel>(builder: (context, model, child) {
-          return Container(
-            height: config.getProportionateScreenHeight(310),
-            child: Text(model.driverStatus),
-          );
-        });
-      },
-    );
-  }
+  // class ShowTripStatus extends StatefulWidget {
+  //   const ShowTripStatus({ Key? key }) : super(key: key);
+
+  //   @override
+  //   _ShowTripStatusState createState() => _ShowTripStatusState();
+  // }
+
+  // class _ShowTripStatusState extends State<ShowTripStatus> {
+  //   @override
+  //   Widget build(BuildContext context) {
+  //     return Container(
+
+  //     );
+  //   }
+  // }
+
+  // void showTripModalSheet(BuildContext context) {
+  //   showModalBottomSheet<dynamic>(
+  //       context: context,
+  //       isScrollControlled: true,
+  //       builder: (builder) {
+  //         return BaseView<HomeScreenViewModel>(
+  //             onModelReady: (model) => model.init(),
+  //             builder: (context, model, child) {
+  //               return Container(
+  //                 height: config.getProportionateScreenHeight(310),
+  //                 child: Text(model.driverStatus),
+  //               );
+  //             });
+  //       });
+  // }
 
   @override
   void initState() {
     super.initState();
     setupInteractedMessage();
-    showTripModalSheet(context);
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    // showTripModalSheet(context);
+    // });
   }
 
   @override
@@ -121,6 +140,18 @@ class _HomeScreenState extends State<HomeScreen> {
         onModelReady: (model) => model.init(),
         builder: (context, model, child) {
           return Scaffold(
+            bottomSheet: Row(
+              children: [
+                Text(model.driverStatus),
+                ElevatedButton(
+                  child: Text(model.rideStatusText),
+                  onPressed: () {
+                    model.generateAndSaveOtp();
+                  },
+                )
+              ],
+            ),
+
             drawer: const AppDrawer(),
             appBar: AppBar(
               title: const Text('Home'),

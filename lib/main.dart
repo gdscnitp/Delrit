@@ -67,7 +67,66 @@ class _MyAppState extends State<MyApp> {
       initialRoute: '/splash',
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
+
+      // darkTheme: ThemeData(
+      //   // fontFamily: 'Poppins',
+      //   colorScheme: const ColorScheme.dark(
+      //     primary: Color(0xFF478DF4),
+      //     secondary: Color(0xFFF4AE47),
+      //     surface: Color(0xFFC4C4C4),
+      //     background: Color(0xFF2C2C2C),
+      //     error: Color(0xFFB00020),
+      //     onPrimary: Colors.black,
+      //     onSecondary: Colors.black,
+      //     onSurface: Colors.black,
+      //     onBackground: Colors.white,
+      //     onError: Colors.white,
+      //     brightness: Brightness.dark,
+      //   ),
+      //   textTheme: TextTheme(
+      //     button: const TextStyle(color: Colors.white),
+      //     headline1: TextStyle(
+      //         fontSize: 20.0, color: config.Colors().mainDarkColor(1)),
+      //     headline2: TextStyle(
+      //         fontSize: 18.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.Colors().secondDarkColor(1)),
+      //     headline3: TextStyle(
+      //         fontSize: 20.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.Colors().mainDarkColor(1)),
+      //     headline4: TextStyle(
+      //         fontSize: 22.0,
+      //         fontWeight: FontWeight.w700,
+      //         color: config.Colors().secondDarkColor(1)),
+      //     headline5: TextStyle(
+      //         fontSize: 22.0,
+      //         fontWeight: FontWeight.w300,
+      //         color: config.Colors().mainDarkColor(1)),
+      //     subtitle1: TextStyle(
+      //         fontSize: 15.0,
+      //         fontWeight: FontWeight.w500,
+      //         color: config.Colors().secondDarkColor(1)),
+      //     subtitle2: TextStyle(
+      //         fontSize: 16.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.Colors().mainDarkColor(1)),
+      //     bodyText1: TextStyle(
+      //         fontSize: 12.0, color: config.Colors().secondDarkColor(1)),
+      //     bodyText2: TextStyle(
+      //         fontSize: 14.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.Colors().secondDarkColor(1)),
+      //     caption: TextStyle(
+      //       fontSize: 12.0,
+      //       color: config.Colors().secondDarkColor(0.6),
+      //     ),
+      //   ),
+      // ),
+      //theme: FlexThemeData.light(scheme: FlexScheme.blue).copyWith(
+
       theme: FlexThemeData.light(scheme: FlexScheme.indigo).copyWith(
+
         textTheme: TextTheme(
           button: const TextStyle(color: Colors.white),
 
