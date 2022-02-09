@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/config/app_config.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/view/complete_profile_viewmodel.dart';
 import 'components/body.dart';
@@ -11,16 +12,19 @@ class CompleteProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseView<CompleteProfileViewModel>(builder: (context, model, child) {
       return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          children: [
-            Flexible(flex: 1, child: Header(model: model)),
-            Flexible(
-                flex: 3,
-                child: Body(
-                  model: model,
-                )),
-          ],
+        // resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: getProportionateScreenHeight(200),
+                child: Header(model: model),
+              ),
+              Body(
+                model: model,
+              ),
+            ],
+          ),
         ),
       );
     });

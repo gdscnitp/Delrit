@@ -1,5 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_sharing/config/app_config.dart';
 import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/view/login_viewmodel.dart';
@@ -10,6 +11,7 @@ class PhoneScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<LoginViewModel>(
+      onModelReady: (model) => model.init(),
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
         body: model.currentState ==
@@ -26,10 +28,13 @@ class PhoneScreen extends StatelessWidget {
                           IconButton(
                               onPressed: () => Navigator.pop(context),
                               icon: const Icon(Icons.arrow_back)),
-                          const Text(
-                            'Enter your phone number\nfor verification',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 24),
+                          Expanded(
+                            child: Text(
+                              'Enter your phone number\nfor verification',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: getProportionateScreenWidth(20)),
+                            ),
                           ),
                         ],
                       ),
@@ -90,28 +95,42 @@ class PhoneScreen extends StatelessWidget {
                           width: 300,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30)),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              model.signInWithPhone(context);
-                            },
-                            child: const FractionallySizedBox(
-                              heightFactor: 0.1,
-                              widthFactor: 1.2,
-                              child: Center(
-                                child: Text(
-                                  'Next',
-                                  style: TextStyle(color: Colors.white),
+                          child: model.isLoadingForOtp
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : ElevatedButton(
+                                  onPressed: () {
+                                    model.setLoader(true);
+                                    model.signInWithPhone(context);
+                                  },
+                                  child: Container(
+                                    height: 30,
+                                    child: const Center(
+                                      child: Text(
+                                        'Next',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  // child: const FractionallySizedBox(
+                                  //   heightFactor: 0.1,
+                                  //   widthFactor: 1.2,
+                                  //   child: Center(
+                                  //     child: Text(
+                                  //       'Next',
+                                  //       style: TextStyle(color: Colors.white),
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -119,7 +138,7 @@ class PhoneScreen extends StatelessWidget {
                   ),
                 ),
               )
-            : model.getOtpFormWidget(context),
+            : model.OtpFillWidget(context),
       ),
     );
   }

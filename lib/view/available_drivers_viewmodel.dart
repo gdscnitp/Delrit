@@ -7,6 +7,7 @@ class AvailableDriversViewModel extends BaseModel {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   String? currentRideId;
   List<DriverModel> availableDrivers = [];
+  double cardHeight = 2.9;
 
   void init(String rideId) async {
     ///Get the list of all the available drivers and display

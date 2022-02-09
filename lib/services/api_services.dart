@@ -1,3 +1,5 @@
+/*-----------------file containing methods for calling http requests */
+
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_urls.dart';
 import 'package:ride_sharing/services/base_api.dart';
@@ -42,6 +44,18 @@ class ApiService extends BaseApi {
     ApiResponse response;
     try {
       response = await postRequest("/firebase/send-chat-notification", body);
+    } catch (e) {
+      response = ApiResponse(error: true, errorMessage: e.toString());
+    }
+    return response;
+  }
+
+  Future<ApiResponse> sendRideOtp(Map<String, dynamic> body) async {
+    ApiResponse response;
+    print("=============================================================");
+    print(body);
+    try {
+      response = await postRequest("/firebase/send-rideotp-notification", body);
     } catch (e) {
       response = ApiResponse(error: true, errorMessage: e.toString());
     }

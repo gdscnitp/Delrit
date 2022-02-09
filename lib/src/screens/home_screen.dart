@@ -8,6 +8,7 @@ import 'package:ride_sharing/src/screens/rider_details/components/reusable_butto
 import 'package:ride_sharing/src/screens/test_screen.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
 import 'package:ride_sharing/src/widgets/app_drawer.dart';
+import 'package:ride_sharing/view/home_screen_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -91,147 +92,184 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // void _showModalSheet(BuildContext context) {
+  // class ShowTripStatus extends StatefulWidget {
+  //   const ShowTripStatus({ Key? key }) : super(key: key);
+
+  //   @override
+  //   _ShowTripStatusState createState() => _ShowTripStatusState();
+  // }
+
+  // class _ShowTripStatusState extends State<ShowTripStatus> {
+  //   @override
+  //   Widget build(BuildContext context) {
+  //     return Container(
+
+  //     );
+  //   }
+  // }
+
+  // void showTripModalSheet(BuildContext context) {
   //   showModalBottomSheet<dynamic>(
-  //     context: context,
-  //     isScrollControlled: true,
-  //     builder: (builder) {
-  //       return Container(
-  //         height: config.getProportionateScreenHeight(310),
-  //         child: rideCompleted(context),
-  //       );
-  //     },
-  //   );
+  //       context: context,
+  //       isScrollControlled: true,
+  //       builder: (builder) {
+  //         return BaseView<HomeScreenViewModel>(
+  //             onModelReady: (model) => model.init(),
+  //             builder: (context, model, child) {
+  //               return Container(
+  //                 height: config.getProportionateScreenHeight(310),
+  //                 child: Text(model.driverStatus),
+  //               );
+  //             });
+  //       });
   // }
 
   @override
   void initState() {
     super.initState();
     setupInteractedMessage();
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    // showTripModalSheet(context);
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
     config.SizeConfig().init(context);
-    // return BaseView<HomeScreenViewModel>(
-    //     onModelReady: (model) => model.init(),
-    //     builder: (context, model, child) {
-    return Scaffold(
-      drawer: const AppDrawer(),
-      appBar: AppBar(
-        title: const Text('Home'),
-        //backgroundColor: config.ThemeColors().mainColor(1),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/login');
-            },
-            child: const Text('Login'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/landing');
-            },
-            child: const Text('Landing Page'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/test');
-            },
-            child: const Text('Map Test'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/post-ride');
-            },
-            child: const Text('Post Ride'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/searchrider');
-            },
-            child: const Text('Search Rider'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/addVehicle');
-            },
-            child: const Text('Add Vehicle'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/complete-profile');
-            },
-            child: const Text('Complete Profile'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/user-profile');
-            },
-            child: const Text('User Profile'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/available-riders');
-            },
-            child: const Text('Available Riders'),
-          ),
+    return BaseView<HomeScreenViewModel>(
+        onModelReady: (model) => model.init(),
+        builder: (context, model, child) {
+          return Scaffold(
+            bottomSheet: Row(
+              children: [
+                Text(model.driverStatus),
+                ElevatedButton(
+                  child: Text(model.rideStatusText),
+                  onPressed: () {
+                    model.generateAndSaveOtp();
+                  },
+                )
+              ],
+            ),
 
-          // ElevatedButton(
-          //   onPressed: () {
-          //     Navigator.pushNamed(context, '/rider-details');
-          //   },
-          //   child: const Text('Rider Details'),
-          // ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/available-drivers',
-                arguments: "aOG5i3YIccmhMnADEEqb",
-              );
-            },
-            child: const Text('Available Drivers'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/chats');
-            },
-            child: const Text('Chats'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/ride-details');
-            },
-            child: const Text('Ride Details'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/access-permission');
-            },
-            child: const Text('Access Permission'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const TestScreen()));
-            },
-            child: const Text('Test Screen'),
-          ),
-        ],
-      ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     _showModalSheet(context);
-      //     //Navigator.pushNamed(context, '/detail');
-      //   },
-      //   child: const Icon(Icons.add),
-      // ),
-    );
-    //});
+            drawer: const AppDrawer(),
+            appBar: AppBar(
+              title: const Text('Home'),
+              //backgroundColor: config.ThemeColors().mainColor(1),
+            ),
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(model.driverStatus),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                    child: const Text('Login'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/landing');
+                    },
+                    child: const Text('Landing Page'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/test');
+                    },
+                    child: const Text('Map Test'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/post-ride');
+                    },
+                    child: const Text('Post Ride'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/searchrider');
+                    },
+                    child: const Text('Search Rider'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/addVehicle');
+                    },
+                    child: const Text('Add Vehicle'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/complete-profile');
+                    },
+                    child: const Text('Complete Profile'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/user-profile');
+                    },
+                    child: const Text('User Profile'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/available-riders');
+                    },
+                    child: const Text('Available Riders'),
+                  ),
+
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     Navigator.pushNamed(context, '/rider-details');
+                  //   },
+                  //   child: const Text('Rider Details'),
+                  // ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/available-drivers',
+                        arguments: "aOG5i3YIccmhMnADEEqb",
+                      );
+                    },
+                    child: const Text('Available Drivers'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/chats');
+                    },
+                    child: const Text('Chats'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/ride-details');
+                    },
+                    child: const Text('Ride Details'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/access-permission');
+                    },
+                    child: const Text('Access Permission'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const TestScreen()));
+                    },
+                    child: const Text('Test Screen'),
+                  ),
+                ],
+              ),
+            ),
+            // floatingActionButton: FloatingActionButton(
+            //   onPressed: () {
+            //     _showModalSheet(context);
+            //     //Navigator.pushNamed(context, '/detail');
+            //   },
+            //   child: const Icon(Icons.add),
+            // ),
+          );
+        });
   }
 }
 
