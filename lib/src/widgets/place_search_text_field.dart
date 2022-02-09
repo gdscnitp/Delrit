@@ -18,7 +18,8 @@ Widget placeSearchTextField({
 }) {
   return SizedBox(
     width: width * 0.8,
-    child: TextField(
+    child: TextFormField(
+     
       // onChanged: (value) {
       // locationCallback(value);
       // },
@@ -81,7 +82,18 @@ Widget riderSearchTextField({
 }) {
   return SizedBox(
     width: width * 0.8,
-    child: TextField(
+    child: TextFormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+
+       validator:(value){
+        if (value!.isEmpty) {
+          return "please enter the details*";
+          
+        } else {
+          return null;
+
+        }
+      },
       // onChanged: (value) {
       // locationCallback(value);
       // },

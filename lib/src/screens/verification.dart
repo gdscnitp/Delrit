@@ -70,6 +70,7 @@ class PhoneScreen extends StatelessWidget {
                               flex: 3,
                               child: TextField(
                                 keyboardType: TextInputType.number,
+                        
                                 decoration: const InputDecoration(
                                   hintText: 'Your Number',
                                   enabledBorder: UnderlineInputBorder(

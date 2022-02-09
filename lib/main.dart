@@ -289,12 +289,12 @@ class _MyAppState extends State<MyApp> {
       //     ),
       //   ),
       // ),
-       home:  Scaffold(
+      //  home: Scaffold(
          
         
-        body:ChatScreen(peer:UserProfileModel(name: 'Ms.Thangabali 🙋‍♀️', tokens: [], id: "2", email:'', phone: '123456778', address: 'abcd', gender: 'gender', age: 'age', profile: "profile"),),
+      //   body: ChatScreen(peer:UserProfileModel(name: 'Ms.Thangabali 🙋‍♀️', tokens: [], id: "2", email:'', phone: '123456778', address: 'abcd', gender: 'gender', age: 'age', profile: "profile"),),
         
-        ),
+      //   ),
     );
   }
 }
