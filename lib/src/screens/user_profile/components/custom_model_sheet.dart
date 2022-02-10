@@ -6,6 +6,7 @@ import 'package:ride_sharing/view/user_profile_viewmodel.dart';
 class CustomModelSheet extends StatelessWidget {
   final UserProfileViewModel model;
   CustomModelSheet({Key? key, required this.model}) : super(key: key);
+  final _formKey=GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,24 +28,24 @@ class CustomModelSheet extends StatelessWidget {
               SizedBox(
                 height: App(context).appHeight(4),
               ),
-              inputFormField(label: 'Name', controller: model.nameController),
+              inputFormField(label: 'Name', controller: model.nameController,Ktype:TextInputType.name,error_msg: "mention your name please*"),
               SizedBox(
                 height: App(context).appHeight(4),
               ),
-              inputFormField(label: 'Email', controller: model.emailController),
+              inputFormField(label: 'Email', controller: model.emailController,Ktype:TextInputType.emailAddress,error_msg: "mention your email please*"),
               SizedBox(
                 height: App(context).appHeight(4),
               ),
-              inputFormField(label: 'Phone', controller: model.phoneController),
+              inputFormField(label: 'Phone', controller: model.phoneController,Ktype:TextInputType.phone,error_msg: "mention your phone no. please*"),
               SizedBox(
                 height: App(context).appHeight(4),
               ),
               inputFormField(
-                  label: 'Gender', controller: model.genderController),
+                  label: 'Gender', controller: model.genderController,Ktype:TextInputType.text,error_msg: "mention your gender please*"),
               SizedBox(
                 height: App(context).appHeight(4),
               ),
-              inputFormField(label: 'Age', controller: model.ageController),
+              inputFormField(label: 'Age', controller: model.ageController,Ktype:TextInputType.number, error_msg: "mention your age please*"),
               SizedBox(
                 height: App(context).appHeight(4),
               ),
@@ -62,7 +63,7 @@ class CustomModelSheet extends StatelessWidget {
                 child: const Text(
                   'Save & Continue',
                   style: TextStyle(
-                    fontSize: 20.0,
+                    fontSize: 18.0,
                   ),
                 ),
               ),

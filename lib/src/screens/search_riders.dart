@@ -12,6 +12,7 @@ class SearchRider extends StatefulWidget {
 }
 
 class _SearchRiderState extends State<SearchRider> {
+  final _formKey=GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -112,65 +113,114 @@ class _SearchRiderState extends State<SearchRider> {
                       width: width * 0.9,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 30.0, bottom: 10.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            riderSearchTextField(
-                              context: context,
-                              label: 'Search your starting point',
-                              hint: 'Search your starting point',
-                              suffIcon: const Icon(
-                                Icons.search,
-                                color: Colors.black,
-                              ),
-                              suffixIcon: IconButton(
-                                icon: const Icon(Icons.my_location),
-                                onPressed: () {
-                                  model.startAddressController.text =
-                                      model.currentAddress;
-                                  model.startAddress = model.currentAddress;
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              riderSearchTextField(
+                                context: context,
+                                msg: "please choose your starting location",
+                                label: 'Search your starting point',
+                                hint: 'Search your starting point',
+                                suffIcon: const Icon(
+                                  Icons.search,
+                                  color: Colors.black,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: const Icon(Icons.my_location),
+                                  onPressed: () {
+                                    model.startAddressController.text =
+                                        model.currentAddress;
+                                    model.startAddress = model.currentAddress;
+                                  },
+                                ),
+                                controller: model.startAddressController,
+                                focusNode: model.startAddressFocusNode,
+                                width: width,
+                                locationCallback: (String? value) {
+                                  setState(() {
+                                    model.startAddress = value ?? "";
+                                    model.startAddressController.text =
+                                        value ?? "";
+                                  });
+                                  if (value != null) {
+                                    model.getNewPosition(value);
+                                  }
                                 },
                               ),
-                              controller: model.startAddressController,
-                              focusNode: model.startAddressFocusNode,
-                              width: width,
-                              locationCallback: (String? value) {
-                                setState(() {
-                                  model.startAddress = value ?? "";
-                                  model.startAddressController.text =
-                                      value ?? "";
-                                });
-                                if (value != null) {
-                                  model.getNewPosition(value);
-                                }
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                            riderSearchTextField(
-                              context: context,
-                              label: 'Search your destination',
-                              hint: 'Search your destination',
-                              suffIcon: const Icon(
-                                Icons.search,
-                                color: Colors.black,
+                              const SizedBox(height: 10),
+                              riderSearchTextField(
+                                msg: "please choose your destination location",
+                                context: context,
+                                label: 'Search your destination',
+                                hint: 'Search your destination',
+                                suffIcon: const Icon(
+                                  Icons.search,
+                                  color: Colors.black,
+                                ),
+                                controller: model.destinationAddressController,
+                                focusNode: model.desrinationAddressFocusNode,
+                                width: width,
+                                locationCallback: (String? value) {
+                                  setState(() {
+                                    model.destinationAddress = value ?? "";
+                                    model.destinationAddressController.text =
+                                        value ?? "";
+                                  });
+                                },
                               ),
-                              controller: model.destinationAddressController,
-                              focusNode: model.desrinationAddressFocusNode,
-                              width: width,
-                              locationCallback: (String? value) {
-                                setState(() {
-                                  model.destinationAddress = value ?? "";
-                                  model.destinationAddressController.text =
-                                      value ?? "";
-                                });
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              width: width * 0.8,
-                              child: GestureDetector(
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: width * 0.8,
+                                child: GestureDetector(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade300,
+                                      border: Border.all(
+                                        color: Colors.grey.shade300,
+                                      ),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(
+                                          10.0,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          model.getText(),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                        Icon(Icons.calendar_today),
+                                      ],
+                                    ),
+                                  ),
+                                  onTap: () => model.selectDateTime(context),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: width * 0.8,
+                                // child: TextField(
+                                //   decoration: kTextFieldStyle(
+                                //     suffixIcon: const Icon(Icons.car_rental),
+                                //     label: 'Choose Vehicle',
+                                //     hint: 'Choose Vehicle',
+                                //     fillColor: Colors.grey[300],
+                                //   ),
+                                // ),
                                 child: Container(
-                                  padding: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.only(
+                                    left: 10,
+                                    right: 10,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: Colors.grey.shade300,
                                     border: Border.all(
@@ -186,130 +236,92 @@ class _SearchRiderState extends State<SearchRider> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        model.getText(),
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
+                                      DropdownButton(
+                                        hint: Text(
+                                          model.selectedVehicle,
+                                          style: const TextStyle(
+                                              color: Colors.black),
                                         ),
+                                        dropdownColor: Colors.grey.shade300,
+                                        icon: const Icon(Icons.arrow_drop_down),
+                                        iconSize: 40,
+                                        underline: const SizedBox(),
+                                        value: model.selectedVehicle,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            model.selectedVehicle =
+                                                value.toString();
+                                          });
+                                        },
+                                        items: model.vehicles.map((e) {
+                                          return DropdownMenuItem(
+                                            child: Text(
+                                              e,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            value: e,
+                                          );
+                                        }).toList(),
                                       ),
-                                      Icon(Icons.calendar_today),
+                                      const Icon(Icons.drive_eta),
                                     ],
                                   ),
                                 ),
-                                onTap: () => model.selectDateTime(context),
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              width: width * 0.8,
-                              // child: TextField(
-                              //   decoration: kTextFieldStyle(
-                              //     suffixIcon: const Icon(Icons.car_rental),
-                              //     label: 'Choose Vehicle',
-                              //     hint: 'Choose Vehicle',
-                              //     fillColor: Colors.grey[300],
-                              //   ),
-                              // ),
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  left: 10,
-                                  right: 10,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade300,
-                                  border: Border.all(
-                                    color: Colors.grey.shade300,
-                                  ),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(
-                                      10.0,
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    DropdownButton(
-                                      hint: Text(
-                                        model.selectedVehicle,
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                      ),
-                                      dropdownColor: Colors.grey.shade300,
-                                      icon: const Icon(Icons.arrow_drop_down),
-                                      iconSize: 40,
-                                      underline: const SizedBox(),
-                                      value: model.selectedVehicle,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          model.selectedVehicle =
-                                              value.toString();
-                                        });
-                                      },
-                                      items: model.vehicles.map((e) {
-                                        return DropdownMenuItem(
-                                          child: Text(
-                                            e,
-                                            style: const TextStyle(
-                                              color: Colors.black,
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: width * 0.8,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      print(model.startAddressController.text);
+                                    print(
+                                        model.destinationAddressController.text);
+                                    String driveId = await model.addDriver();
+                                    await model.addTrip(driveId);
+                                      
+                                    } else {
+                                      return;
+                                    }
+                                    
+                                    // Navigator.pushNamed(
+                                    //   context,
+                                    //   '/nearby-riders',
+                                    //   arguments: {
+                                    //     'startAddress':
+                                    //         model.startAddressController.text,
+                                    //     'destinationAddress': model
+                                    //         .destinationAddressController.text,
+                                    //   },
+                                    // );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: model.state == ViewState.Busy
+                                        ? const CircularProgressIndicator()
+                                        : const Text(
+                                            'Search Riders',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 24.0,
                                             ),
                                           ),
-                                          value: e,
-                                        );
-                                      }).toList(),
-                                    ),
-                                    const Icon(Icons.drive_eta),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              width: width * 0.8,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  print(model.startAddressController.text);
-                                  print(
-                                      model.destinationAddressController.text);
-                                  String driveId = await model.addDriver();
-                                  await model.addTrip(driveId);
-                                  // Navigator.pushNamed(
-                                  //   context,
-                                  //   '/nearby-riders',
-                                  //   arguments: {
-                                  //     'startAddress':
-                                  //         model.startAddressController.text,
-                                  //     'destinationAddress': model
-                                  //         .destinationAddressController.text,
-                                  //   },
-                                  // );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: model.state == ViewState.Busy
-                                      ? const CircularProgressIndicator()
-                                      : const Text(
-                                          'Search Riders',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 24.0,
-                                          ),
-                                        ),
+                              TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  'Search for drivers instead',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: const Text(
-                                'Search for drivers instead',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
