@@ -8,6 +8,7 @@ import 'package:ride_sharing/view/choose_location_viewmodel.dart';
 import 'package:ride_sharing/view/complete_profile_viewmodel.dart';
 import 'package:ride_sharing/view/driver_details_viewmodel.dart';
 import 'package:ride_sharing/view/home_screen_view_model.dart';
+import 'package:ride_sharing/view/live_tracking_viewmodel.dart';
 import 'package:ride_sharing/view/login_viewmodel.dart';
 import 'package:ride_sharing/view/post_ride_viewmodel.dart';
 import 'package:ride_sharing/view/rider_details_viewmodel.dart';
@@ -32,4 +33,5 @@ void setupLocator() {
   getIt.registerFactory(() => DriverDetailsViewModel());
   getIt.registerFactory(() => HomeScreenViewModel());
   getIt.registerFactory(() => AddVehicleViewModel());
+  getIt.registerFactory(() => LiveTrackingViewModel());
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 class Helper {
   static Widget text(
@@ -7,11 +7,11 @@ class Helper {
     return Text(
       msg,
       textAlign: TextAlign.center,
-      style: GoogleFonts.nunito(
-          fontWeight: fontWeight,
-          fontSize: size.toDouble(),
-          color: color,
-          letterSpacing: spacing.toDouble()),
+      // style: GoogleFonts.nunito(
+      //     fontWeight: fontWeight,
+      //     fontSize: size.toDouble(),
+      //     color: color,
+      //     letterSpacing: spacing.toDouble()),
     );
   }
 }

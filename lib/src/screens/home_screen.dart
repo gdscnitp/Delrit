@@ -256,8 +256,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const TestScreen()));
                     },
-                    child: const Text('Test Screen'),
+                    child: const Text('Test Screenn'),
                   ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/live-track');
+                    },
+                    child: const Text('Live Track'),
+                  ),
+                  const SizedBox(height: 100),
                 ],
               ),
             ),
