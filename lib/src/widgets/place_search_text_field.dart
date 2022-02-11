@@ -48,11 +48,24 @@ Widget inputFormField({
   // FocusNode? focusNode,
   required String label,
   required TextEditingController controller,
+  required TextInputType Ktype,
+  required String error_msg,
   //required String hint,
   //required BuildContext context,
 }) {
   return SizedBox(
     child: TextFormField(
+      
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value){
+        if (value!.isEmpty ) {
+          return error_msg;
+          
+        } else {
+          return null;
+        }
+      },
+      keyboardType:Ktype,
       controller: controller,
       // onChanged: (value) {
       // locationCallback(value);
@@ -61,6 +74,7 @@ Widget inputFormField({
       // controller: controller,
       // focusNode: focusNode,
       decoration: kTextFormFieldStyle(
+        
         label: label,
         hint: 'Type here...',
       ),
@@ -70,6 +84,7 @@ Widget inputFormField({
 
 Widget riderSearchTextField({
   required TextEditingController controller,
+  required String msg,
   FocusNode? focusNode,
   required String label,
   required String hint,
@@ -81,7 +96,18 @@ Widget riderSearchTextField({
 }) {
   return SizedBox(
     width: width * 0.8,
-    child: TextField(
+    child: TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value){
+        if (value!.isEmpty) {
+          return msg;
+          
+        } else {
+          return null;
+        }
+      },
+      
+      
       // onChanged: (value) {
       // locationCallback(value);
       // },

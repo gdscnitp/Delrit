@@ -13,10 +13,8 @@ InputDecoration kTextFieldStyle(
     labelText: label,
     filled: true,
     fillColor: fillColor ?? Colors.white,
-    enabledBorder: OutlineInputBorder(
-      borderRadius: const BorderRadius.all(
-        Radius.circular(10.0),
-      ),
+    border: OutlineInputBorder(
+      borderRadius:  BorderRadius.circular(15),
       borderSide: BorderSide(
         color: Colors.grey.shade400,
         width: borderwidth ?? 2,
