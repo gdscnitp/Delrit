@@ -25,8 +25,8 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 5),
                 ElevatedButton(
                   onPressed: () async {
-                    await model.signInWithFacebook();
-                    Navigator.of(context).pushNamed('/');
+                    // await model.signInWithFacebook();
+                    // Navigator.of(context).pushNamed('/');
                   },
                   child: const Text('Sign In with Facebook'),
                 ),
