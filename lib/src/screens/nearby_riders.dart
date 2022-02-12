@@ -21,7 +21,6 @@ class _NearbyRidersState extends State<NearbyRiders> {
     return BaseView<SearchRiderViewModel>(
       onModelReady: (model) => model.init(widget.args),
       builder: (context, model, child) => Scaffold(
-        key: model.scaffoldkey,
         body: Stack(
           children: [
             GoogleMap(

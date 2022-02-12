@@ -168,7 +168,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       // Use dark or light theme based on system setting.
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light
     );
   }
 }

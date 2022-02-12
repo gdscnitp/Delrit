@@ -24,7 +24,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchRiderViewModel extends BaseModel {
-  final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final ApiService _apiService = ApiService();
   Prefs prefs = Prefs();

@@ -12,4 +12,11 @@ class BaseModel extends ChangeNotifier {
     _state = viewState;
     notifyListeners();
   }
+
+  RideState _rideState = RideState.NO_RIDE;
+  RideState get rideState => _rideState;
+  void setRideState(RideState rideState) {
+    _rideState = rideState;
+    notifyListeners();
+  }
 }

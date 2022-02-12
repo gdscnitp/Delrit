@@ -3,7 +3,7 @@ import 'package:ride_sharing/src/screens/add_vehicle.dart';
 import 'package:ride_sharing/src/screens/available_drivers/available_drivers.dart';
 import 'package:ride_sharing/src/screens/available_riders/available_rider.dart';
 import 'package:ride_sharing/src/screens/driver_details/driver_details.dart';
-import 'package:ride_sharing/src/screens/live_vehicle_traking_screen/live_vehicle_tracking.dart';
+import 'package:ride_sharing/src/screens/main_screen/main_screen.dart';
 import 'package:ride_sharing/src/screens/rider_details/rider_details.dart';
 import 'package:ride_sharing/src/screens/chat_screen/chat_screen.dart';
 import 'package:ride_sharing/src/screens/choose_location.dart';
@@ -15,8 +15,6 @@ import 'package:ride_sharing/src/screens/map_test.dart';
 import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
 import 'package:ride_sharing/src/screens/nearby_riders.dart';
 import 'package:ride_sharing/src/screens/search_riders.dart';
-import 'package:ride_sharing/src/screens/welcome_screen/components/splashScrn1.dart';
-import 'package:ride_sharing/src/screens/welcome_screen/components/splashScrn2.dart';
 import 'package:ride_sharing/src/screens/splash_screen/splash_screen.dart';
 import 'package:ride_sharing/src/screens/complete_profile/complete_profile.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
@@ -56,8 +54,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => NearbyRiders(args: args));
       case '/user-profile':
         return MaterialPageRoute(builder: (_) => const UserProfile());
-      case '/ride-details':
-        return MaterialPageRoute(builder: (_) => const RideDetails());
+      // case '/ride-details':
+      //   return MaterialPageRoute(builder: (_) => const RideDetails());
       case '/chats':
         return MaterialPageRoute(builder: (_) => ChatScreen(peer: args));
       case '/post-ride':
@@ -74,8 +72,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => RiderDetails(args: args));
       case '/driver-details':
         return MaterialPageRoute(builder: (_) => DriverDetails(args: args));
-      case '/live-track':
-        return MaterialPageRoute(builder: (_) => const LiveTrack());
+      case '/main':
+        return MaterialPageRoute(builder: (_) => const MainScreen());
 //      case '/second':
 //      // Validation of correct data type
 //        if (args is String) {

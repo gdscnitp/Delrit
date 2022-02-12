@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:ride_sharing/src/models/drivers.dart';
+import 'package:ride_sharing/src/models/riders.dart';
+import 'package:ride_sharing/src/models/user.dart';
+
 TripsModel tripsModelFromJson(Map<String, dynamic>? data) =>
     TripsModel.fromJson(data!);
 
@@ -35,11 +39,21 @@ class Driver {
   final String driveId;
   final String driverUid;
   final String status;
+  UserProfileModel? driverProfile;
+  DriverModel? driveData;
+
+  set setDriverProfile(UserProfileModel userProfile) {
+    driverProfile = userProfile;
+  }
+
+  set setDriveData(DriverModel driveData) {
+    driveData = driveData;
+  }
 
   factory Driver.fromJson(Map<String, dynamic> json) => Driver(
         driveId: json["driveId"],
         driverUid: json["driverUid"],
-        status: json["status"],
+        status: json["driverStatus"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -59,6 +73,16 @@ class Rider {
   final String riderUid;
   final String rideId;
   final String status;
+  late UserProfileModel riderProfile;
+  late RiderModel rideData;
+
+  set setRiderProfile(UserProfileModel riderProfile) {
+    this.riderProfile = riderProfile;
+  }
+
+  set setRideData(RiderModel rideData) {
+    this.rideData = rideData;
+  }
 
   factory Rider.fromJson(Map<String, dynamic> json) => Rider(
         riderUid: json["riderUid"],
