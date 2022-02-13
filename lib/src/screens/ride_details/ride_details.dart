@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/src/models/trips.dart';
+import 'package:ride_sharing/view/main_screen_viewmodel.dart';
 import 'components/body.dart';
-import 'package:ride_sharing/src/widgets/app_bar.dart';
 
-class RideDetails extends StatelessWidget {
-  final TripsModel trip;
-  const RideDetails(this.trip, {Key? key}) : super(key: key);
+class RideDetails extends StatefulWidget {
+  final MainScreenViewModel model;
+  const RideDetails(this.model, {Key? key}) : super(key: key);
 
+  @override
+  State<RideDetails> createState() => _RideDetailsState();
+}
+
+class _RideDetailsState extends State<RideDetails> {
   @override
   Widget build(BuildContext context) {
     final TextStyle? commonTextStyle = Theme.of(context).textTheme.headline2;
-    return Body(context, trip, commonTextStyle!);
+    return Body(context, widget.model.tripData, commonTextStyle!);
   }
 }

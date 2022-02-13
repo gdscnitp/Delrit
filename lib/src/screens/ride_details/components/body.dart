@@ -33,7 +33,7 @@ Widget Body(BuildContext context, TripsModel trip, TextStyle commonTextStyle) {
         style: commonTextStyle,
       ),
       inputFormField(commonTextStyle as TextStyle,
-          trip.driver.driveData?.sourceName ?? " "),
+          trip.driver.driveData?.sourceName ?? ""),
       SizedBox(
         height: getProportionateScreenHeight(15),
       ),
@@ -41,7 +41,8 @@ Widget Body(BuildContext context, TripsModel trip, TextStyle commonTextStyle) {
         'My Destination',
         style: commonTextStyle,
       ),
-      inputFormField(commonTextStyle, 'NIT Patna'),
+      inputFormField(
+          commonTextStyle, trip.driver.driveData?.destinationName ?? ""),
       SizedBox(
         height: getProportionateScreenHeight(12),
       ),
@@ -52,7 +53,7 @@ Widget Body(BuildContext context, TripsModel trip, TextStyle commonTextStyle) {
       SizedBox(
         height: getProportionateScreenHeight(12),
       ),
-      driverDetailsCard(context, commonTextStyle),
+      driverDetailsCard(context, trip.driver, commonTextStyle),
       SizedBox(
         height: getProportionateScreenHeight(12),
       ),
@@ -63,14 +64,30 @@ Widget Body(BuildContext context, TripsModel trip, TextStyle commonTextStyle) {
       SizedBox(
         height: getProportionateScreenHeight(12),
       ),
-      travallerDetailsCard(commonTextStyle),
-      SizedBox(
-        height: getProportionateScreenHeight(12),
-      ),
-      travallerDetailsCard(commonTextStyle),
-      SizedBox(
-        height: getProportionateScreenHeight(12),
-      ),
+      ListView(
+        shrinkWrap: true,
+        children: [
+          for (var rider in trip.riders)
+            travallerDetailsCard(rider, commonTextStyle)
+        ],
+      )
+      // Expanded(
+      //   child: ListView.builder(
+      //     itemCount: trip.riders.length,
+      //     itemBuilder: (context, index) {
+      //       return Text("hhh");
+      //       // return travallerDetailsCard(trip.riders[index], commonTextStyle);
+      //     },
+      //   ),
+      // ),
+      // travallerDetailsCard(commonTextStyle),
+      // SizedBox(
+      //   height: getProportionateScreenHeight(12),
+      // ),
+      // travallerDetailsCard(commonTextStyle),
+      // SizedBox(
+      //   height: getProportionateScreenHeight(12),
+      // ),
     ]),
   );
 }

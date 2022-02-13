@@ -47,7 +47,7 @@ class Driver {
   }
 
   set setDriveData(DriverModel driveData) {
-    driveData = driveData;
+    this.driveData = driveData;
   }
 
   factory Driver.fromJson(Map<String, dynamic> json) => Driver(
@@ -73,8 +73,8 @@ class Rider {
   final String riderUid;
   final String rideId;
   final String status;
-  late UserProfileModel riderProfile;
-  late RiderModel rideData;
+  UserProfileModel? riderProfile;
+  RiderModel? rideData;
 
   set setRiderProfile(UserProfileModel riderProfile) {
     this.riderProfile = riderProfile;
@@ -87,7 +87,7 @@ class Rider {
   factory Rider.fromJson(Map<String, dynamic> json) => Rider(
         riderUid: json["riderUid"],
         rideId: json["rideId"],
-        status: json["status"],
+        status: json["riderStatus"],
       );
 
   Map<String, dynamic> toJson() => {

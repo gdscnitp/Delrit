@@ -9,6 +9,7 @@ import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/prefs_services.dart';
 import 'package:ride_sharing/src/models/drivers.dart';
+import 'package:ride_sharing/src/models/riders.dart';
 import 'package:ride_sharing/src/models/trips.dart';
 import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/screens/main_screen/components/no_ride.dart';
@@ -20,7 +21,7 @@ class MainScreenViewModel extends BaseModel {
   final Prefs prefs = Prefs();
   final CameraPosition initialLocation = const CameraPosition(
     target: LatLng(26.8876621, 80.995846),
-    zoom: 15.0,
+    zoom: 10.0,
   );
   late GoogleMapController mapController;
   String currentAddress = "";
@@ -34,7 +35,8 @@ class MainScreenViewModel extends BaseModel {
   BitmapDescriptor? destinationIcon;
 
   late LocationData currentPosition;
-  late LocationData destinationLocation;
+  late LatLng sourceLocation;
+  late LatLng destinationLocation;
   late Location location;
 
   String? uid = FirebaseAuth.instance.currentUser?.uid;
@@ -43,14 +45,14 @@ class MainScreenViewModel extends BaseModel {
 
   void init() async {
     setState(ViewState.Busy);
-    // location = Location();
+    location = Location();
     // location.onLocationChanged.listen((LocationData locationData) {
     //   print(
     //       locationData.latitude.toString() + locationData.longitude.toString());
     //   currentPosition = locationData;
     //   updatePin();
     // });
-    // setSourceAndDestinationIcons();
+    setSourceAndDestinationIcons();
 
     if (uid == null) return;
 
@@ -74,8 +76,8 @@ class MainScreenViewModel extends BaseModel {
     }
 
     getAllTripData();
-
     setState(ViewState.Idle);
+    notifyListeners();
   }
 
   void setSourceAndDestinationIcons() async {
@@ -96,7 +98,6 @@ class MainScreenViewModel extends BaseModel {
     mapController.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
         target: LatLng(currentPosition.latitude!, currentPosition.longitude!),
-        zoom: 15.0,
       ),
     ));
     markers.removeWhere((m) => m.markerId.value == 'Source');
@@ -111,7 +112,7 @@ class MainScreenViewModel extends BaseModel {
     notifyListeners();
   }
 
-  void getCurrentLocation() async {
+  void getCurrentTripMap() async {
     await location.getLocation().then((LocationData position) async {
       currentPosition = position;
       mapController.animateCamera(
@@ -119,32 +120,44 @@ class MainScreenViewModel extends BaseModel {
           CameraPosition(
               target:
                   LatLng(currentPosition.latitude!, currentPosition.longitude!),
-              zoom: 15.0),
+              zoom: 10.0),
         ),
       );
 
-      markers.clear();
-      markers.add(
-        Marker(
-          markerId: const MarkerId("Source"),
-          position:
-              LatLng(currentPosition.latitude!, currentPosition.longitude!),
-          infoWindow: const InfoWindow(title: "Your Location"),
-          icon: sourceIcon!,
-        ),
-      );
+      if (rideState != RideState.NO_RIDE) {
+        sourceLocation = LatLng(tripData.driver.driveData!.source.latitude,
+            tripData.driver.driveData!.source.longitude);
 
-      markers.add(
-        Marker(
-          markerId: const MarkerId("Destination"),
-          position: const LatLng(26.555513059659972, 80.51012964258656),
-          infoWindow: const InfoWindow(title: "Destination Location"),
-          icon: destinationIcon!,
-        ),
-      );
+        destinationLocation = LatLng(
+            tripData.driver.driveData!.destination.latitude,
+            tripData.driver.driveData!.destination.longitude);
 
-      // createPolylines(currentPosition.latitude, currentPosition.longitude,
-      //     26.555513059659972, 80.51012964258656);
+        markers.clear();
+        markers.add(
+          Marker(
+            markerId: const MarkerId("Source"),
+            position: sourceLocation,
+            infoWindow: const InfoWindow(title: "Source Location"),
+            icon: sourceIcon!,
+          ),
+        );
+
+        markers.add(
+          Marker(
+            markerId: const MarkerId("Destination"),
+            position: destinationLocation,
+            infoWindow: const InfoWindow(title: "Destination Location"),
+            icon: destinationIcon!,
+          ),
+        );
+
+        createPolylines(
+          sourceLocation.latitude,
+          sourceLocation.longitude,
+          destinationLocation.latitude,
+          destinationLocation.longitude,
+        );
+      }
 
       notifyListeners();
       // await getAddress();
@@ -187,20 +200,28 @@ class MainScreenViewModel extends BaseModel {
   }
 
   getAllTripData() async {
-    print("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-    print("hereeeeeeeeeeeeeeeeeeefffffeeeeeeeeeeeee");
-    print("hereeeeeeeeeeeeeeeeeeefffffeeeeeeeeeeeefffe");
     var data;
-    // data = (await db.collection("users").doc(tripData.driver.driverUid).get())
-    //     .data();
+    data = (await db.collection("users").doc(tripData.driver.driverUid).get())
+        .data();
 
-    // tripData.driver.setDriverProfile = UserProfileModel.fromJson(data!);
+    tripData.driver.setDriverProfile = UserProfileModel.fromJson(data!);
 
     data = (await db
         .collection("availableDrivers")
         .doc(tripData.driver.driveId)
         .get());
-    print(data.data());
     tripData.driver.setDriveData = DriverModel.fromJson(data.data(), data.id);
+    notifyListeners();
+
+    for (Rider rider in tripData.riders) {
+      data = (await db.collection("users").doc(rider.riderUid).get()).data();
+      rider.setRiderProfile = UserProfileModel.fromJson(data!);
+      print("ok");
+      print(rider.riderProfile?.name);
+
+      data = (await db.collection("availableRiders").doc(rider.rideId).get());
+      rider.setRideData = RiderModel.fromJson(data.data(), data.id);
+      notifyListeners();
+    }
   }
 }

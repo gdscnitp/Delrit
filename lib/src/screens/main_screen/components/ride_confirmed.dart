@@ -15,6 +15,6 @@ class RideConfirmedBS extends StatefulWidget {
 class _RideConfirmedBSState extends State<RideConfirmedBS> {
   @override
   Widget build(BuildContext context) {
-    return RideDetails(widget.model.tripData);
+    return RideDetails(widget.model);
   }
 }
