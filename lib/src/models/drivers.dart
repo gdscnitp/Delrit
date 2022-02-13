@@ -39,6 +39,8 @@ class DriverModel {
     required this.uid,
     required this.vehicle,
     required this.docId,
+    required this.sourceName,
+    required this.destinationName,
   });
 
   final GeoPoint destination, source;
@@ -55,6 +57,8 @@ class DriverModel {
         uid: json["uid"],
         vehicle: json["vehicle"],
         docId: id,
+        sourceName: json["sourceName"],
+        destinationName: json["destinationName"],
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart';
+import 'package:ride_sharing/src/models/trips.dart';
+import 'package:ride_sharing/src/utils/dateutils.dart';
 
-Widget driverDetailsCard(BuildContext context, TextStyle commonTextStyle) {
+Widget driverDetailsCard(
+    BuildContext context, Driver driver, TextStyle commonTextStyle) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
     child: Card(
@@ -37,7 +40,7 @@ Widget driverDetailsCard(BuildContext context, TextStyle commonTextStyle) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Rider Name',
+                      driver.driverProfile?.name ?? "",
                       style: Theme.of(context).textTheme.headline1,
                     ),
                     SizedBox(
@@ -50,7 +53,7 @@ Widget driverDetailsCard(BuildContext context, TextStyle commonTextStyle) {
                           width: 35,
                           child: Image.asset('assets/images/check_mark.png'),
                         ),
-                        Text(
+                        const Text(
                           'Vaccinated',
                           style: TextStyle(
                             color: Colors.green,
@@ -59,21 +62,21 @@ Widget driverDetailsCard(BuildContext context, TextStyle commonTextStyle) {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 7,
                     ),
                     Text(
-                      'Gender : Female',
+                      'Gender : ${driver.driverProfile?.gender ?? ""}',
                       style: commonTextStyle,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 7,
                     ),
                     Text(
-                      'Age : 35 years',
+                      'Age : ${driver.driverProfile?.age ?? ""} years',
                       style: commonTextStyle,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 7,
                     ),
                   ],
@@ -98,7 +101,7 @@ Widget driverDetailsCard(BuildContext context, TextStyle commonTextStyle) {
               ),
               Expanded(
                 child: Text(
-                  '+91 60708090100',
+                  '+91 ${driver.driverProfile?.phone ?? ""}',
                   style: commonTextStyle,
                 ),
               ),
@@ -145,24 +148,24 @@ Widget driverDetailsCard(BuildContext context, TextStyle commonTextStyle) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Source : Patliputra, Patna',
+                  'Source : ${driver.driveData?.sourceName ?? ""}',
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
-                  'Destination : Mahendru Ghat, Patna',
+                  'Destination : ${driver.driveData?.sourceName ?? ""}',
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
-                  'On 8th Dec,2021 at 8:30 A.M.',
+                  'On ${timestampToHumanReadable(driver.driveData?.time ?? 0)}',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 17,
                 ),
               ],

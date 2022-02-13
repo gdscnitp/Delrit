@@ -12,7 +12,7 @@ class SearchRider extends StatefulWidget {
 }
 
 class _SearchRiderState extends State<SearchRider> {
-  final _formKey=GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -20,7 +20,6 @@ class _SearchRiderState extends State<SearchRider> {
     return BaseView<SearchRiderViewModel>(
       onModelReady: (model) => model.getCurrentLocation(),
       builder: (context, model, child) => Scaffold(
-        key: model.scaffoldkey,
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -77,7 +76,7 @@ class _SearchRiderState extends State<SearchRider> {
                           horizontal: 10.0,
                         ),
                         focusColor: Colors.white,
-                        hintText: 'Search for Riders',
+                        hintText: 'Post Your Ride',
                         hintStyle: const TextStyle(
                           fontSize: 18,
                         ),
@@ -277,15 +276,14 @@ class _SearchRiderState extends State<SearchRider> {
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
                                       print(model.startAddressController.text);
-                                    print(
-                                        model.destinationAddressController.text);
-                                    String driveId = await model.addDriver();
-                                    await model.addTrip(driveId);
-                                      
+                                      print(model
+                                          .destinationAddressController.text);
+                                      String driveId = await model.addDriver();
+                                      await model.addTrip(driveId);
                                     } else {
                                       return;
                                     }
-                                    
+
                                     // Navigator.pushNamed(
                                     //   context,
                                     //   '/nearby-riders',
@@ -302,7 +300,7 @@ class _SearchRiderState extends State<SearchRider> {
                                     child: model.state == ViewState.Busy
                                         ? const CircularProgressIndicator()
                                         : const Text(
-                                            'Search Riders',
+                                            'Post & Search',
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 24.0,
@@ -314,7 +312,7 @@ class _SearchRiderState extends State<SearchRider> {
                               TextButton(
                                 onPressed: () {},
                                 child: const Text(
-                                  'Search for drivers instead',
+                                  'Get a Ride instead?',
                                   style: TextStyle(
                                     color: Colors.black,
                                   ),

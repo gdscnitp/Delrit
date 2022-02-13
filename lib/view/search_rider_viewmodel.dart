@@ -24,7 +24,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchRiderViewModel extends BaseModel {
-  final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final ApiService _apiService = ApiService();
   Prefs prefs = Prefs();
@@ -51,7 +50,7 @@ class SearchRiderViewModel extends BaseModel {
 
   Set<Marker> markers = {};
 
-  List<Rider> nearbyRiders = [];
+  List<RiderModel> nearbyRiders = [];
 
   late PolylinePoints polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
@@ -141,14 +140,16 @@ class SearchRiderViewModel extends BaseModel {
   void getNearbyRiders(BuildContext context) async {
     final Uint8List markerIcon =
         await getBytesFromAsset('assets/icons/person.png', 150);
-    List<Rider> riders =
+    List<RiderModel> riders =
         (await db.collection('availableRiders').get()).docs.map((e) {
       var data = e.data();
-      return Rider(
-          docId: e.id,
-          uid: data['uid'] ?? "",
-          source: data["source"],
-          destination: data["destination"]);
+      return RiderModel(
+        docId: e.id,
+        uid: data['uid'] ?? "",
+        source: data["source"],
+        destination: data["destination"],
+        time: data["time"],
+      );
     }).toList();
 
     nearbyRiders = riders.where((r) {
@@ -167,7 +168,7 @@ class SearchRiderViewModel extends BaseModel {
     );
 
     markers.clear();
-    for (Rider r in nearbyRiders) {
+    for (RiderModel r in nearbyRiders) {
       var user = (await db.collection('users').doc(r.uid).get()).data();
       UserProfileModel userProfile = userProfileFromJson(user);
       markers.add(
@@ -298,7 +299,7 @@ class SearchRiderViewModel extends BaseModel {
     // notifyListeners();
   }
 
-  void acceptRide(Rider r) async {
+  void acceptRide(RiderModel r) async {
     // print("yoooooooooooooooooooo");
     // var token =
     //     "cuiqIW3wT2ycOyijjoOdJK:APA91bFbPRFj6wRNowB7jo7xAuVE_KGvnZy-wIPQPkT936djHz1GT_Bxss_B2bH427EAz4aIp8mPiInV0fINchIlHPhZHjm3KeAGqBQtc8knkfTirHwTGqkzN6NCiYuqepWgROstaB3M";

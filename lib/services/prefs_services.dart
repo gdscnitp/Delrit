@@ -86,7 +86,7 @@ class Prefs {
     final SharedPreferences getTripPref = await _prefs;
 
     print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-    String myTripId = getTripPref.getString("trip_id") ?? " ";
+    String myTripId = getTripPref.getString("trip_id") ?? "";
     print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
     print(myTripId);
 

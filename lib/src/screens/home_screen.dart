@@ -260,9 +260,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/live-track');
+                      Navigator.pushNamed(context, '/main');
                     },
-                    child: const Text('Live Track'),
+                    child: const Text('Main Screen'),
                   ),
                   const SizedBox(height: 100),
                 ],

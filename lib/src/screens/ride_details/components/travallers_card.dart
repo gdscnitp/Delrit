@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart';
+import 'package:ride_sharing/src/models/trips.dart';
 
-Widget travallerDetailsCard(TextStyle commonTextStyle) {
+Widget travallerDetailsCard(Rider rider, TextStyle commonTextStyle) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
     child: Card(
@@ -37,7 +38,7 @@ Widget travallerDetailsCard(TextStyle commonTextStyle) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Rider Name',
+                      rider.riderProfile?.name ?? "",
                       style: commonTextStyle,
                     ),
                     SizedBox(
@@ -45,12 +46,12 @@ Widget travallerDetailsCard(TextStyle commonTextStyle) {
                     ),
                     Row(
                       children: [
-                        Container(
+                        SizedBox(
                           height: 35,
                           width: 35,
                           child: Image.asset('assets/images/check_mark.png'),
                         ),
-                        Text(
+                        const Text(
                           'Vaccinated',
                           style: TextStyle(
                             color: Colors.green,
@@ -59,21 +60,21 @@ Widget travallerDetailsCard(TextStyle commonTextStyle) {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 7,
                     ),
                     Text(
-                      'Gender : Female',
+                      'Gender : ${rider.riderProfile?.gender ?? ""}',
                       style: commonTextStyle,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 7,
                     ),
                     Text(
-                      'Age : 35 years',
+                      'Age : ${rider.riderProfile?.age ?? ""} years',
                       style: commonTextStyle,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 7,
                     ),
                   ],
@@ -103,7 +104,7 @@ Widget travallerDetailsCard(TextStyle commonTextStyle) {
               ),
               Expanded(
                 child: Text(
-                  '+91 60708090100',
+                  '+91 ${rider.riderProfile?.phone ?? ""}',
                   style: commonTextStyle,
                 ),
               ),

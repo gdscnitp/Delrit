@@ -6,7 +6,7 @@ import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/screens/rider_details/components/reusable_button.dart';
 
 class RiderDetailsBottomSheet extends StatefulWidget {
-  final Rider rider;
+  final RiderModel rider;
   final UserProfileModel riderInfo;
   final Function func;
   const RiderDetailsBottomSheet(
