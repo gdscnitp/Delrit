@@ -15,6 +15,10 @@ class _RideDetailsState extends State<RideDetails> {
   @override
   Widget build(BuildContext context) {
     final TextStyle? commonTextStyle = Theme.of(context).textTheme.headline2;
-    return Body(context, widget.model.tripData, commonTextStyle!);
+    return Body(
+      context,
+      widget.model,
+      commonTextStyle!,
+    );
   }
 }

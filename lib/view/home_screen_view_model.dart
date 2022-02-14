@@ -96,4 +96,6 @@ class HomeScreenViewModel extends BaseModel {
       print("No rider to send otp");
     }
   }
+
+  
 }
