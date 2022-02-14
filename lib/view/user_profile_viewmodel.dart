@@ -11,7 +11,6 @@ class UserProfileViewModel extends BaseModel {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController genderController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
 
@@ -24,12 +23,17 @@ class UserProfileViewModel extends BaseModel {
   late File pickedImage;
 
   var uid;
+  String gender = "Select gender";
+
+  void setGender(String val) {
+    gender = val;
+    notifyListeners();
+  }
 
   void clear() {
     nameController.clear();
     phoneController.clear();
     emailController.clear();
-    genderController.clear();
     ageController.clear();
     notifyListeners();
   }
@@ -46,7 +50,7 @@ class UserProfileViewModel extends BaseModel {
       nameController.text = user.name ?? '';
       phoneController.text = user.phone ?? '';
       emailController.text = user.email ?? '';
-      genderController.text = user.gender ?? '';
+      gender = user.gender ?? '';
       ageController.text = user.age ?? '';
       addressController.text = user.address ?? '';
       imgUrl = user.profile;
@@ -58,7 +62,7 @@ class UserProfileViewModel extends BaseModel {
     print(nameController.text);
     print(phoneController.text);
     print(emailController.text);
-    print(genderController.text);
+    print(gender);
     print(ageController.text);
     print(addressController.text);
 
@@ -71,7 +75,7 @@ class UserProfileViewModel extends BaseModel {
         "email": emailController.text,
         "address": addressController.text,
         "age": ageController.text,
-        "gender": genderController.text
+        "gender": gender,
       }).then((value) {
         print("User saved to db");
         Navigator.of(context).pop();
