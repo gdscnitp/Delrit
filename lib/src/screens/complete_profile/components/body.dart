@@ -55,6 +55,7 @@ class Body extends StatelessWidget {
                   height: App(context).appHeight(4),
                 ),
                 DropdownButtonFormField<String>(
+                  value: model.gender,
                   decoration: InputDecoration(
                     labelText: "Gender",
                     filled: true,
@@ -86,14 +87,15 @@ class Body extends StatelessWidget {
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                  items: <String>['Male', 'Female'].map((String value) {
+                  items: <String>['Male', 'Female', 'Select gender']
+                      .map((String value) {
                     return DropdownMenuItem<String>(
                       child: Text(value),
                       value: value,
                     );
                   }).toList(),
                   onChanged: (val) {
-                    if (val != null) {
+                    if (val != null && val != 'Select gender') {
                       model.setGender(val);
                     }
                   },
