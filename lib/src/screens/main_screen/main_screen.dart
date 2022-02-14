@@ -32,6 +32,9 @@ class _MainScreenState extends State<MainScreen> {
           case RideState.RIDE_CONFIRMED:
             bottomSheet = RideDetails(model);
             break;
+          case RideState.RIDE_STARTED:
+            bottomSheet = RideDetails(model);
+            break;
           default:
         }
         return SafeArea(

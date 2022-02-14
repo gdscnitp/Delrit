@@ -13,14 +13,17 @@ class TripsModel {
   TripsModel({
     required this.driver,
     required this.riders,
+    required this.rideOtp,
   });
 
   final Driver driver;
   final List<Rider> riders;
+  String rideOtp;
 
   factory TripsModel.fromJson(Map<String, dynamic> json) => TripsModel(
         driver: Driver.fromJson(json["driver"]),
         riders: List<Rider>.from(json["riders"].map((x) => Rider.fromJson(x))),
+        rideOtp: json["rideOtp"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,18 +9,22 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_model.dart';
+import 'package:ride_sharing/services/api_response.dart';
+import 'package:ride_sharing/services/api_services.dart';
 import 'package:ride_sharing/services/prefs_services.dart';
 import 'package:ride_sharing/src/models/drivers.dart';
 import 'package:ride_sharing/src/models/riders.dart';
 import 'package:ride_sharing/src/models/trips.dart';
 import 'package:ride_sharing/src/models/user.dart';
-import 'package:ride_sharing/src/screens/main_screen/components/no_ride.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreenViewModel extends BaseModel {
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
   final FirebaseFirestore db = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   final Prefs prefs = Prefs();
+  final ApiService apiService = ApiService();
+
   final CameraPosition initialLocation = const CameraPosition(
     target: LatLng(26.8876621, 80.995846),
     zoom: 10.0,
@@ -42,21 +48,22 @@ class MainScreenViewModel extends BaseModel {
   String? uid = FirebaseAuth.instance.currentUser?.uid;
 
   late TripsModel tripData;
+  String? tripId;
 
   void init() async {
     setState(ViewState.Busy);
     location = Location();
-    // location.onLocationChanged.listen((LocationData locationData) {
-    //   print(
-    //       locationData.latitude.toString() + locationData.longitude.toString());
-    //   currentPosition = locationData;
-    //   updatePin();
-    // });
+    location.onLocationChanged.listen((LocationData locationData) {
+      print(
+          locationData.latitude.toString() + locationData.longitude.toString());
+      currentPosition = locationData;
+      updatePin();
+    });
     setSourceAndDestinationIcons();
 
     if (uid == null) return;
 
-    String tripId = await prefs.getMyTripId();
+    tripId = await prefs.getMyTripId();
     print("===================================================");
     print(tripId);
     print("===================================================");
@@ -69,10 +76,10 @@ class MainScreenViewModel extends BaseModel {
     var data = (await db.collection("trips").doc(tripId).get()).data();
     tripData = TripsModel.fromJson(data!);
 
-    if (tripData.driver.driverUid == uid) {
-      if (tripData.driver.status == "confirmed") {
-        setRideState(RideState.RIDE_CONFIRMED);
-      }
+    if (tripData.driver.status == "confirmed") {
+      setRideState(RideState.RIDE_CONFIRMED);
+    } else if (tripData.driver.status == "started") {
+      setRideState(RideState.RIDE_STARTED);
     }
 
     getAllTripData();
@@ -95,11 +102,11 @@ class MainScreenViewModel extends BaseModel {
   }
 
   void updatePin() async {
-    mapController.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(
-        target: LatLng(currentPosition.latitude!, currentPosition.longitude!),
-      ),
-    ));
+    // mapController.animateCamera(CameraUpdate.newCameraPosition(
+    //   CameraPosition(
+    //     target: LatLng(currentPosition.latitude!, currentPosition.longitude!),
+    //   ),
+    // ));
     markers.removeWhere((m) => m.markerId.value == 'Source');
     markers.add(
       Marker(
@@ -223,5 +230,58 @@ class MainScreenViewModel extends BaseModel {
       rider.setRideData = RiderModel.fromJson(data.data(), data.id);
       notifyListeners();
     }
+  }
+
+  sendRideOtp(String otpcode, List<String> recipients) async {
+    var body = {
+      "receivers": recipients,
+      "senderUid": auth.currentUser!.uid,
+      "message": otpcode,
+    };
+
+    final ApiResponse response = await apiService.sendRideOtp(body);
+    print(response.data);
+  }
+
+  Future<void> generateAndSaveOtp() async {
+    // var data = await db.collection("trips").doc(tripId).get();
+    // var data2 = data.data();
+    // if (data2!["riders"].length > 0) {
+    //   List<String> recipients = [];
+    //   data2["riders"]
+    //       .forEach((element) => {recipients.add(element["riderUid"])});
+    //   print(recipients);
+
+    //   String otp = Random().nextInt(999999).toString();
+    //   print(otp);
+    //   await db
+    //       .collection("trips")
+    //       .doc(tripId)
+    //       .update({"rideOtp": otp}).then((value) {
+    //     print("Otp saved $otp");
+    //     sendRideOtp(otp, recipients);
+    //   });
+    // } else {
+    //   print("No rider to send otp");
+    // }
+
+    List<String> recipients = tripData.riders.map((e) => e.riderUid).toList();
+    String otp = Random().nextInt(999999).toString();
+    await db.collection("trips").doc(tripId).update({
+      "driver.driverStatus": "started",
+      "rideOtp": otp,
+    });
+    await sendRideOtp(otp, recipients);
+    await Future.delayed(const Duration(seconds: 2));
+    navigationService.navigateTo("/main", withreplacement: true);
+  }
+
+  Future<void> endTrip() async {
+    await db
+        .collection("trips")
+        .doc(tripId)
+        .update({"driver.driverStatus": "completed"});
+    await Future.delayed(const Duration(seconds: 2));
+    navigationService.navigateTo("/main", withreplacement: true);
   }
 }
