@@ -15,9 +15,12 @@ class UserProfile extends StatelessWidget {
             key: model.scaffoldkey,
             appBar: AppBar(
               centerTitle: true,
-              leading: Icon(
-                Icons.arrow_back_outlined,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back_outlined),
                 color: Theme.of(context).primaryColorDark,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
               elevation: 0,
               title: Text(

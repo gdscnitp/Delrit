@@ -89,10 +89,7 @@ Widget Body(BuildContext context, UserProfileViewModel model) {
           parameter: 'Phone : ',
           value: model.phoneController.text),
       SizedBox(height: getProportionateScreenHeight(20)),
-      itemRow(
-          context: context,
-          parameter: 'Gender : ',
-          value: model.genderController.text),
+      itemRow(context: context, parameter: 'Gender : ', value: model.gender),
       SizedBox(height: getProportionateScreenHeight(20)),
       itemRow(
           context: context,

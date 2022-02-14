@@ -10,7 +10,6 @@ class CompleteProfileViewModel extends BaseModel {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController genderController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
 
@@ -36,6 +35,13 @@ class CompleteProfileViewModel extends BaseModel {
   String destinationAddress = '';
 
   Set<Marker> markers = {};
+
+  String gender = "Select gender";
+
+  void setGender(String val) {
+    gender = val;
+    notifyListeners();
+  }
 
   getAddress() async {
     try {
@@ -101,7 +107,6 @@ class CompleteProfileViewModel extends BaseModel {
     nameController.clear();
     phoneController.clear();
     emailController.clear();
-    genderController.clear();
     ageController.clear();
     notifyListeners();
   }
@@ -115,7 +120,7 @@ class CompleteProfileViewModel extends BaseModel {
     print(nameController.text);
     print(phoneController.text);
     print(emailController.text);
-    print(genderController.text);
+    print(gender);
     print(ageController.text);
     print(addressController.text);
     print(auth.currentUser?.uid);
@@ -129,7 +134,7 @@ class CompleteProfileViewModel extends BaseModel {
         "email": emailController.text,
         "address": addressController.text,
         "age": ageController.text,
-        "gender": genderController.text
+        "gender": gender,
       }).then((value) {
         print("User saved to db");
         navigationService.navigateTo("/access-permission",
