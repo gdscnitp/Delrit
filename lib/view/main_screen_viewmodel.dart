@@ -54,12 +54,12 @@ class MainScreenViewModel extends BaseModel {
   void init() async {
     setState(ViewState.Busy);
     location = Location();
-    // location.onLocationChanged.listen((LocationData locationData) {
-    //   print(
-    //       locationData.latitude.toString() + locationData.longitude.toString());
-    //   currentPosition = locationData;
-    //   updatePin();
-    // });
+    location.onLocationChanged.listen((LocationData locationData) {
+      print(
+          locationData.latitude.toString() + locationData.longitude.toString());
+      currentPosition = locationData;
+      updatePin();
+    });
     setSourceAndDestinationIcons();
 
     if (uid == null) return;
@@ -131,9 +131,10 @@ class MainScreenViewModel extends BaseModel {
       mapController.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
-              target:
-                  LatLng(currentPosition.latitude!, currentPosition.longitude!),
-              zoom: 10.0),
+            target:
+                LatLng(currentPosition.latitude!, currentPosition.longitude!),
+            zoom: 10.0,
+          ),
         ),
       );
 
@@ -164,12 +165,12 @@ class MainScreenViewModel extends BaseModel {
           ),
         );
 
-        // createPolylines(
-        //   sourceLocation.latitude,
-        //   sourceLocation.longitude,
-        //   destinationLocation.latitude,
-        //   destinationLocation.longitude,
-        // );
+        createPolylines(
+          sourceLocation.latitude,
+          sourceLocation.longitude,
+          destinationLocation.latitude,
+          destinationLocation.longitude,
+        );
       }
 
       notifyListeners();
