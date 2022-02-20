@@ -49,16 +49,17 @@ class MainScreenViewModel extends BaseModel {
 
   late TripsModel tripData;
   String? tripId;
+  Map<String, int> userRating = {};
 
   void init() async {
     setState(ViewState.Busy);
     location = Location();
-    location.onLocationChanged.listen((LocationData locationData) {
-      print(
-          locationData.latitude.toString() + locationData.longitude.toString());
-      currentPosition = locationData;
-      updatePin();
-    });
+    // location.onLocationChanged.listen((LocationData locationData) {
+    //   print(
+    //       locationData.latitude.toString() + locationData.longitude.toString());
+    //   currentPosition = locationData;
+    //   updatePin();
+    // });
     setSourceAndDestinationIcons();
 
     if (uid == null) return;
@@ -80,6 +81,11 @@ class MainScreenViewModel extends BaseModel {
       setRideState(RideState.RIDE_CONFIRMED);
     } else if (tripData.driver.status == "started") {
       setRideState(RideState.RIDE_STARTED);
+    } else if (tripData.driver.status == "completed") {
+      setRideState(RideState.RIDE_ENDED);
+    } else if (tripData.driver.status == "rated") {
+      prefs.deleteTripIdLocally();
+      setRideState(RideState.NO_RIDE);
     }
 
     getAllTripData();
@@ -158,12 +164,12 @@ class MainScreenViewModel extends BaseModel {
           ),
         );
 
-        createPolylines(
-          sourceLocation.latitude,
-          sourceLocation.longitude,
-          destinationLocation.latitude,
-          destinationLocation.longitude,
-        );
+        // createPolylines(
+        //   sourceLocation.latitude,
+        //   sourceLocation.longitude,
+        //   destinationLocation.latitude,
+        //   destinationLocation.longitude,
+        // );
       }
 
       notifyListeners();
@@ -283,5 +289,18 @@ class MainScreenViewModel extends BaseModel {
         .update({"driver.driverStatus": "completed"});
     await Future.delayed(const Duration(seconds: 2));
     navigationService.navigateTo("/main", withreplacement: true);
+  }
+
+  Future<void> rateUsers() async {
+    setState(ViewState.Busy);
+    userRating.forEach((key, value) async {
+      await db.collection("users").doc(key).update({
+        "rating": FieldValue.arrayUnion([value]),
+      });
+    });
+    await db.collection("trips").doc(tripId).update({
+      "driver.driverStatus": "rated",
+    });
+    setState(ViewState.Idle);
   }
 }

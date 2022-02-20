@@ -92,4 +92,9 @@ class Prefs {
 
     return myTripId;
   }
+
+  Future<void> deleteTripIdLocally() async {
+    final SharedPreferences tripPref = await _prefs;
+    tripPref.remove("trip_id");
+  }
 }

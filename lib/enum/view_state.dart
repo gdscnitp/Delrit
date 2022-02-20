@@ -11,4 +11,5 @@ enum RideState {
   RIDE_CONFIRMED,
   RIDE_STARTED,
   RIDE_ENDED,
+  RIDE_RATED,
 }
