@@ -31,14 +31,17 @@ Widget starsRowWidget(
           direction: Axis.horizontal,
           itemCount: 5,
           itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-          itemBuilder: (context, _) => Icon(
+          itemBuilder: (context, _) => const Icon(
             Icons.star,
             color: Colors.blue,
           ),
           onRatingUpdate: (rating) {
+            print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
             model.users[uid] = rating.toInt();
             print(model.users);
+            print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
           },
+          updateOnDrag: true,
         ),
       ),
     ],

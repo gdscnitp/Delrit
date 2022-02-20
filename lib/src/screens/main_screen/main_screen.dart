@@ -5,6 +5,7 @@ import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_view.dart';
 import 'package:ride_sharing/src/screens/main_screen/components/no_ride.dart';
 import 'package:ride_sharing/src/screens/main_screen/components/ride_confirmed.dart';
+import 'package:ride_sharing/src/screens/main_screen/components/ride_ended.dart';
 import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
 import 'package:ride_sharing/view/live_tracking_viewmodel.dart';
 import 'package:ride_sharing/view/main_screen_viewmodel.dart';
@@ -34,6 +35,9 @@ class _MainScreenState extends State<MainScreen> {
             break;
           case RideState.RIDE_STARTED:
             bottomSheet = RideDetails(model);
+            break;
+          case RideState.RIDE_ENDED:
+            bottomSheet = RideEndedBottomSheet(model);
             break;
           default:
         }
