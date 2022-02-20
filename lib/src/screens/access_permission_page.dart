@@ -20,7 +20,7 @@ class _AccessPermissionState extends State<AccessPermission> {
     if (await Permission.location.request().isGranted) {
       print('location granted');
       Fluttertoast.showToast(msg: "Permission Granted!");
-      Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, "/main", (route) => false);
     }
   }
 
