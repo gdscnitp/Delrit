@@ -18,42 +18,42 @@ class Header extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: App(context).appWidth(10),
-              vertical: App(context).appHeight(5)),
-          child: Container(
-            width: App(context).appWidth(80),
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: TextFormField(
-              onTap: () async {},
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(
-                    vertical: 18.0, horizontal: 10.0),
-                hintText: 'Search for drivers',
-                hintStyle: const TextStyle(
-                  fontSize: 15,
-                ),
-                prefixIcon: const Icon(
-                  Icons.menu,
-                  size: 35,
-                ),
-                suffixIcon: GestureDetector(
-                  onTap: () async {},
-                  child: const Icon(
-                    Icons.gps_fixed,
-                    size: 20,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.symmetric(
+        //       horizontal: App(context).appWidth(10),
+        //       vertical: App(context).appHeight(5)),
+        //   child: Container(
+        //     width: App(context).appWidth(80),
+        //     decoration: BoxDecoration(
+        //       color: Theme.of(context).scaffoldBackgroundColor,
+        //       borderRadius: BorderRadius.circular(10.0),
+        //     ),
+        //     child: TextFormField(
+        //       onTap: () async {},
+        //       textAlign: TextAlign.center,
+        //       decoration: InputDecoration(
+        //         border: InputBorder.none,
+        //         contentPadding: const EdgeInsets.symmetric(
+        //             vertical: 18.0, horizontal: 10.0),
+        //         hintText: 'Search for drivers',
+        //         hintStyle: const TextStyle(
+        //           fontSize: 15,
+        //         ),
+        //         prefixIcon: const Icon(
+        //           Icons.menu,
+        //           size: 35,
+        //         ),
+        //         suffixIcon: GestureDetector(
+        //           onTap: () async {},
+        //           child: const Icon(
+        //             Icons.gps_fixed,
+        //             size: 20,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

@@ -29,6 +29,7 @@ class TripsModel {
   Map<String, dynamic> toJson() => {
         "driver": driver.toJson(),
         "riders": List<dynamic>.from(riders.map((x) => x.toJson())),
+        "rideOtp": rideOtp,
       };
 }
 
@@ -62,7 +63,7 @@ class Driver {
   Map<String, dynamic> toJson() => {
         "driveId": driveId,
         "driverUid": driverUid,
-        "status": status,
+        "driverStatus": status,
       };
 }
 
@@ -96,6 +97,6 @@ class Rider {
   Map<String, dynamic> toJson() => {
         "riderUid": riderUid,
         "rideId": rideId,
-        "status": status,
+        "riderStatus": status,
       };
 }

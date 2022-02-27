@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ride_sharing/src/widgets/place_search_text_field.dart';
 import 'package:ride_sharing/view/post_ride_viewmodel.dart';
 import 'header.dart';
-final _formKey=GlobalKey<FormState>();
+
+final _formKey = GlobalKey<FormState>();
 Widget Body(BuildContext context, PostRideViewModel model) {
   var width = MediaQuery.of(context).size.width;
   return SingleChildScrollView(
@@ -67,7 +68,7 @@ Widget Body(BuildContext context, PostRideViewModel model) {
                             // if (value != null) {
                             //   model.getNewPosition(value);
                             // }
-                  
+
                             //-----------OR---------------
                             model.locationCallBackStarting(value);
                           },
@@ -91,7 +92,7 @@ Widget Body(BuildContext context, PostRideViewModel model) {
                             //   model.destinationAddressController.text =
                             //       value ?? "";
                             // });
-                  
+
                             //----------OR---------
                             model.locationCallBackDestination(value);
                           },
@@ -114,7 +115,8 @@ Widget Body(BuildContext context, PostRideViewModel model) {
                                 ),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     model.getText(),
@@ -158,21 +160,19 @@ Widget Body(BuildContext context, PostRideViewModel model) {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 print(model.startAddressController.text);
-                              print(model.destinationAddressController.text);
-                              String rideId = await model.addRideToDb(context);
-                              // String rideId = "s80xwaWczIMlqJT1Uf77";
-                              print(rideId);
-                              Navigator.pushNamed(
-                                context,
-                                "/available-drivers",
-                                arguments: rideId,
-                              );
-
-                                
+                                print(model.destinationAddressController.text);
+                                String rideId =
+                                    await model.addRideToDb(context);
+                                // String rideId = "s80xwaWczIMlqJT1Uf77";
+                                print(rideId);
+                                Navigator.pushNamed(
+                                  context,
+                                  "/available-drivers",
+                                  arguments: rideId,
+                                );
                               } else {
-                                return ;
+                                return;
                               }
-                              
                             },
                             child: const Padding(
                               padding: EdgeInsets.all(8.0),

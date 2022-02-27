@@ -87,20 +87,53 @@ Widget Body(BuildContext context, MainScreenViewModel model,
         SizedBox(
           height: getProportionateScreenHeight(12),
         ),
-        if (model.tripData.driver.status == "confirmed")
-          Center(
-            child: ElevatedButton(
-              onPressed: () => model.generateAndSaveOtp(),
-              child: const Text("Start You Ride"),
+        if (model.isDriver == true)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              if (model.tripData.driver.status == "confirmed")
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                      '/available-riders',
+                      arguments: model.tripData.driver.driveId,
+                    );
+                  },
+                  child: const Text("Search More Riders"),
+                ),
+              if (model.tripData.driver.status == "confirmed")
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () => model.generateAndSaveOtp(),
+                    child: const Text("Start You Ride"),
+                  ),
+                ),
+              if (model.tripData.driver.status == "started")
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () => model.endTrip(),
+                    child: const Text("End Your Ride"),
+                  ),
+                )
+            ],
+          ),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: () async {
+              if (model.isDriver == false) {
+                await model.cancelRequestFromRider();
+              } else {
+                await model.cancelRequestFromDriver();
+              }
+            },
+            icon: const Icon(Icons.close),
+            label: const Text("Cancel Ride"),
+            style: ElevatedButton.styleFrom(
+              primary: const Color.fromARGB(255, 187, 29, 18),
             ),
           ),
-        if(model.tripData.driver.status == "started")
-          Center(
-            child: ElevatedButton(
-              onPressed: () => model.endTrip(),
-              child: const Text("End Your Ride"),
-            ),
-          )
+        )
       ],
     ),
   );

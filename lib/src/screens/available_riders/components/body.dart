@@ -36,37 +36,58 @@ Widget Body(BuildContext context, AvailableRidersViewModel model) {
                 width: 30.0,
               ),
               DropdownButton(
-                  icon: const Icon(Icons.arrow_drop_down),
-                  elevation: 0,
-                  hint: const Text('Select'),
-                  value: valueChoose,
-                  items: listItem.map((valueItem) {
-                    return DropdownMenuItem<String>(
-                        value: valueItem, child: Text(valueItem));
-                  }).toList(),
-                  onChanged: (newValue) {
-                    // setState(() {
-                    //   valueChoose = newValue.toString();
-                    // });
-                  })
+                icon: const Icon(Icons.arrow_drop_down),
+                elevation: 0,
+                hint: const Text('Select'),
+                value: valueChoose,
+                items: listItem.map((valueItem) {
+                  return DropdownMenuItem<String>(
+                      value: valueItem, child: Text(valueItem));
+                }).toList(),
+                onChanged: (newValue) {
+                  // setState(() {
+                  //   valueChoose = newValue.toString();
+                  // });
+                },
+              )
             ],
           ),
         ),
         ListView.builder(
-            itemCount: model.availableRiders.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              if (model.availableRiders.isEmpty) {
-                ///Return no riders available widget
-                return Text(
-                  'No Riders available in your locality',
-                  style: Theme.of(context).textTheme.headline3,
-                );
-              } else {
-                return RiderDetailsCard(rider: model.availableRiders[index],                driveId: model.currentDriveId,);
-              }
-            }),
+          itemCount: model.availableRiders.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            if (model.availableRiders.isEmpty) {
+              ///Return no riders available widget
+              return Text(
+                'No Riders available in your locality',
+                style: Theme.of(context).textTheme.headline3,
+              );
+            } else {
+              return RiderDetailsCard(
+                rider: model.availableRiders[index],
+                driveId: model.currentDriveId,
+              );
+            }
+          },
+        ),
+        SizedBox(
+          height: 20.0,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil("/", (route) => false);
+              },
+              child: Text("Go to Ride Page"),
+            ),
+          ),
+        ),
       ],
     ),
   );

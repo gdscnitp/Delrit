@@ -12,6 +12,9 @@ class PostRide extends StatelessWidget {
       onModelReady: (model) => model.getCurrentLocation(),
       builder: (context, model, child) => Scaffold(
         key: model.scaffoldkey,
+        appBar: AppBar(
+          title: Text('Post a Ride'),
+        ),
         body: Body(context, model),
       ),
     );

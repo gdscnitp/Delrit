@@ -120,7 +120,6 @@ class _RideEndedBottomSheetState extends State<RideEndedBottomSheet> {
                     onPress: () async {
                       ///Submit all the ratings show progress and the pop the context
                       await widget.model.rateUsers();
-                      Navigator.of(context).pop();
                     },
                     buttoncolor: Colors.blue,
                   ),

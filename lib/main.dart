@@ -53,16 +53,152 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+        statusBarBrightness: Brightness.light,
+      ),
+    );
     return MaterialApp(
       navigatorKey: getIt<NavigationService>().navigatorKey,
       title: 'Ride Sharing',
       initialRoute:
-          FirebaseAuth.instance.currentUser == null ? '/welcome' : '/main',
+          FirebaseAuth.instance.currentUser == null ? '/welcome' : '/',
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
-      theme: FlexThemeData.light(scheme: FlexScheme.indigo).copyWith(
+      // theme: FlexThemeData.light(scheme: FlexScheme.indigo).copyWith(
+      //   appBarTheme: const AppBarTheme(
+      //     backgroundColor: Colors.white,
+      //     centerTitle: true,
+      //     foregroundColor: Colors.black,
+      //     systemOverlayStyle: SystemUiOverlayStyle.dark,
+      //   ),
+      //   textTheme: TextTheme(
+      //     button: const TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
+
+      //     /// Headline 1 style ---- Use it --- Do not change ----///
+      //     headline1: TextStyle(
+      //       fontSize: 18,
+      //       fontWeight: FontWeight.w700,
+      //       color: config.ThemeColors.mainTextColor(1),
+      //       letterSpacing: 1,
+      //       //overflow: TextOverflow.ellipsis,
+      //     ),
+
+      //     /// Headline 2 style ---- Use it --- Do not change ----///
+      //     headline2: TextStyle(
+      //         fontSize: 15,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.ThemeColors.mainTextColor(1)),
+      //     headline3: TextStyle(
+      //         fontSize: 15,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.ThemeColors.mainTextSecondaryColor(1)),
+      //     headline4: TextStyle(
+      //         fontSize: 20,
+      //         fontWeight: FontWeight.w700,
+      //         color: config.ThemeColors().secondColor(1)),
+      //     headline5: TextStyle(
+      //         fontSize: 20,
+      //         fontWeight: FontWeight.w300,
+      //         color: config.ThemeColors().mainColor(1)),
+      //     subtitle1: TextStyle(
+      //         fontSize: 13,
+      //         fontWeight: FontWeight.w500,
+      //         color: config.ThemeColors().secondColor(1)),
+      //     subtitle2: TextStyle(
+      //         fontSize: 13,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.ThemeColors().mainColor(1)),
+      //     bodyText1: TextStyle(
+      //       fontSize: 13,
+      //       color: config.ThemeColors.mainTextColor(1),
+      //     ),
+      //     bodyText2: TextStyle(
+      //         fontSize: 13,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.ThemeColors.mainTextSecondaryColor(1)),
+      //     caption: TextStyle(
+      //       fontSize: 10,
+      //       color: config.ThemeColors().secondColor(0.6),
+      //     ),
+      //   ),
+      // ),
+
+      // The material dark theme.
+      // darkTheme: FlexThemeData.dark(scheme: FlexScheme.indigo).copyWith(
+      //   textTheme: TextTheme(
+      //     button: const TextStyle(color: Colors.white),
+
+      //     /// Headline 1 style ---- Use it --- Do not change ----///
+      //     headline1: const TextStyle(
+      //       fontSize: 21.0,
+      //       fontWeight: FontWeight.w700,
+      //       color: Colors.white,
+      //       //overflow: TextOverflow.ellipsis,
+      //     ),
+
+      //     /// Headline 2 style ---- Use it --- Do not change ----///
+      //     headline2: const TextStyle(
+      //       fontSize: 18.0,
+      //       fontWeight: FontWeight.w600,
+      //       color: Colors.white,
+      //     ),
+      //     headline3: TextStyle(
+      //         fontSize: 18.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.ThemeColors.mainTextSecondaryColor(1)),
+      //     headline4: TextStyle(
+      //         fontSize: 22.0,
+      //         fontWeight: FontWeight.w700,
+      //         color: config.ThemeColors().secondColor(1)),
+      //     headline5: const TextStyle(
+      //       fontSize: 22.0,
+      //       fontWeight: FontWeight.w300,
+      //       color: Colors.white,
+      //     ),
+      //     subtitle1: TextStyle(
+      //         fontSize: 15.0,
+      //         fontWeight: FontWeight.w500,
+      //         color: config.ThemeColors().secondColor(1)),
+      //     subtitle2: const TextStyle(
+      //       fontSize: 16.0,
+      //       fontWeight: FontWeight.w600,
+      //       color: Colors.white,
+      //     ),
+      //     bodyText1: const TextStyle(
+      //       fontSize: 15.0,
+      //       color: Colors.white,
+      //     ),
+      //     bodyText2: TextStyle(
+      //         fontSize: 15.0,
+      //         fontWeight: FontWeight.w600,
+      //         color: config.ThemeColors.mainTextSecondaryColor(1)),
+      //     caption: TextStyle(
+      //       fontSize: 12.0,
+      //       color: config.ThemeColors().secondColor(0.6),
+      //     ),
+      //   ),
+      // ),
+      // Use dark or light theme based on system setting.
+      // themeMode: ThemeMode.light,
+      theme: ThemeData(
+        colorSchemeSeed: Colors.indigo,
+        useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          color: Colors.white,
+          foregroundColor: Colors.black,
+          shadowColor: Colors.indigo,
+          centerTitle: true,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.white,
+            statusBarIconBrightness:
+                Brightness.dark, // For Android (dark icons)
+            statusBarBrightness: Brightness.light,
+          ),
+        ),
         textTheme: TextTheme(
-          button: const TextStyle(color: Colors.white),
+          button: const TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
 
           /// Headline 1 style ---- Use it --- Do not change ----///
           headline1: TextStyle(
@@ -111,65 +247,8 @@ class _MyAppState extends State<MyApp> {
             color: config.ThemeColors().secondColor(0.6),
           ),
         ),
+        splashColor: Colors.white,
       ),
-
-      // The material dark theme.
-      darkTheme: FlexThemeData.dark(scheme: FlexScheme.indigo).copyWith(
-        textTheme: TextTheme(
-          button: const TextStyle(color: Colors.white),
-
-          /// Headline 1 style ---- Use it --- Do not change ----///
-          headline1: const TextStyle(
-            fontSize: 21.0,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-            //overflow: TextOverflow.ellipsis,
-          ),
-
-          /// Headline 2 style ---- Use it --- Do not change ----///
-          headline2: const TextStyle(
-            fontSize: 18.0,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-          headline3: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.w600,
-              color: config.ThemeColors.mainTextSecondaryColor(1)),
-          headline4: TextStyle(
-              fontSize: 22.0,
-              fontWeight: FontWeight.w700,
-              color: config.ThemeColors().secondColor(1)),
-          headline5: const TextStyle(
-            fontSize: 22.0,
-            fontWeight: FontWeight.w300,
-            color: Colors.white,
-          ),
-          subtitle1: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
-              color: config.ThemeColors().secondColor(1)),
-          subtitle2: const TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-          bodyText1: const TextStyle(
-            fontSize: 15.0,
-            color: Colors.white,
-          ),
-          bodyText2: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w600,
-              color: config.ThemeColors.mainTextSecondaryColor(1)),
-          caption: TextStyle(
-            fontSize: 12.0,
-            color: config.ThemeColors().secondColor(0.6),
-          ),
-        ),
-      ),
-      // Use dark or light theme based on system setting.
-      themeMode: ThemeMode.light,
     );
   }
 }

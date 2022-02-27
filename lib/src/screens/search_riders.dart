@@ -20,6 +20,9 @@ class _SearchRiderState extends State<SearchRider> {
     return BaseView<SearchRiderViewModel>(
       onModelReady: (model) => model.getCurrentLocation(),
       builder: (context, model, child) => Scaffold(
+        appBar: AppBar(
+          title: Text('Post a Ride'),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -32,62 +35,62 @@ class _SearchRiderState extends State<SearchRider> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10,
-                      right: 10,
-                      top: 40,
-                    ),
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.grey.shade400,
-                            width: 2,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.grey.shade400,
-                            width: 2,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.blue.shade300,
-                            width: 2,
-                          ),
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[300],
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 18.0,
-                          horizontal: 10.0,
-                        ),
-                        focusColor: Colors.white,
-                        hintText: 'Post Your Ride',
-                        hintStyle: const TextStyle(
-                          fontSize: 18,
-                        ),
-                        prefixIcon: const Icon(
-                          Icons.menu,
-                          color: Colors.black,
-                          size: 35,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(
+                  //     left: 10,
+                  //     right: 10,
+                  //     top: 40,
+                  //   ),
+                  //   child: TextFormField(
+                  //     textAlign: TextAlign.center,
+                  //     readOnly: true,
+                  //     decoration: InputDecoration(
+                  //       disabledBorder: OutlineInputBorder(
+                  //         borderRadius: const BorderRadius.all(
+                  //           Radius.circular(10.0),
+                  //         ),
+                  //         borderSide: BorderSide(
+                  //           color: Colors.grey.shade400,
+                  //           width: 2,
+                  //         ),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderRadius: const BorderRadius.all(
+                  //           Radius.circular(10.0),
+                  //         ),
+                  //         borderSide: BorderSide(
+                  //           color: Colors.grey.shade400,
+                  //           width: 2,
+                  //         ),
+                  //       ),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderRadius: const BorderRadius.all(
+                  //           Radius.circular(10.0),
+                  //         ),
+                  //         borderSide: BorderSide(
+                  //           color: Colors.blue.shade300,
+                  //           width: 2,
+                  //         ),
+                  //       ),
+                  //       filled: true,
+                  //       fillColor: Colors.grey[300],
+                  //       contentPadding: const EdgeInsets.symmetric(
+                  //         vertical: 18.0,
+                  //         horizontal: 10.0,
+                  //       ),
+                  //       focusColor: Colors.white,
+                  //       hintText: 'Post Your Ride',
+                  //       hintStyle: const TextStyle(
+                  //         fontSize: 18,
+                  //       ),
+                  //       prefixIcon: const Icon(
+                  //         Icons.menu,
+                  //         color: Colors.black,
+                  //         size: 35,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               Padding(

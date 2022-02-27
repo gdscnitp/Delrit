@@ -17,7 +17,7 @@ class NavigationService {
     }
   }
 
-  bool pop({required String routeName, Object? argument}) {
+  bool pop({Object? argument}) {
     navigatorKey.currentState!.pop();
 
     return true;
