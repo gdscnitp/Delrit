@@ -51,6 +51,8 @@ class MainScreenViewModel extends BaseModel {
   String? tripId;
   Map<String, int> userRating = {};
 
+  bool isDriver = false;
+
   void init() async {
     setState(ViewState.Busy);
     location = Location();
@@ -76,6 +78,12 @@ class MainScreenViewModel extends BaseModel {
 
     var data = (await db.collection("trips").doc(tripId).get()).data();
     tripData = TripsModel.fromJson(data!);
+
+    if (tripData.driver.driverUid == uid) {
+      isDriver = true;
+      print("############################################################");
+      print("He is a driver. Show Extra options on bottom sheet");
+    }
 
     if (tripData.driver.status == "confirmed") {
       setRideState(RideState.RIDE_CONFIRMED);
@@ -302,6 +310,40 @@ class MainScreenViewModel extends BaseModel {
     await db.collection("trips").doc(tripId).update({
       "driver.driverStatus": "rated",
     });
+    navigationService.navigateTo("/main", withreplacement: true);
+    setState(ViewState.Idle);
+  }
+
+  Future<void> cancelRequestFromRider() async {
+    setState(ViewState.Busy);
+    var riders_data =
+        (await db.collection("trips").doc(tripId).get()).data()?["riders"] ??
+            [];
+
+    for (var rider in riders_data) {
+      if (rider["riderUid"] == uid) {
+        rider["riderStatus"] = "cancelled";
+      }
+    }
+    print(riders_data);
+
+    await db.collection("trips").doc(tripId).update({
+      "riders": riders_data,
+    });
+
+    await prefs.deleteTripIdLocally();
+
+    navigationService.navigateTo("/main", withreplacement: true);
+    setState(ViewState.Idle);
+  }
+
+  Future<void> cancelRequestFromDriver() async {
+    setState(ViewState.Busy);
+    await db.collection("trips").doc(tripId).update({
+      "driver.driverStatus": "cancelled",
+    });
+    await prefs.deleteTripIdLocally();
+    navigationService.navigateTo("/main", withreplacement: true);
     setState(ViewState.Idle);
   }
 }

@@ -7,12 +7,12 @@ import 'package:ride_sharing/src/screens/main_screen/main_screen.dart';
 import 'package:ride_sharing/src/screens/rider_details/rider_details.dart';
 import 'package:ride_sharing/src/screens/chat_screen/chat_screen.dart';
 import 'package:ride_sharing/src/screens/choose_location.dart';
-import 'package:ride_sharing/src/screens/home_screen.dart';
+// import 'package:ride_sharing/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/src/screens/Landing_page/landing_page.dart';
 import 'package:ride_sharing/src/screens/login_page.dart';
 import 'package:ride_sharing/src/screens/map_test.dart';
-import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
+// import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
 import 'package:ride_sharing/src/screens/nearby_riders.dart';
 import 'package:ride_sharing/src/screens/search_riders.dart';
 import 'package:ride_sharing/src/screens/splash_screen/splash_screen.dart';
@@ -29,7 +29,7 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(builder: (_) => const MainScreen());
       case '/splash':
         return MaterialPageRoute(builder: (_) => const SplashScreen());
       case '/welcome':

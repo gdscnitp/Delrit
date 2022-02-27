@@ -3,6 +3,87 @@ import 'package:ride_sharing/config/app_config.dart';
 import 'package:ride_sharing/src/models/trips.dart';
 
 Widget travallerDetailsCard(Rider rider, TextStyle commonTextStyle) {
+  Widget chip = Container(
+    padding: const EdgeInsets.all(8),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(5),
+      color: Colors.yellow,
+    ),
+    child: const Text(
+      "pending",
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 12,
+      ),
+    ),
+  );
+
+  switch (rider.status) {
+    case "confirmed":
+      chip = Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.green,
+        ),
+        child: const Text(
+          "Confirmed",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+          ),
+        ),
+      );
+      break;
+    case "pending":
+      chip = Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.yellow,
+        ),
+        child: const Text(
+          "Pending",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+          ),
+        ),
+      );
+      break;
+    case "cancelled":
+      chip = Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.red,
+        ),
+        child: const Text(
+          "Cancelled",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+          ),
+        ),
+      );
+      break;
+    case "started":
+      chip = Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.blue,
+        ),
+        child: const Text(
+          "Started",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+          ),
+        ),
+      );
+      break;
+  }
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
     child: Card(
@@ -87,28 +168,36 @@ Widget travallerDetailsCard(Rider rider, TextStyle commonTextStyle) {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                child: ClipOval(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Image.asset(
-                      'assets/images/call_black.png',
-                      fit: BoxFit.contain,
-                      width: 33,
-                      height: 33,
-                    ),
+              ClipOval(
+                child: Material(
+                  color: Colors.transparent,
+                  child: Image.asset(
+                    'assets/images/call_black.png',
+                    fit: BoxFit.contain,
+                    width: 33,
+                    height: 33,
                   ),
                 ),
               ),
-              Expanded(
-                child: Text(
-                  '+91 ${rider.riderProfile?.phone ?? ""}',
-                  style: commonTextStyle,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    '+91 ${rider.riderProfile?.phone ?? ""}',
+                    style: commonTextStyle,
+                  ),
+                  SizedBox(
+                    height: getProportionateScreenHeight(10),
+                  ),
+                  chip,
+                ],
               ),
             ],
+          ),
+          SizedBox(
+            height: getProportionateScreenHeight(15),
           ),
           SizedBox(
             height: getProportionateScreenHeight(15),

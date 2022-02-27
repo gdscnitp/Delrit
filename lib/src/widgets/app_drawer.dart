@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart';
+import 'package:ride_sharing/services/prefs_services.dart';
 import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
 
@@ -105,7 +106,10 @@ class _AppDrawerState extends State<AppDrawer> {
             text: 'Log out',
             onTap: () async {
               await FirebaseAuth.instance.signOut();
-              Navigator.of(context).pop();
+              Prefs prefs = Prefs();
+              await prefs.deleteTripIdLocally();
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil("/welcome", (route) => false);
             },
           ),
           Align(

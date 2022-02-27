@@ -152,8 +152,8 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
                     ),
                   ],
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
+                SizedBox(
+                  width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(
@@ -176,7 +176,7 @@ class _RiderDetailsCardState extends State<RiderDetailsCard> {
                     ),
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(
-                        horizontal: config.getProportionateScreenWidth(90),
+                        horizontal: config.getProportionateScreenWidth(10),
                         vertical: config.getProportionateScreenHeight(7),
                       ),
                       shape: RoundedRectangleBorder(

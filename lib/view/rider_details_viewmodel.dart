@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ride_sharing/constant/appconstant.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_services.dart';
@@ -93,5 +94,8 @@ class RiderDetailsViewModel extends BaseModel {
 
     final ApiResponse response =
         await apiService.sendRequestNotificationToRider(body);
+
+    AppConstant.showSuccessToast("Request sent successfully");
+    navigationService.pop();
   }
 }

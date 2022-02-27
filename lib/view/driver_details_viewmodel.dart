@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ride_sharing/constant/appconstant.dart';
 import 'package:ride_sharing/provider/base_model.dart';
 import 'package:ride_sharing/services/api_response.dart';
 import 'package:ride_sharing/services/api_services.dart';
@@ -56,7 +57,8 @@ class DriverDetailsViewModel extends BaseModel {
           .id;
       print(tripId);
       print("added in db");
-      prefs.setRideId(tripId);
+      print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+      prefs.saveTripIdLocally(tripId);
     } else {
       tripId = data[0].id;
       await db.collection("trips").doc(data[0].id).update({
@@ -70,7 +72,8 @@ class DriverDetailsViewModel extends BaseModel {
       });
       print(data[0].id);
       print("already in db");
-      prefs.setRideId(data[0].id);
+      print("#####################################");
+      prefs.saveTripIdLocally(data[0].id);
     }
 
     Map<String, dynamic> body = {
@@ -81,6 +84,9 @@ class DriverDetailsViewModel extends BaseModel {
 
     final ApiResponse response =
         await apiService.sendRequestNotificationToDriver(body);
+
+    AppConstant.showSuccessToast("Request sent successfully");
+    navigationService.navigateTo("/", withreplacement: true);
   }
 
   void rideStatus(bool newStatus) {

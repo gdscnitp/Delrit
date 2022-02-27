@@ -5,6 +5,88 @@ import 'package:ride_sharing/src/utils/dateutils.dart';
 
 Widget driverDetailsCard(
     BuildContext context, Driver driver, TextStyle commonTextStyle) {
+  Widget chip = Container(
+    padding: const EdgeInsets.all(8),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(5),
+      color: Colors.green,
+    ),
+    child: const Text(
+      "Confirmed",
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 12,
+      ),
+    ),
+  );
+
+  switch (driver.status) {
+    case "confirmed":
+      chip = Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.green,
+        ),
+        child: const Text(
+          "Confirmed",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+          ),
+        ),
+      );
+      break;
+    case "pending":
+      chip = Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.yellow,
+        ),
+        child: const Text(
+          "Pending",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+          ),
+        ),
+      );
+      break;
+    case "cancelled":
+      chip = Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.red,
+        ),
+        child: const Text(
+          "Cancelled",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+          ),
+        ),
+      );
+      break;
+    case "started":
+      chip = Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.blue,
+        ),
+        child: const Text(
+          "Started",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+          ),
+        ),
+      );
+      break;
+  }
+
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
     child: Card(
@@ -161,9 +243,15 @@ Widget driverDetailsCard(
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  'On ${timestampToHumanReadable(driver.driveData?.time ?? 0)}',
-                  style: Theme.of(context).textTheme.bodyText1,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'On ${timestampToHumanReadable(driver.driveData?.time ?? 0)}',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    chip,
+                  ],
                 ),
                 const SizedBox(
                   height: 17,

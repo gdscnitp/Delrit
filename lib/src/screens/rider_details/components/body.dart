@@ -169,7 +169,7 @@ class Body extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: getProportionateScreenHeight(40),
+                      height: getProportionateScreenHeight(20),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

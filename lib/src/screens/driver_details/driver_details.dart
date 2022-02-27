@@ -19,15 +19,6 @@ class DriverDetails extends StatelessWidget {
                 'Driver Details',
                 style: Theme.of(context).textTheme.headline2,
               ),
-              leading: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.arrow_back_outlined,
-                  color: Theme.of(context).primaryColorDark,
-                ),
-              ),
               elevation: 0,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             ),

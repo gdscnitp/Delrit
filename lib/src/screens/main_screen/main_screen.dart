@@ -1,13 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ride_sharing/config/app_config.dart';
 import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_view.dart';
+import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/screens/main_screen/components/no_ride.dart';
-import 'package:ride_sharing/src/screens/main_screen/components/ride_confirmed.dart';
 import 'package:ride_sharing/src/screens/main_screen/components/ride_ended.dart';
 import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
-import 'package:ride_sharing/view/live_tracking_viewmodel.dart';
+import 'package:ride_sharing/src/widgets/app_drawer.dart';
+import 'package:ride_sharing/src/widgets/driver_request_bottomsheet.dart';
 import 'package:ride_sharing/view/main_screen_viewmodel.dart';
 
 class MainScreen extends StatefulWidget {
@@ -18,10 +21,91 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  Future<void> setupInteractedMessage() async {
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleBackgroundMessage);
+    FirebaseMessaging.onMessage.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+
+    if (message.data["requestType"] == "RequestByDriver" ||
+        message.data["requestType"] == "RequestByRider") {
+      showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(15),
+            topLeft: Radius.circular(15),
+          ),
+        ),
+        builder: (builder) {
+          return DriverRequestBottomSheet(message.data);
+        },
+      );
+    }
+  }
+
+  void _handleBackgroundMessage(RemoteMessage message) async {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+
+    if (message.data["requestType"] == "Chat") {
+      var data =
+          (await db.collection('users').doc(message.data["senderUid"]).get())
+              .data();
+      UserProfileModel user = UserProfileModel.fromJson(data!);
+      print("here===");
+      print(user.name);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        "/chats",
+        (route) => true,
+        arguments: user,
+      );
+    } else {
+      showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(15),
+            topLeft: Radius.circular(15),
+          ),
+        ),
+        builder: (builder) {
+          return DriverRequestBottomSheet(message.data);
+        },
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setupInteractedMessage();
+  }
+
   Widget? bottomSheet;
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return BaseView<MainScreenViewModel>(
       onModelReady: (model) => model.init(),
       builder: (context, model, child) {
@@ -45,6 +129,7 @@ class _MainScreenState extends State<MainScreen> {
           child: Scaffold(
             key: model.scaffoldkey,
             backgroundColor: Colors.yellow[50],
+            drawer: AppDrawer(),
             body: Stack(
               children: [
                 GoogleMap(
