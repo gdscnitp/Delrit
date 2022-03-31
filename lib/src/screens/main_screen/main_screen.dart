@@ -5,12 +5,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ride_sharing/config/app_config.dart';
 import 'package:ride_sharing/enum/view_state.dart';
 import 'package:ride_sharing/provider/base_view.dart';
+import 'package:ride_sharing/src/models/trips.dart';
 import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/screens/main_screen/components/no_ride.dart';
 import 'package:ride_sharing/src/screens/main_screen/components/ride_ended.dart';
 import 'package:ride_sharing/src/screens/ride_details/ride_details.dart';
 import 'package:ride_sharing/src/widgets/app_drawer.dart';
 import 'package:ride_sharing/src/widgets/driver_request_bottomsheet.dart';
+import 'package:ride_sharing/src/widgets/show_exit_popup.dart';
 import 'package:ride_sharing/view/main_screen_viewmodel.dart';
 
 class MainScreen extends StatefulWidget {
@@ -102,89 +104,111 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget? bottomSheet;
+  void rebuildAllChildren(BuildContext context) {
+    void rebuild(Element el) {
+      el.markNeedsBuild();
+      el.visitChildren(rebuild);
+    }
+
+    (context as Element).visitChildren(rebuild);
+  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return BaseView<MainScreenViewModel>(
-      onModelReady: (model) => model.init(),
-      builder: (context, model, child) {
-        print("reloading here");
-        switch (model.rideState) {
-          case RideState.NO_RIDE:
-            bottomSheet = const NoRideBS();
-            break;
-          case RideState.RIDE_CONFIRMED:
-            bottomSheet = RideDetails(model);
-            break;
-          case RideState.RIDE_STARTED:
-            bottomSheet = RideDetails(model);
-            break;
-          case RideState.RIDE_ENDED:
-            bottomSheet = RideEndedBottomSheet(model);
-            break;
-          default:
-        }
-        return SafeArea(
-          child: Scaffold(
-            key: model.scaffoldkey,
-            backgroundColor: Colors.yellow[50],
-            drawer: AppDrawer(),
-            body: Stack(
-              children: [
-                GoogleMap(
-                  myLocationEnabled: true,
-                  compassEnabled: true,
-                  tiltGesturesEnabled: false,
-                  markers: Set<Marker>.of(model.markers),
-                  polylines: Set<Polyline>.of(model.polylines.values),
-                  initialCameraPosition: model.initialLocation,
-                  onMapCreated: (GoogleMapController controller) {
-                    model.mapController = controller;
-                    // Delay of 3 second
-                    Future.delayed(const Duration(seconds: 2), () {
-                      model.getCurrentTripMap();
-                    });
-                  },
-                ),
-                DraggableScrollableSheet(
-                  initialChildSize: 0.35,
-                  minChildSize: 0.35,
-                  builder: (BuildContext context,
-                      ScrollController scrollController) {
-                    return SingleChildScrollView(
-                      controller: scrollController,
-                      child: Card(
-                        elevation: 12.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
+
+    return WillPopScope(
+      onWillPop: () => showExitPopup(context),
+      child: BaseView<MainScreenViewModel>(
+        onModelReady: (model) => model.init(),
+        builder: (context, model, child) {
+          print("reloading here");
+          switch (model.rideState) {
+            case RideState.NO_RIDE:
+              bottomSheet = const NoRideBS();
+              break;
+            case RideState.RIDE_CONFIRMED:
+              bottomSheet = RideDetails(model);
+              break;
+            case RideState.RIDE_STARTED:
+              bottomSheet = RideDetails(model);
+              break;
+            case RideState.RIDE_ENDED:
+              bottomSheet = RideEndedBottomSheet(model);
+              break;
+            default:
+          }
+          return SafeArea(
+            child: Scaffold(
+              key: model.scaffoldkey,
+              backgroundColor: Colors.yellow[50],
+              drawer: AppDrawer(),
+              body: Stack(
+                children: [
+                  GoogleMap(
+                    myLocationEnabled: true,
+                    compassEnabled: true,
+                    tiltGesturesEnabled: false,
+                    markers: Set<Marker>.of(model.markers),
+                    polylines: Set<Polyline>.of(model.polylines.values),
+                    initialCameraPosition: model.initialLocation,
+                    onMapCreated: (GoogleMapController controller) {
+                      model.mapController = controller;
+                      // Delay of 3 second
+                      Future.delayed(const Duration(seconds: 2), () {
+                        model.getCurrentTripMap();
+                      });
+                    },
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/main", (route) => false);
+                    },
+                    icon: const Icon(
+                      Icons.refresh,
+                      color: Colors.black,
+                    ),
+                  ),
+                  DraggableScrollableSheet(
+                    initialChildSize: 0.35,
+                    minChildSize: 0.35,
+                    builder: (BuildContext context,
+                        ScrollController scrollController) {
+                      return SingleChildScrollView(
+                        controller: scrollController,
+                        child: Card(
+                          elevation: 12.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          margin: const EdgeInsets.all(0),
+                          child: bottomSheet,
                         ),
-                        margin: const EdgeInsets.all(0),
-                        child: bottomSheet,
-                      ),
-                    );
-                  },
-                ),
-              ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+              // body: GoogleMap(
+              //   myLocationEnabled: true,
+              //   compassEnabled: true,
+              //   tiltGesturesEnabled: false,
+              //   markers: Set<Marker>.of(model.markers),
+              //   polylines: Set<Polyline>.of(model.polylines.values),
+              //   initialCameraPosition: model.initialLocation,
+              //   onMapCreated: (GoogleMapController controller) {
+              //     model.mapController = controller;
+              //     model.getCurrentLocation();
+              //   },
+              // ),
+              // bottomSheet: model.state == ViewState.Busy
+              //     ? const Center(child: CircularProgressIndicator())
+              //     : bottomSheet,
             ),
-            // body: GoogleMap(
-            //   myLocationEnabled: true,
-            //   compassEnabled: true,
-            //   tiltGesturesEnabled: false,
-            //   markers: Set<Marker>.of(model.markers),
-            //   polylines: Set<Polyline>.of(model.polylines.values),
-            //   initialCameraPosition: model.initialLocation,
-            //   onMapCreated: (GoogleMapController controller) {
-            //     model.mapController = controller;
-            //     model.getCurrentLocation();
-            //   },
-            // ),
-            // bottomSheet: model.state == ViewState.Busy
-            //     ? const Center(child: CircularProgressIndicator())
-            //     : bottomSheet,
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

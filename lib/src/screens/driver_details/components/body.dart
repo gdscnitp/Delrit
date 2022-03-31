@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ride_sharing/src/models/drivers.dart';
 import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/utils/dateutils.dart';
+import 'package:ride_sharing/src/widgets/launch_url.dart';
 import 'package:ride_sharing/view/driver_details_viewmodel.dart';
 import 'reusable_button.dart';
 import 'ride_confirmed.dart';
@@ -102,14 +103,14 @@ class Body extends StatelessWidget {
                         height: sizedHeight,
                       ),
                       Text(
-                        'Gender : Female',
+                        'Gender : ${model.driverInfo?.gender}',
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       SizedBox(
                         height: sizedHeight,
                       ),
                       Text(
-                        'Age : 35 years',
+                        'Age : ${model.driverInfo?.age.toString()} years',
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       SizedBox(
@@ -170,7 +171,7 @@ class Body extends StatelessWidget {
                           height: 38,
                         ),
                         Text(
-                          '+91 60708090100',
+                          '+91 ${model.driverInfo?.phone}',
                           style: Theme.of(context).textTheme.headline2,
                         ),
                       ],
@@ -209,7 +210,7 @@ class Body extends StatelessWidget {
                             text: 'Call',
                             buttoncolor: null,
                             onPress: () {
-                              showModalSheet(context);
+                              launchURL("tel:+91${model.driverInfo?.phone}");
                             },
                           ),
                         ),

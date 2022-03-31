@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ride_sharing/config/app_config.dart';
 import 'package:ride_sharing/src/models/trips.dart';
+import 'package:ride_sharing/src/widgets/launch_url.dart';
 
 Widget travallerDetailsCard(Rider rider, TextStyle commonTextStyle) {
   Widget chip = Container(
@@ -167,33 +168,33 @@ Widget travallerDetailsCard(Rider rider, TextStyle commonTextStyle) {
             height: getProportionateScreenHeight(10),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ClipOval(
-                child: Material(
-                  color: Colors.transparent,
-                  child: Image.asset(
-                    'assets/images/call_black.png',
-                    fit: BoxFit.contain,
-                    width: 33,
-                    height: 33,
+              GestureDetector(
+                onTap: () async {
+                  launchURL("tel:+91${rider.riderProfile?.phone ?? ""}");
+                },
+                child: ClipOval(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Image.asset(
+                      'assets/images/call_black.png',
+                      fit: BoxFit.contain,
+                      width: 33,
+                      height: 33,
+                    ),
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    '+91 ${rider.riderProfile?.phone ?? ""}',
-                    style: commonTextStyle,
-                  ),
-                  SizedBox(
-                    height: getProportionateScreenHeight(10),
-                  ),
-                  chip,
-                ],
+              Text(
+                '+91 ${rider.riderProfile?.phone ?? ""}',
+                style: commonTextStyle,
               ),
+              SizedBox(
+                height: getProportionateScreenHeight(10),
+              ),
+              chip,
             ],
           ),
           SizedBox(
