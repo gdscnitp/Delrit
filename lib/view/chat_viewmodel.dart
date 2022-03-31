@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,8 +11,6 @@ import 'package:ride_sharing/services/api_services.dart';
 import '../src/screens/chat_screen/chat_screen.dart';
 
 class ChatScreenModel extends BaseModel {
-  
-  
   String message = '';
   late String meUid;
   late String peerUid;
@@ -21,7 +18,7 @@ class ChatScreenModel extends BaseModel {
 
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
-  late File pickedImage;
+  File? pickedImage;
 
   final ApiService apiService = ApiService();
 
@@ -30,7 +27,6 @@ class ChatScreenModel extends BaseModel {
     peerUid = peerId;
     createChatRoom();
   }
-  
 
   // getChatUsers() {
   //   final User meUser = auth.currentUser!;
@@ -59,7 +55,6 @@ class ChatScreenModel extends BaseModel {
   }
 
   saveChatMessage() async {
-
     if (message != '') {
       Map<String, dynamic> chatData = {
         "message": message,
@@ -72,22 +67,23 @@ class ChatScreenModel extends BaseModel {
         "receiverUid": peerUid,
         "senderUid": meUid,
         "message": message,
-        "image":pickedImage,
+        "image": pickedImage,
       };
 
       final ApiResponse response = await apiService.sendChatNotification(body);
+      print(response.data);
     }
   }
-   Future pickImage(context) async {
+
+  Future pickImage(context) async {
     await ImagePicker().pickImage(source: ImageSource.gallery).then((value) {
       pickedImage = File(value!.path);
       Reference reference = FirebaseStorage.instance
           .ref()
           .child('media')
           .child(DateTime.now().microsecondsSinceEpoch.toString() + '.jpg');
-      UploadTask task = reference.putFile(pickedImage);
-     
-     
+      UploadTask task = reference.putFile(pickedImage!);
+
       task.whenComplete(() {
         reference.getDownloadURL().then((value) {
           message = value;
@@ -95,5 +91,4 @@ class ChatScreenModel extends BaseModel {
       });
     });
   }
-
 }

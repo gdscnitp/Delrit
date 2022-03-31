@@ -3,6 +3,7 @@ import 'package:ride_sharing/src/models/riders.dart';
 import 'package:ride_sharing/src/models/user.dart';
 import 'package:ride_sharing/src/screens/user_profile/user_profile.dart';
 import 'package:ride_sharing/src/utils/dateutils.dart';
+import 'package:ride_sharing/src/widgets/launch_url.dart';
 import 'package:ride_sharing/view/rider_details_viewmodel.dart';
 import 'reusable_button.dart';
 import 'ride_confirmed.dart';
@@ -102,14 +103,14 @@ class Body extends StatelessWidget {
                         height: sizedHeight,
                       ),
                       Text(
-                        'Gender : Female',
+                        'Gender : ${model.riderInfo?.gender}',
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       SizedBox(
                         height: sizedHeight,
                       ),
                       Text(
-                        'Age : 35 years',
+                        'Age : ${model.riderInfo?.age.toString()} years',
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       SizedBox(
@@ -163,7 +164,7 @@ class Body extends StatelessWidget {
                           height: 38,
                         ),
                         Text(
-                          '+91 60708090100',
+                          '+91  ${model.riderInfo?.phone}',
                           style: Theme.of(context).textTheme.headline2,
                         ),
                       ],
@@ -194,7 +195,7 @@ class Body extends StatelessWidget {
                             text: 'Call',
                             buttoncolor: null,
                             onPress: () {
-                              showModalSheet(context);
+                              launchURL("tel:+91 ${model.riderInfo?.phone}");
                             },
                           ),
                         ),

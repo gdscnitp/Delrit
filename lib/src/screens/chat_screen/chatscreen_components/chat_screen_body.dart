@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_5.dart';
 import 'package:ride_sharing/view/chat_viewmodel.dart';
 
@@ -78,7 +77,6 @@ getSenderView(CustomClipper clipper, BuildContext context, String child) =>
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.7,
         ),
-        
         child: Uri.tryParse(child)?.hasAbsolutePath ?? false
             ? Image.network(
                 child,
@@ -105,7 +103,6 @@ getReceiverView(CustomClipper clipper, BuildContext context, String child) =>
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.7,
         ),
-       
         child: Uri.tryParse(child)?.hasAbsolutePath ?? false
             ? Image.network(
                 child,

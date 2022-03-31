@@ -105,7 +105,7 @@ Widget Body(BuildContext context, MainScreenViewModel model,
                 Center(
                   child: ElevatedButton(
                     onPressed: () => model.generateAndSaveOtp(),
-                    child: const Text("Start You Ride"),
+                    child: const Text("Start Your Ride"),
                   ),
                 ),
               if (model.tripData.driver.status == "started")

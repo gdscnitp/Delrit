@@ -49,11 +49,52 @@ class MainScreenViewModel extends BaseModel {
 
   late TripsModel tripData;
   String? tripId;
+  var tripStream;
   Map<String, int> userRating = {};
 
   bool isDriver = false;
 
+  void streamStatus(Map<String, dynamic> data) async {
+    // if (tripData.driver.status == "confirmed") {
+    //   setRideState(RideState.RIDE_CONFIRMED);
+    // } else if (tripData.driver.status == "started") {
+    //   setRideState(RideState.RIDE_STARTED);
+    // } else if (tripData.driver.status == "completed") {
+    //   setRideState(RideState.RIDE_ENDED);
+    // } else if (tripData.driver.status == "rated") {
+    //   prefs.deleteTripIdLocally();
+    //   setRideState(RideState.NO_RIDE);
+    // }
+    var data;
+
+    tripData = TripsModel.fromJson(data);
+
+    data = (await db.collection("users").doc(tripData.driver.driverUid).get())
+        .data();
+
+    tripData.driver.setDriverProfile = UserProfileModel.fromJson(data!);
+
+    data = (await db
+        .collection("availableDrivers")
+        .doc(tripData.driver.driveId)
+        .get());
+    tripData.driver.setDriveData = DriverModel.fromJson(data.data(), data.id);
+    // notifyListeners();
+
+    for (Rider rider in tripData.riders) {
+      data = (await db.collection("users").doc(rider.riderUid).get()).data();
+      rider.setRiderProfile = UserProfileModel.fromJson(data!);
+      print("ok");
+      print(rider.riderProfile?.name);
+
+      data = (await db.collection("availableRiders").doc(rider.rideId).get());
+      rider.setRideData = RiderModel.fromJson(data.data(), data.id);
+    }
+    print(tripId);
+  }
+
   void init() async {
+    // await prefs.deleteTripIdLocally();
     setState(ViewState.Busy);
     location = Location();
     location.onLocationChanged.listen((LocationData locationData) {
@@ -245,6 +286,8 @@ class MainScreenViewModel extends BaseModel {
       rider.setRideData = RiderModel.fromJson(data.data(), data.id);
       notifyListeners();
     }
+
+    // print(tripData.driver.driverProfile!.name);
   }
 
   sendRideOtp(String otpcode, List<String> recipients) async {
@@ -288,6 +331,9 @@ class MainScreenViewModel extends BaseModel {
     });
     await sendRideOtp(otp, recipients);
     await Future.delayed(const Duration(seconds: 2));
+
+    sendRideOtp(otp, recipients);
+
     navigationService.navigateTo("/main", withreplacement: true);
   }
 
