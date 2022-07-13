@@ -35,7 +35,7 @@ All
 
 1. Fork and Clone the project:
 ```
-  git clone https://github.com/<your-account-here>/Ride-Sharing-App.git
+  git clone https://github.com/gdscnitp/Delrit.git
 ```
 
 2. Install the packages:
