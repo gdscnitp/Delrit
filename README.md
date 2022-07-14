@@ -27,7 +27,6 @@ All
 - Requires the will and efforts of the users.
 
 ## Reference to App's Designs:
-https://www.figma.com/file/QcbYspjuAs75bM24XHvSBq/Ride-Sharing-App?node-id=8%3A73
 <a href="https://www.figma.com/file/QcbYspjuAs75bM24XHvSBq/Ride-Sharing-App?node-id=8%3A73" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/figma/figma-icon.svg" alt="figma" width="40" height="40"/> </a>
 
 
