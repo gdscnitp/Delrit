@@ -8,9 +8,7 @@
 [![Top](https://img.shields.io/github/languages/top/gdscnitp/Delrit?style=for-the-badge&label=Top%20Languages)](https://github.com/gdscnitp/Delrit)
 [![Issues](https://img.shields.io/github/issues/gdscnitp/Delrit?style=for-the-badge&label=Issues)](https://github.com/gdscnitp/Delrit)
 
-
-<img src="https://github.com/SrijanShovit/Ride-Sharing-App/blob/main/assets/images/delrit_1.png" alt="logo" width="900" height="600"/>
-
+<p align="center"><img src="https://github.com/SrijanShovit/Ride-Sharing-App/blob/main/assets/images/delrit_1.png" alt="logo" width="400" height="200"/></p>
 
 ## Problems Addressed:
 
