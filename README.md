@@ -9,7 +9,7 @@
 [![Issues](https://img.shields.io/github/issues/gdscnitp/Delrit?style=for-the-badge&label=Issues)](https://github.com/gdscnitp/Delrit)
 
 
-<img src="https://github.com/SrijanShovit/Ride-Sharing-App/blob/main/assets/images/delrit_1.png" alt="logo" width="40" height="40"/>
+<img src="https://github.com/SrijanShovit/Ride-Sharing-App/blob/main/assets/images/delrit_1.png" alt="logo" width="900" height="600"/>
 
 
 ## Problems Addressed:
