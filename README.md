@@ -8,6 +8,8 @@
 [![Top](https://img.shields.io/github/languages/top/gdscnitp/Delrit?style=for-the-badge&label=Top%20Languages)](https://github.com/gdscnitp/Delrit)
 [![Issues](https://img.shields.io/github/issues/gdscnitp/Delrit?style=for-the-badge&label=Issues)](https://github.com/gdscnitp/Delrit)
 
+<p align="center"><img src="https://github.com/SrijanShovit/Ride-Sharing-App/blob/main/assets/images/delrit_1.png" alt="logo" width="400" height="200"/></p>
+
 ## Problems Addressed:
 
 You must be aware of car-pooling and its advantages like reducing traffic and pollution. Also, there might be situations when you don’t want to travel alone or cut down your ride costs. However, finding someone to share your ride with other people can be a tedious task. 
@@ -25,6 +27,10 @@ All
 ## Project constraints:
 - Requires basic knowledge of Flutter and Firebase
 - Requires the will and efforts of the users.
+
+## Demo on YouTube: 👇
+<a href="https://www.youtube.com/watch?v=WOSQTW2VIKk&list=PLkQgekuif9DhANvlSjdDSz73Ffd-Z6SiS&index=7" target="_blank" rel="noreferrer">Click me</a>
+
 
 ## Reference to App's Designs:
 <a href="https://www.figma.com/file/QcbYspjuAs75bM24XHvSBq/Ride-Sharing-App?node-id=8%3A73" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/figma/figma-icon.svg" alt="figma" width="40" height="40"/> </a>
