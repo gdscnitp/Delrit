@@ -8,6 +8,10 @@
 [![Top](https://img.shields.io/github/languages/top/gdscnitp/Delrit?style=for-the-badge&label=Top%20Languages)](https://github.com/gdscnitp/Delrit)
 [![Issues](https://img.shields.io/github/issues/gdscnitp/Delrit?style=for-the-badge&label=Issues)](https://github.com/gdscnitp/Delrit)
 
+
+<img src="https://github.com/SrijanShovit/Ride-Sharing-App/blob/main/assets/images/delrit_1.png" alt="logo" width="40" height="40"/>
+
+
 ## Problems Addressed:
 
 You must be aware of car-pooling and its advantages like reducing traffic and pollution. Also, there might be situations when you don’t want to travel alone or cut down your ride costs. However, finding someone to share your ride with other people can be a tedious task. 
